@@ -1,4 +1,4 @@
-package com.wedding.UserManage.service;
+package com.wedding.usermanage.service;
 
 import org.springframework.stereotype.Service;
 

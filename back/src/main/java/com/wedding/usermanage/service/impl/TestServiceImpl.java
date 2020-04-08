@@ -1,6 +1,6 @@
-package com.wedding.UserManage.service.impl;
+package com.wedding.usermanage.service.impl;
 
-import com.wedding.UserManage.service.TestService;
+import com.wedding.usermanage.service.TestService;
 import com.wedding.mapper.AlbumMapper;
 import com.wedding.model.po.Album;
 import org.springframework.beans.factory.annotation.Autowired;
