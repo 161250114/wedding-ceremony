@@ -1,8 +1,10 @@
 package com.wedding.mapper;
 
 import com.wedding.model.po.Happiness_photo;
-import java.util.List;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+@Repository
 public interface Happiness_photoMapper {
     int deleteByPrimaryKey(Integer id);
 

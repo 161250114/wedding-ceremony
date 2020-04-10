@@ -1,8 +1,11 @@
 package com.wedding.mapper;
 
 import com.wedding.model.po.Date_record;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public interface Date_recordMapper {
     int deleteByPrimaryKey(Integer id);
 
