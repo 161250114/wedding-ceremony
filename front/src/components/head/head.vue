@@ -13,15 +13,15 @@
             <img src="../../../static/title.png" class="title-img">
           </el-col>
         </a>
-        <el-col :span="13">
+        <el-col :xs="8" :sm="11" :md="14" :lg="13" :xl="13">
           &nbsp;
         </el-col>
           <el-col :span="3" v-show="!isLogin">
-            <el-button type="text" style="margin-top:10px;">登录</el-button>&nbsp;&nbsp;&nbsp;
+            <el-button type="text" style="margin-top:10px;" @click="login">登录</el-button>&nbsp;&nbsp;&nbsp;
             <el-button type="text">注册</el-button>
           </el-col>
           <el-col :span="3" v-show="isLogin"> 
-            <h3>欢迎您，{{username}}&nbsp;
+            <p style="margin-top:15px">欢迎您，{{username}}&nbsp;
               <el-dropdown @command="handleCommand">
                 <span class="el-dropdown-link">
                   <i class="el-icon-user-solid"></i>
@@ -34,7 +34,7 @@
                     <el-dropdown-item divided command="quit">退出登录</el-dropdown-item>
                   </el-dropdown-menu>
               </el-dropdown>
-            </h3>
+            </p>
             
           </el-col>
       </el-row>
@@ -69,6 +69,10 @@
             app.activeIndex=3;
             break;
         }
+      },
+      login(){
+        let app=this;
+        this.$router.push('/login');
       }
     }
   }
