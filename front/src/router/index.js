@@ -3,10 +3,12 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Home from '@/components/home/home'
 import Head from '@/components/head/head'
+import Login from '@/components/login/login'
 
 Vue.use(Router)
 
 export default new Router({
+  mode:'history',
   routes: [
     {
       path: '/',
@@ -18,8 +20,8 @@ export default new Router({
       component: Home
     },
     {
-      path: '/head',
-      component: Head
+      path: '/login',
+      component: Head,Login
     }
   ]
 })

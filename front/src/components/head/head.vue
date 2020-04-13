@@ -17,10 +17,8 @@
           &nbsp;
         </el-col>
           <el-col :span="3" v-show="!isLogin">
-            <el-menu :default-active="activeIndex" class="header" mode="horizontal" @select="handleSelect">
-              <el-menu-item index="1">登录</el-menu-item>
-              <el-menu-item index="2">注册</el-menu-item>
-            </el-menu>
+            <el-button type="text" style="margin-top:10px;">登录</el-button>&nbsp;&nbsp;&nbsp;
+            <el-button type="text">注册</el-button>
           </el-col>
           <el-col :span="3" v-show="isLogin"> 
             <h3>欢迎您，{{username}}&nbsp;
@@ -63,19 +61,6 @@
 
     },
     methods: {
-      handleSelect(key) {
-        switch(key){
-          case  '1':
-            let app=this;
-            app.isLogin=!app.isLogin;
-            // this.$router.push("/login")
-            break;
-          case  '2':
-            // this.$router.push("/register")
-            break;
-
-        }
-      },
       handleCommand(command){
         let app=this;
         switch(command){
