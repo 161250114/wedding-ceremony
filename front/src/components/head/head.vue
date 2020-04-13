@@ -17,8 +17,8 @@
           &nbsp;
         </el-col>
           <el-col :span="3" v-show="!isLogin">
-            <el-button type="text" style="margin-top:10px;" @click="login">登录</el-button>&nbsp;&nbsp;&nbsp;
-            <el-button type="text">注册</el-button>
+            <router-link to="/login"><el-button type="text" style="margin-top:10px;">登录</el-button></router-link>&nbsp;&nbsp;&nbsp;
+            <router-link to="/register"><el-button type="text">注册</el-button></router-link>
           </el-col>
           <el-col :span="3" v-show="isLogin"> 
             <p style="margin-top:15px">欢迎您，{{username}}&nbsp;
@@ -69,10 +69,6 @@
             app.activeIndex=3;
             break;
         }
-      },
-      login(){
-        let app=this;
-        this.$router.push('/login');
       }
     }
   }

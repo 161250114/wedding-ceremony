@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="footer">
     <el-divider></el-divider>
     <el-row>
       <el-col :span="6">
@@ -24,4 +24,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.footer{
+  width: 100%;
+  position:absolute;
+  bottom: 0;
+}
+</style>

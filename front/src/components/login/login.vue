@@ -24,7 +24,7 @@
             </el-form-item>
             <el-form-item>
               <el-button type="primary">登录</el-button>
-              <el-button>注册</el-button>
+              <router-link to="/register"><el-button>注册</el-button></router-link>
             </el-form-item>
           </el-form>
         </div>
