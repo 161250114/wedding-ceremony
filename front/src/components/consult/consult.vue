@@ -1,13 +1,101 @@
 <template>
-
+  <div class="talk_con">
+    <div class="talk_show" id="words">
+      <div class="atalk"><span>A说：吃饭了吗？</span></div>
+      <div class="btalk"><span>B说：还没呢，你呢？</span></div>
+      <div class="atalk"><span>A说：吃饭了吗？</span></div>
+      <div class="btalk"><span>A说：吃饭了吗？</span></div>
+      <div class="atalk"><span>A说：吃饭了吗？</span></div>
+      <div class="btalk"><span>B说：还没呢，你呢？</span></div>
+      <div class="atalk"><span>A说：吃饭了吗？</span></div>
+      <div class="btalk"><span>A说：吃饭了吗？</span></div>
+      <div class="atalk"><span>A说：吃饭了吗？</span></div>
+      <div class="btalk"><span>B说：还没呢，你呢？</span></div>
+      <div class="atalk"><span>A说：吃饭了吗？</span></div>
+      <div class="btalk"><span>A说：吃饭了吗？</span></div>
+    </div>
+    <div class="talk_input">
+      <el-input v-model="input" placeholder="请输入内容" class="talk_word"></el-input>
+      <el-button type="primary" class="talk_sub" @click="send(input)">发送</el-button>
+    </div>
+  </div>
 </template>
 
 <script>
     export default {
-        name: "consult"
+      name: "consult",
+      data(){
+          return {
+            input:""
+      }
+      },
+      methods:{
+        send(word){
+
+        },
+        addA(word){
+
+        }
+      }
     }
 </script>
 
-<style scoped>
-
+<style type="text/css">
+  .talk_con{
+    width:600px;
+    height:500px;
+    border:1px solid #666;
+    margin:50px auto 0;
+    background:#f9f9f9;
+  }
+  .talk_show{
+    width:580px;
+    height:420px;
+    border:1px solid #666;
+    background:#fff;
+    margin:10px auto 0;
+    overflow:auto;
+  }
+  .talk_input{
+    width:580px;
+    margin:10px auto 0;
+  }
+  .talk_word{
+    width:420px;
+    height:50px;
+    padding:0px;
+    float:left;
+    margin-left:10px;
+    outline:none;
+    text-indent:10px;
+  }
+  .talk_sub{
+    width:100px;
+    height:50px;
+    float:left;
+    margin-left:30px;
+    text-align: center;
+  }
+  .atalk{
+    margin-top:10px;
+    margin-left:-400px;
+  }
+  .atalk span{
+    display:inline-block;
+    background:#0181cc;
+    border-radius:10px;
+    color:#fff;
+    padding:5px 10px;
+  }
+  .btalk{
+    margin:10px;
+    text-align:right;
+  }
+  .btalk span{
+    display:inline-block;
+    background:#ef8201;
+    border-radius:10px;
+    color:#fff;
+    padding:5px 10px;
+  }
 </style>
