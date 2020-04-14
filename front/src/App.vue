@@ -9,8 +9,13 @@
 </template>
 
 <script>
+  import Vue from 'vue'
 import Myhead from "./components/head/head"
 import Myfooter from "./components/footer/footer"
+import axios from 'axios'
+Vue.prototype.$axios = axios
+axios.defaults.baseURL = '/api'
+
 export default {
   name: 'App',
   components:{

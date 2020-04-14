@@ -1,18 +1,7 @@
 <template>
   <div class="talk_con">
     <div class="talk_show" id="words">
-      <div class="atalk"><span>A说：吃饭了吗？</span></div>
-      <div class="btalk"><span>B说：还没呢，你呢？</span></div>
-      <div class="atalk"><span>A说：吃饭了吗？</span></div>
-      <div class="btalk"><span>A说：吃饭了吗？</span></div>
-      <div class="atalk"><span>A说：吃饭了吗？</span></div>
-      <div class="btalk"><span>B说：还没呢，你呢？</span></div>
-      <div class="atalk"><span>A说：吃饭了吗？</span></div>
-      <div class="btalk"><span>A说：吃饭了吗？</span></div>
-      <div class="atalk"><span>A说：吃饭了吗？</span></div>
-      <div class="btalk"><span>B说：还没呢，你呢？</span></div>
-      <div class="atalk"><span>A说：吃饭了吗？</span></div>
-      <div class="btalk"><span>A说：吃饭了吗？</span></div>
+      <div  v-for="mess in list"  :class="{'atalk':mess.sender_id==1,'btalk':mess.receiver_id==1}"><span>{{mess.content}}</span></div>
     </div>
     <div class="talk_input">
       <el-input v-model="input" placeholder="请输入内容" class="talk_word"></el-input>
@@ -22,14 +11,31 @@
 </template>
 
 <script>
+    import axios from 'axios'
     export default {
       name: "consult",
       data(){
           return {
-            input:""
+            input:"",
+            isMy:true,
+            list:[],
+            classes:[]
       }
       },
+      created(){
+        this.load();
+      },
       methods:{
+        load(){
+          let app=this
+          axios.get('/systemmessage/getAll')
+            .then(function(res){
+              app.list=res.data
+            })
+            .catch(function(err){
+              console.log(err);
+            });
+        },
         send(word){
 
         },
