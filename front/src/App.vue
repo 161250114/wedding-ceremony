@@ -10,10 +10,12 @@
 
 <script>
   import Vue from 'vue'
-import Myhead from "./components/head/head"
-import Myfooter from "./components/footer/footer"
-import axios from 'axios'
+  import Myhead from "./components/head/head"
+  import Myfooter from "./components/footer/footer"
+  import axios from 'axios'
+
 Vue.prototype.$axios = axios
+  axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8'
 axios.defaults.baseURL = '/api'
 
 export default {

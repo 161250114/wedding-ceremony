@@ -5,7 +5,7 @@
     </div>
     <div class="talk_input">
       <el-input v-model="input" placeholder="请输入内容" class="talk_word"></el-input>
-      <el-button type="primary" class="talk_sub" @click="send(input)">发送</el-button>
+      <el-button type="primary" class="talk_sub" @click="send()">发送</el-button>
     </div>
   </div>
 </template>
@@ -19,11 +19,20 @@
             input:"",
             isMy:true,
             list:[],
-            classes:[]
       }
       },
       created(){
         this.load();
+      },
+      mounted: function () {
+        if(this.timer){
+          clearInterval(this.timer);
+        } else{
+          this.timer = setInterval(() => {
+            this.load();//再次加载数据,自己定义的方法
+            console.log("成功了");
+          }, 1000);//每隔十秒刷新一次
+        }
       },
       methods:{
         load(){
@@ -37,7 +46,17 @@
             });
         },
         send(word){
-
+          let app=this;
+          var data = {};
+          data["id"] = 0;
+          data["sender_id"]=1;
+          data["receiver_id"]=0;
+          data["content"]=app.input;
+          data["state"]=0;
+          data=JSON.stringify(data);
+            axios.post("/systemmessage/add",data)
+            .then(successResponse => {alert("lbw")})
+            .catch(failResponse => {}); //失败后的操作
         },
         addA(word){
 
