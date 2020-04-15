@@ -5,6 +5,7 @@ import Login from '@/components/login/login'
 import Register from '@/components/register/register'
 import Consult from '@/components/consult/consult'
 import SendHappiness from'@/components/happiness/sendhappiness'
+import Happiness from '@/components/happiness/happiness'
 Vue.use(Router)
 
 export default new Router({
@@ -30,6 +31,10 @@ export default new Router({
     {
       path:'/sendhappiness',
       component:SendHappiness
+    },
+    {
+      path:'/happiness',
+      component:Happiness
     }
   ]
 })
