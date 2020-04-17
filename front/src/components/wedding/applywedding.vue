@@ -7,10 +7,9 @@
       <el-col :span="3">&nbsp;</el-col>
       <el-col :span="18">
         <el-steps :active="active" finish-status="success">
-          <el-step title="基本信息填写"></el-step>
-          <el-step title="个人资料填写"></el-step>
-          <el-step title="自我介绍填写"></el-step>
-          <el-step title="完成注册"></el-step>
+          <el-step title="个人信息填写"></el-step>
+          <el-step title="婚宴要求填写"></el-step>
+          <el-step title="完成申请"></el-step>
         </el-steps>
       </el-col>
     </el-row>
@@ -37,47 +36,25 @@
         >
           <el-row>
             <el-col :span="15"
-            ><el-form-item label="用户名:" v-model="userInfo.username">
+            ><el-form-item label="姓名:" v-model="wedding.name">
               <el-input prefix-icon="el-icon-user"></el-input> </el-form-item
             ></el-col>
           </el-row>
           <el-row>
             <el-col :span="15"
-            ><el-form-item label="密码:" v-model="userInfo.password">
+            ><el-form-item label="电话:" v-model="wedding.phone">
               <el-input
-                prefix-icon="el-icon-postcard"
+                prefix-icon="el-icon-phone"
               ></el-input> </el-form-item
             ></el-col>
           </el-row>
           <el-row>
             <el-col :span="15"
-            ><el-form-item label="确认密码:">
+            ><el-form-item label="邮箱:" v-model="wedding.email">
               <el-input
                 prefix-icon="el-icon-postcard"
               ></el-input> </el-form-item
             ></el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="15"
-            ><el-form-item label="手机号:" v-model="userInfo.phone">
-              <el-input prefix-icon="el-icon-phone"></el-input> </el-form-item
-            ></el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="10"
-            ><el-form-item label="验证码:">
-              <el-input
-                prefix-icon="el-icon-message"
-              ></el-input> </el-form-item
-            ></el-col>
-            <el-col :span="1">
-              <el-button
-                type="primary"
-                @click="sendKey"
-                :disabled="!validateButton.active"
-              >{{ validateButton.message }}</el-button
-              >
-            </el-col>
           </el-row>
         </el-form>
         <el-form
@@ -87,126 +64,44 @@
         >
           <el-row>
             <el-col :span="15"
-            ><el-form-item label="姓名:">
+            ><el-form-item label="总人数:">
               <el-input
-                v-model="userInfo.fullName"
-                placeholder="请输入姓名"
-                prefix-icon="el-icon-user-solid"
+                v-model="wedding.total"
               ></el-input>
             </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="15"
-            ><el-form-item label="性别:">
-              <el-radio v-model="userInfo.sex" label="1">男</el-radio>
-              <el-radio v-model="userInfo.sex" label="2">女</el-radio>
-            </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="15"
-            ><el-form-item label="生日:">
-              <div class="block">
-                <el-date-picker
-                  v-model="userInfo.birthday"
-                  type="date"
-                  placeholder="选择日期"
-                  style="width:100%"
-                >
-                </el-date-picker>
-              </div>
-            </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="15"
-            ><el-form-item label="身高:">
+            ><el-form-item label="时间范围:">
               <el-input
-                v-model="userInfo.height"
-                placeholder="以厘米(cm)为单位"
-              ></el-input>
+                placeholder="开始时间"
+                suffix-icon="el-icon-date"
+                v-model="wedding.start">
+              </el-input>
+              <el-input
+                placeholder="结束时间"
+                suffix-icon="el-icon-date"
+                v-model="wedding.end">
+              </el-input>
             </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="15"
-            ><el-form-item label="住址:">
-              <el-cascader
-                ref="cityCascader"
-                :options="cities"
-                style="width:100%"
-                @change="addressChange"
-              ></el-cascader>
-            </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="15"
-            ><el-form-item label="学历:">
-              <el-select
-                v-model="userInfo.education"
-                placeholder="请选择"
-                style="width:100%"
+            ><el-form-item label="位置要求:">
+              <el-input
+                type="textarea"
+                placeholder="请输入内容"
+                v-model="wedding.location"
+                maxlength="50"
+                show-word-limit
               >
-                <el-option
-                  v-for="item in educationList"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-                >
-                </el-option>
-              </el-select>
+              </el-input>
             </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
-            <el-col :span="15"
-            ><el-form-item label="婚姻状况:">
-              <el-radio v-model="userInfo.marriage" label="1">未婚</el-radio>
-              <el-radio v-model="userInfo.marriage" label="2">离婚</el-radio>
-              <el-radio v-model="userInfo.marriage" label="3">丧偶</el-radio>
-            </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="15"
-            ><el-form-item label="职业:">
-              <el-select
-                v-model="userInfo.profession"
-                placeholder="请选择"
-                style="width:100%"
-              >
-                <el-option
-                  v-for="item in professionList"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="15"
-            ><el-form-item label="月薪:">
-              <el-select
-                v-model="userInfo.salary"
-                placeholder="请选择"
-                style="width:100%"
-              >
-                <el-option
-                  v-for="item in salaryList"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            </el-col>
-          </el-row>
+
         </el-form>
         <el-form
           label-position="left"
@@ -215,12 +110,15 @@
         >
           <el-row>
             <el-col :span="15"
-            ><el-form-item label="自我介绍:">
+            ><el-form-item label="细节要求:">
               <el-input
                 type="textarea"
-                v-model="userInfo.introduction"
-                :autosize="{ minRows: 10, maxRows: 10 }"
-              ></el-input>
+                placeholder="请输入内容"
+                v-model="wedding.detail"
+                maxlength="250"
+                show-word-limit
+              >
+              </el-input>
             </el-form-item>
             </el-col>
           </el-row>
@@ -259,23 +157,31 @@
             "../../../static/registerPic3.png",
             "../../../static/registerPic4.jpeg"
           ],
-          userInfo: {
-            username: "",
-            password: "",
-            phone: "",
-            fullName: "",
-            sex: 0,
-            birthday: "",
-            height: "",
-            introduction: "",
-            address: "",
-            education: "",
-            marriage: "",
-            salary: "",
-            profession: ""
+          wedding: {
+            name:"",
+            phone:"",
+            email:"",
+            total:"",
+            start:"",
+            end:"",
+            location:"",
+            detail:""
           },
         }
-      }
+      },
+    methods:{
+      changeStep(index) {
+        let app = this;
+        if (app.active == 0 && index == -1) {
+          app.$message({
+            message: "已回到第一步！",
+            type: "warning"
+          });
+        } else {
+          this.active = this.active + index;
+        }
+      },
+    }
     }
 </script>
 

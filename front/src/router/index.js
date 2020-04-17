@@ -7,6 +7,8 @@ import Consult from '@/components/consult/consult'
 import SendHappiness from'@/components/happiness/sendhappiness'
 import Happiness from '@/components/happiness/happiness'
 import ApplyWedding from '@/components/wedding/applywedding'
+import Wedding from '@/components/wedding/wedding'
+import WeddingDetail from '@/components/wedding/weddingdetail'
 Vue.use(Router)
 
 export default new Router({
@@ -40,6 +42,14 @@ export default new Router({
     {
       path:'/applywedding',
       component:ApplyWedding
+    },
+    {
+      path:'/wedding',
+      component:Wedding
+    },
+    {
+      path:'/weddingdetail',
+      component:WeddingDetail
     }
   ]
 })
