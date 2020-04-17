@@ -6,6 +6,7 @@ import Register from '@/components/register/register'
 import Consult from '@/components/consult/consult'
 import SendHappiness from'@/components/happiness/sendhappiness'
 import Happiness from '@/components/happiness/happiness'
+import ApplyWedding from '@/components/wedding/applywedding'
 Vue.use(Router)
 
 export default new Router({
@@ -35,6 +36,10 @@ export default new Router({
     {
       path:'/happiness',
       component:Happiness
+    },
+    {
+      path:'/applywedding',
+      component:ApplyWedding
     }
   ]
 })
