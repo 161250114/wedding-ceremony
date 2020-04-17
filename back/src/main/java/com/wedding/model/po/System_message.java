@@ -9,6 +9,17 @@ public class System_message {
 
     private String content;
 
+    public System_message() {
+    }
+
+    public System_message(Integer id, Integer senderId, Integer receiverId, String content, Integer state) {
+        this.id = id;
+        this.senderId = senderId;
+        this.receiverId = receiverId;
+        this.content = content;
+        this.state = state;
+    }
+
     private Integer state;
 
     public Integer getId() {
