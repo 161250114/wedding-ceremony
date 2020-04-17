@@ -1,5 +1,7 @@
 package com.wedding.model.po;
 
+import java.util.Date;
+
 public class Wedding {
     private Integer id;
 
@@ -13,11 +15,48 @@ public class Wedding {
 
     private Integer total;
 
+    private Date start;
+
+    private Date end;
+
     private String location;
 
     private String detail;
 
+    public Wedding() {
+    }
+
     private Integer state;
+
+    public Wedding(Integer id, Integer applicantId, String name, String phone, String email, Integer total, Date start, Date end, String location, String detail, Integer state) {
+        this.id = id;
+        this.applicantId = applicantId;
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.total = total;
+        this.start = start;
+        this.end = end;
+        this.location = location;
+        this.detail = detail;
+        this.state = state;
+    }
+
+    public Date getStart() {
+        return start;
+    }
+
+    public void setStart(Date start) {
+        this.start = start;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public void setEnd(Date end) {
+        this.end = end;
+    }
 
     public Integer getId() {
         return id;

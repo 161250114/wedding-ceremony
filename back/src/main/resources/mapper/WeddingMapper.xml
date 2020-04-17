@@ -8,6 +8,8 @@
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="total" property="total" jdbcType="INTEGER" />
+    <result column="start" property="start" jdbcType="DATE" />
+    <result column="end" property="end" jdbcType="DATE" />
     <result column="location" property="location" jdbcType="VARCHAR" />
     <result column="detail" property="detail" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="INTEGER" />
@@ -18,11 +20,11 @@
   </delete>
   <insert id="insert" parameterType="com.wedding.model.po.Wedding" >
     insert into wedding (id, applicant_id, name, 
-      phone, email, total, 
+      phone, email, total, start,end,
       location, detail, state
       )
     values (#{id,jdbcType=INTEGER}, #{applicantId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{total,jdbcType=INTEGER}, 
+      #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{total,jdbcType=INTEGER}, #{start,jdbcType=DATE}, #{end,jdbcType=DATE},
       #{location,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}
       )
   </insert>
@@ -33,18 +35,20 @@
       phone = #{phone,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       total = #{total,jdbcType=INTEGER},
+      start = #{start,jdbcType=DATE},
+      end = #{end,jdbcType=DATE},
       location = #{location,jdbcType=VARCHAR},
       detail = #{detail,jdbcType=VARCHAR},
       state = #{state,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, applicant_id, name, phone, email, total, location, detail, state
+    select id, applicant_id, name, phone, email, total,start,end,location, detail, state
     from wedding
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, applicant_id, name, phone, email, total, location, detail, state
+    select id, applicant_id, name, phone, email, total,start,end, location, detail, state
     from wedding
   </select>
 </mapper>
