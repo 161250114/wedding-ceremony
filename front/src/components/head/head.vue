@@ -27,7 +27,7 @@
                   <i class="el-icon-user-solid"></i>
                 </span>
                   <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item command="1">功能1</el-dropdown-item>
+                    <el-dropdown-item command="1">个人中心</el-dropdown-item>
                     <el-dropdown-item command="2">功能2</el-dropdown-item>
                     <el-dropdown-item command="3">功能3</el-dropdown-item>
                     <el-dropdown-item command="4">功能4</el-dropdown-item>
@@ -48,12 +48,11 @@
     props:{
       index: {
         type: String
-      }
+      },
+      isLogin:Boolean
     },
     data(){
       return{
-        activeIndex:3,
-        isLogin:false,
         username:"pikaqiu"
       }
     },
@@ -65,8 +64,7 @@
         let app=this;
         switch(command){
           case 'quit':
-            app.isLogin=!app.isLogin;
-            app.activeIndex=3;
+            app.$emit("quit",false)
             break;
         }
       }

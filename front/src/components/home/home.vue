@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div class="head">
-      <Head :index="activeIndex"></Head>
-    </div>
     
   </div>
 

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <Myhead></Myhead>
+    <Myhead v-bind:isLogin="isLogin" @quit="changeLogin"></Myhead>
     <div id="app">
-      <router-view/>
+      <router-view @login="changeLogin"/>
     </div>
     <Myfooter></Myfooter>
   </div>
@@ -22,6 +22,18 @@ export default {
   name: 'App',
   components:{
     Myhead,Myfooter
+  },
+  data(){
+    return{
+      isLogin:false
+    }
+  },
+  methods:{
+    changeLogin(isLogin){
+      this.isLogin=isLogin;
+      console.log(this.isLogin)
+    }
+    
   }
 }
 </script>

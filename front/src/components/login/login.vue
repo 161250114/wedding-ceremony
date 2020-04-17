@@ -20,11 +20,17 @@
             </el-form-item>
             <el-form-item label="密码：">
               <el-input></el-input>
-              <el-button type="text" style="float:right;" size="small">忘记密码</el-button>
+              <el-button type="text" style="float:right;" size="small"
+                >忘记密码</el-button
+              >
             </el-form-item>
             <el-form-item>
-              <el-button type="primary">登录</el-button>
-              <router-link to="/register"><el-button>注册</el-button></router-link>
+              <router-link to="/">
+              <el-button type="primary" @click="login">登录</el-button>
+              </router-link>
+              <router-link to="/register"
+                ><el-button>注册</el-button></router-link
+              >
             </el-form-item>
           </el-form>
         </div>
@@ -34,14 +40,18 @@
 </template>
 
 <script>
-export default{
-  data(){
-      return{
-        picUrls:["../../../static/loginPic1.png"]
-      }
+export default {
+  data() {
+    return {
+      picUrls: ["../../../static/loginPic1.png"]
+    };
+  },
+  methods:{
+    login(){
+      this.$emit("login",true);
     }
-}
-
+  }
+};
 </script>
 
 <style scoped>
@@ -62,7 +72,7 @@ export default{
 }
 
 .page {
-  background-image:url("../../../static/loginBack.png");
+  background-image: url("../../../static/loginBack.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   height: 600px;
