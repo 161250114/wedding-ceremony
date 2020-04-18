@@ -1,7 +1,13 @@
 package com.wedding.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
+import java.io.Serializable;
+
 public class ReturnMessage {
+    @JSONField
     private boolean result;
+    @JSONField
     private String message;
 
     public ReturnMessage(boolean result, String message) {

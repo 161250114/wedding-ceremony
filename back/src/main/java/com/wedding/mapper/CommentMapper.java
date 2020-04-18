@@ -1,11 +1,8 @@
 package com.wedding.mapper;
 
 import com.wedding.model.po.Comment;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
-@Repository
 public interface CommentMapper {
     int deleteByPrimaryKey(Integer id);
 

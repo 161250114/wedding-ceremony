@@ -10,7 +10,7 @@
     delete from album
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wedding.model.po.Album" >
+  <insert id="insert" parameterType="com.wedding.model.po.Album" useGeneratedKeys="true" keyProperty="id">
     insert into album (id, current_number, max_number
       )
     values (#{id,jdbcType=INTEGER}, #{currentNumber,jdbcType=INTEGER}, #{maxNumber,jdbcType=INTEGER}

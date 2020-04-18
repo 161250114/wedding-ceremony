@@ -19,8 +19,6 @@ public class User {
 
     private String fullname;
 
-    private Integer age;
-
     private Byte sex;
 
     private Date birthday;
@@ -107,14 +105,6 @@ public class User {
 
     public void setFullname(String fullname) {
         this.fullname = fullname == null ? null : fullname.trim();
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
     }
 
     public Byte getSex() {

@@ -1,10 +1,8 @@
 package com.wedding.mapper;
 
 import com.wedding.model.po.System_message;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
-@Repository
+
 public interface System_messageMapper {
     int deleteByPrimaryKey(Integer id);
 
