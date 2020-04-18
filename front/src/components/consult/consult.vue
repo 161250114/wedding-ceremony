@@ -1,11 +1,14 @@
 <template>
-  <div class="talk_con">
-    <div class="talk_show" id="words">
-      <div  v-for="mess in list"  :class="{'atalk':mess.sender_id==1,'btalk':mess.receiver_id==1}"><span>{{mess.content}}</span></div>
-    </div>
-    <div class="talk_input">
-      <el-input v-model="input" placeholder="请输入内容" class="talk_word"></el-input>
-      <el-button type="primary" class="talk_sub" @click="send()">发送</el-button>
+  <div>
+    <div class="title" style="text-align: center"><p style="font-size: 20px">正在与管理员聊天</p></div>
+    <div class="talk_con">
+      <div class="talk_show" id="words">
+        <div  v-for="mess in list"  :class="{'atalk':mess.sender_id==1,'btalk':mess.receiver_id==1}"><span>{{mess.content}}</span></div>
+      </div>
+      <div class="talk_input">
+        <el-input v-model="input" placeholder="请输入内容" class="talk_word"></el-input>
+        <el-button type="primary" class="talk_sub" @click="send()">发送</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -70,7 +73,7 @@
     width:600px;
     height:500px;
     border:1px solid #666;
-    margin:50px auto 0;
+    margin:0px auto 0;
     background:#f9f9f9;
   }
   .talk_show{
