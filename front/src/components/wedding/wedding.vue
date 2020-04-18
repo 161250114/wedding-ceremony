@@ -31,16 +31,36 @@
     <el-table-column
       prop="state"
       label="状态">
+    </el-table-column>
+      <el-table-column
+        prop="start"
+        label="开始时间">
+      </el-table-column>
+      <el-table-column
+        prop="end"
+        label="结束时间">
+      </el-table-column>
+      <el-table-column
+        label="位置信息">
+        <template slot-scope="scope">
+          <el-button @click="checkLoc(scope.row)" type="text" size="small">查看</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="细节">
+        <template slot-scope="scope">
+          <el-button @click="checkDet(scope.row)" type="text" size="small">查看</el-button>
+        </template>
+      </el-table-column>
       <el-table-column
         fixed="right"
         label="操作"
         width="100">
         <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+          <el-button v-if="getState(scope.row)==0" @click="handleClick(scope.row)" type="text" size="small">通过</el-button>
+          <el-button v-if="getState(scope.row)==0" @click="handleClick(scope.row)" type="text" size="small">取消</el-button>
         </template>
       </el-table-column>
-    </el-table-column>
-
   </el-table>
 </div>
 </template>
@@ -52,40 +72,81 @@
         return {
           input:"",
           tableData: [{
-            id: '2016-05-03',
-            name: '王小虎',
-            phone: '上海市普陀区金沙江路 1518 弄'
+            id:1,
+            name:"卢本伟",
+            phone:"",
+            email:"",
+            total:100,
+            start:"",
+            end:"",
+            location:"777777",
+            detail:"2155",
+            state:0
           }, {
-            id: '2016-05-02',
-            name: '王小虎',
-            phone: '上海市普陀区金沙江路 1518 弄'
+            id:2,
+            name:"五五开",
+            phone:"",
+            email:"",
+            total:120,
+            start:"",
+            end:"",
+            location:"35325",
+            detail:"2532",
+            state:1
           }, {
-            id: '2016-05-04',
-            name: '王小虎',
-            phone: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            id: '2016-05-01',
-            name: '王小虎',
-            phone: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            id: '2016-05-08',
-            name: '卢本伟',
-            phone: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            id: '2016-05-06',
-            name: '王小虎',
-            phone: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            id: '2016-05-07',
-            name: '王小虎',
-            phone: '上海市普陀区金沙江路 1518 弄'
+            id:3,
+            name:"pdd",
+            phone:"",
+            email:"",
+            total:200,
+            start:"",
+            end:"",
+            location:"2314",
+            detail:"144345315",
+            state:0
           }]
         }
       },
       methods: {
-      handleClick(row){
+        handleClick(row){
         console.log(row.id)
       },
+        getState(row){
+          let app=this
+          let table=this.tableData
+          let info=""
+          for(let i=0;i<table.length;i++){
+            if(table[i]["id"]==row.id){
+              return table[i]["state"]
+            }
+          }
+        },
+        checkLoc(row){
+          let app=this
+          let table=this.tableData
+          let info=""
+          for(let i=0;i<table.length;i++){
+            if(table[i]["id"]==row.id){
+              info=table[i]["location"];
+            }
+          }
+          this.$alert(info, '位置信息', {
+            confirmButtonText: '确定',
+          });
+        },
+        checkDet(row){
+          let app=this
+          let table=this.tableData
+          let info=""
+          for(let i=0;i<table.length;i++){
+            if(table[i]["id"]==row.id){
+              info=table[i]["detail"];
+            }
+          }
+          this.$alert(info, '细节信息', {
+            confirmButtonText: '确定',
+          });
+        },
       search(input){
         let app=this
         let table=this.tableData
@@ -96,9 +157,8 @@
             result.push(data);
           }
         }
-        console.log(result)
+        this.tableData=result
       },
-
     }
 
     }

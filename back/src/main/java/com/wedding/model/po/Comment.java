@@ -9,6 +9,9 @@ public class Comment {
 
     private String content;
 
+    public Comment() {
+    }
+
     private Integer state;
 
     public Integer getId() {
@@ -17,6 +20,14 @@ public class Comment {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Comment(Integer id, Integer happinessId, Integer senderId, String content, Integer state) {
+        this.id = id;
+        this.happinessId = happinessId;
+        this.senderId = senderId;
+        this.content = content;
+        this.state = state;
     }
 
     public Integer getHappinessId() {
