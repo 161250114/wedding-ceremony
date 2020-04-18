@@ -36,23 +36,25 @@
         >
           <el-row>
             <el-col :span="15"
-            ><el-form-item label="姓名:" v-model="wedding.name">
-              <el-input prefix-icon="el-icon-user"></el-input> </el-form-item
+            ><el-form-item label="姓名:">
+              <el-input prefix-icon="el-icon-user"  v-model="wedding.name"></el-input> </el-form-item
             ></el-col>
           </el-row>
           <el-row>
             <el-col :span="15"
-            ><el-form-item label="电话:" v-model="wedding.phone">
+            ><el-form-item label="电话:">
               <el-input
                 prefix-icon="el-icon-phone"
+                v-model="wedding.phone"
               ></el-input> </el-form-item
             ></el-col>
           </el-row>
           <el-row>
             <el-col :span="15"
-            ><el-form-item label="邮箱:" v-model="wedding.email">
+            ><el-form-item label="邮箱:">
               <el-input
                 prefix-icon="el-icon-postcard"
+                v-model="wedding.email"
               ></el-input> </el-form-item
             ></el-col>
           </el-row>
