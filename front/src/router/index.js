@@ -10,6 +10,7 @@ import ApplyWedding from '@/components/wedding/applywedding'
 import PersonalInfo from '@/components/personalInfo/personalInfo'
 import Wedding from '@/components/wedding/wedding'
 import WeddingDetail from '@/components/wedding/weddingdetail'
+import ConsultList from '@/components/consult/consultlist'
 Vue.use(Router)
 
 export default new Router({
@@ -54,6 +55,10 @@ export default new Router({
     {
       path:'/weddingdetail',
       component:WeddingDetail
+    },
+    {
+      path:'/consultlist',
+      component:ConsultList
     }
   ]
 })
