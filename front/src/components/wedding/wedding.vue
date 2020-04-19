@@ -72,7 +72,7 @@
         return {
           input:"",
           tableData: [{
-            id:1,
+            id:"100001",
             name:"卢本伟",
             phone:"",
             email:"",
@@ -83,7 +83,7 @@
             detail:"2155",
             state:0
           }, {
-            id:2,
+            id:"100002",
             name:"五五开",
             phone:"",
             email:"",
@@ -94,7 +94,7 @@
             detail:"2532",
             state:1
           }, {
-            id:3,
+            id:"100003",
             name:"pdd",
             phone:"",
             email:"",
