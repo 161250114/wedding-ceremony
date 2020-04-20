@@ -3,6 +3,7 @@ package com.wedding.weddingconsulthappiness.service.impl;
 
 import com.wedding.mapper.Wedding_recordMapper;
 import com.wedding.model.po.Wedding_record;
+import com.wedding.weddingconsulthappiness.service.WeddingRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,7 @@
 package com.wedding.weddingconsulthappiness.controller;
 
 import com.wedding.model.po.System_message;
+import com.wedding.weddingconsulthappiness.service.SystemMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;

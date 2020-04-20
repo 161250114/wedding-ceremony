@@ -25,8 +25,16 @@ public class LRServiceImpl implements LRService {
 
     @Override
     public ReturnMessage login(LoginVO loginVO) {
-
-        return new ReturnMessage(true,"ok");
+        User user=userMapper.selectByPhone(loginVO.getUname_phone());
+        if(user.getPassword().equals(loginVO.getPassword())){
+            return new ReturnMessage(true,"ok");
+        }else{
+            user=userMapper.selectByUsername(loginVO.getUname_phone());
+            if(user.getPassword().equals(loginVO.getPassword())){
+                return new ReturnMessage(true,"ok");
+            }
+        }
+        return new ReturnMessage(false,"密码不正确");
     }
 
     @Override
