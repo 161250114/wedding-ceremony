@@ -24,7 +24,7 @@
                 <b>账户余额：{{ userinfo.balance }}&nbsp;¥</b>
               </p>
             </div>
-            <el-menu router>
+            <el-menu router unique-opened >
               <el-submenu index="1">
                 <template slot="title"
                   ><i class="el-icon-message"></i>个人资料</template
@@ -66,6 +66,7 @@
                 <template slot="title"
                   ><i class="el-icon-star-off"></i>服务购买</template
                 >
+                <el-menu-item index="/personalInfo/charge">充值</el-menu-item>
                 <el-menu-item index="/personalInfo/beVIP">成为付费会员</el-menu-item>
                 <el-menu-item index="/personalInfo/addAlbumMax">相册容量购买</el-menu-item>
               </el-submenu>
@@ -115,7 +116,7 @@ export default {
       currentIndex: "1-1",
       userinfo: {
         username: "pikaqiu",
-        usertype: 0,
+        usertype: 1,
         balance: 50
       }
     };

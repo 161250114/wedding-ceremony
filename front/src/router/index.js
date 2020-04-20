@@ -91,6 +91,10 @@ export default new Router({
         {
           path:'limits',
           component:() => import('@/components/personalInfo/children/limits')
+        },
+        {
+          path:'charge',
+          component:() => import('@/components/personalInfo/children/charge')
         }
       ]
     },
