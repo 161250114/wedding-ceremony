@@ -2,7 +2,6 @@ package com.wedding.weddingconsulthappiness.controller;
 
 
 import com.wedding.model.po.Wedding;
-import com.wedding.usermanage.service.WeddingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

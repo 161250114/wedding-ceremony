@@ -3,23 +3,23 @@ package com.wedding.usermanage.vo;
 import java.io.Serializable;
 
 public class LoginVO implements Serializable {
-    String username;
+    String uname_phone;
     String password;
 
-    public LoginVO(String username, String password) {
-        this.username = username;
+    public LoginVO(String uname_phone, String password) {
+        this.uname_phone = uname_phone;
         this.password = password;
     }
 
     public LoginVO() {
     }
 
-    public String getUsername() {
-        return username;
+    public String getUname_phone() {
+        return uname_phone;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUname_phone(String uname_phone) {
+        this.uname_phone = uname_phone;
     }
 
     public String getPassword() {

@@ -3,7 +3,6 @@ package com.wedding.weddingconsulthappiness.service.impl;
 
 import com.wedding.mapper.Happiness_photoMapper;
 import com.wedding.model.po.Happiness_photo;
-import com.wedding.usermanage.service.HappinessPhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -2,7 +2,7 @@ package com.wedding.weddingconsulthappiness.service.impl;
 
 import com.wedding.mapper.CommentMapper;
 import com.wedding.model.po.Comment;
-import com.wedding.usermanage.service.CommentService;
+import com.wedding.weddingconsulthappiness.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

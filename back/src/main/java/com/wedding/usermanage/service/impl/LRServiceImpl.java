@@ -25,7 +25,8 @@ public class LRServiceImpl implements LRService {
 
     @Override
     public ReturnMessage login(LoginVO loginVO) {
-        return null;
+
+        return new ReturnMessage(true,"ok");
     }
 
     @Override
