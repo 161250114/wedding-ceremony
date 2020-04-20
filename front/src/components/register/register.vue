@@ -37,15 +37,19 @@
         >
           <el-row>
             <el-col :span="15"
-              ><el-form-item label="用户名:" v-model="userInfo.username">
-                <el-input prefix-icon="el-icon-user"></el-input> </el-form-item
+              ><el-form-item label="用户名:">
+                <el-input
+                  prefix-icon="el-icon-user"
+                  placeholder="不超过15个字符" v-model="userInfo.username"
+                ></el-input> </el-form-item
             ></el-col>
           </el-row>
           <el-row>
             <el-col :span="15"
-              ><el-form-item label="密码:" v-model="userInfo.password">
+              ><el-form-item label="密码:">
                 <el-input
                   prefix-icon="el-icon-postcard"
+                  placeholder="不超过15个字符" v-model="userInfo.password"
                 ></el-input> </el-form-item
             ></el-col>
           </el-row>
@@ -54,13 +58,18 @@
               ><el-form-item label="确认密码:">
                 <el-input
                   prefix-icon="el-icon-postcard"
+                  placeholder="重复密码"
+                  v-model="password2"
                 ></el-input> </el-form-item
             ></el-col>
           </el-row>
           <el-row>
             <el-col :span="15"
-              ><el-form-item label="手机号:" v-model="userInfo.phone">
-                <el-input prefix-icon="el-icon-phone"></el-input> </el-form-item
+              ><el-form-item label="手机号:">
+                <el-input
+                  prefix-icon="el-icon-phone"
+                  placeholder="请输入手机号" v-model="userInfo.phone"
+                ></el-input> </el-form-item
             ></el-col>
           </el-row>
           <el-row>
@@ -68,6 +77,7 @@
               ><el-form-item label="验证码:">
                 <el-input
                   prefix-icon="el-icon-message"
+                  placeholder="请输入验证码"
                 ></el-input> </el-form-item
             ></el-col>
             <el-col :span="1">
@@ -113,6 +123,7 @@
                     type="date"
                     placeholder="选择日期"
                     style="width:100%"
+                    value-format="yyyy-MM-dd"
                   >
                   </el-date-picker>
                 </div>
@@ -120,13 +131,18 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="15"
+            <el-col :span="10"
               ><el-form-item label="身高:">
                 <el-input
                   v-model="userInfo.height"
-                  placeholder="以厘米(cm)为单位"
+                  placeholder="以厘米(cm)为单位的整数"
                 ></el-input>
               </el-form-item>
+            </el-col>
+            <el-col :span="1"
+              ><el-form-item label-width="0px"
+                ><label style="font-size:20px">CM</label></el-form-item
+              >
             </el-col>
           </el-row>
           <el-row>
@@ -230,8 +246,17 @@
             <el-button style="margin-top: 12px;" @click="changeStep(-1)"
               >上一步</el-button
             >
-            <el-button style="margin-top: 12px;" @click="changeStep(1)"
+            <el-button
+              style="margin-top: 12px;"
+              @click="changeStep(1)"
+              v-show="this.active == 0 || this.active == 1"
               >下一步</el-button
+            >
+            <el-button
+              style="margin-top: 12px;"
+              @click="submit"
+              v-show="this.active == 2"
+              >提交</el-button
             >
           </el-col>
         </el-row>
@@ -242,6 +267,7 @@
 
 <script>
 import { regionData } from "element-china-area-data";
+import Axios from "axios";
 export default {
   data() {
     return {
@@ -274,6 +300,7 @@ export default {
         salary: "",
         profession: ""
       },
+      password2:"",
       cities: "",
       educationList: [
         "高中中专及以下",
@@ -377,6 +404,14 @@ export default {
         }
       }
       console.log(app.userInfo.address);
+    },
+    submit() {
+      let app = this;
+      Axios.post("register", app.userInfo)
+        .then(function(res) {
+          console.log(res)
+        })
+        .catch(function(error) {});
     }
   },
   created() {

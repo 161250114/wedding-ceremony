@@ -16,17 +16,17 @@
         <div class="wrap" style="margin-top:50px">
           <el-form>
             <el-form-item label="用户名/手机号：">
-              <el-input></el-input>
+              <el-input v-model="userinfo.uname_phone"></el-input>
             </el-form-item>
             <el-form-item label="密码：">
-              <el-input></el-input>
+              <el-input v-model="userinfo.password"></el-input>
               <el-button type="text" style="float:right;" size="small"
                 >忘记密码</el-button
               >
             </el-form-item>
             <el-form-item>
               <router-link to="/">
-              <el-button type="primary" @click="login">登录</el-button>
+                <el-button type="primary" @click="login">登录</el-button>
               </router-link>
               <router-link to="/register"
                 ><el-button>注册</el-button></router-link
@@ -40,15 +40,26 @@
 </template>
 
 <script>
+import Axios from "axios";
 export default {
   data() {
     return {
-      picUrls: ["../../../static/loginPic1.png"]
+      picUrls: ["../../../static/loginPic1.png"],
+      userinfo:{
+        uname_phone:"",
+        password:""
+      }
     };
   },
-  methods:{
-    login(){
-      this.$emit("login",true);
+  methods: {
+    login() {
+      let app=this
+      app.$emit("login",true);
+      Axios.post("/login", app.userinfo)
+        .then(function(res) {
+          console.log(res.data)
+        })
+        .catch(function(error) {});
     }
   }
 };

@@ -17,7 +17,7 @@ export default new Router({
   mode:'history',
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'home',
       component: Home
     },
@@ -46,7 +46,53 @@ export default new Router({
       component:ApplyWedding
     },{
       path:'/personalInfo',
-      component:PersonalInfo
+      component:PersonalInfo,
+      children:[
+        {
+          path:'baseInfo',
+          component:() => import('@/components/personalInfo/children/baseInfo')
+        },
+        {
+          path:'addAlbumMax',
+          component:() => import('@/components/personalInfo/children/addAlbumMax')
+        },
+        {
+          path:'album',
+          component:() => import('@/components/personalInfo/children/album')
+        },
+        {
+          path:'beVIP',
+          component:() => import('@/components/personalInfo/children/beVIP')
+        },
+        {
+          path:'changePassword',
+          component:() => import('@/components/personalInfo/children/changePassword')
+        },
+        {
+          path:'consumption',
+          component:() => import('@/components/personalInfo/children/consumption')
+        },
+        {
+          path:'dateRecord',
+          component:() => import('@/components/personalInfo/children/dateRecord')
+        },
+        {
+          path:'detailInfo',
+          component:() => import('@/components/personalInfo/children/detailInfo')
+        },
+        {
+          path:'friends',
+          component:() => import('@/components/personalInfo/children/friends')
+        },
+        {
+          path:'introduction',
+          component:() => import('@/components/personalInfo/children/introduction')
+        },
+        {
+          path:'limits',
+          component:() => import('@/components/personalInfo/children/limits')
+        }
+      ]
     },
     {
       path:'/wedding',
