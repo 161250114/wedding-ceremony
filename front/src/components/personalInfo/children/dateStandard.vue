@@ -110,6 +110,13 @@
           <el-radio v-model="standard.marriage" label="4">不限</el-radio>
         </el-form-item>
       </el-form>
+      <el-alert
+        title="这些选项会影响系统为您推荐的用户列表~~~"
+        type="success"
+        :closable="false"
+      >
+      </el-alert>
+      <p></p>
       <el-button type="primary">保存</el-button>
       <el-button type="primary">重置</el-button>
     </div>
@@ -168,7 +175,7 @@ export default {
     }
   },
   created() {
-    let app = this; 
+    let app = this;
     app.cities = JSON.parse(JSON.stringify(regionData));
     let tempAddress = { label: "不限", value: "不限" };
     app.cities.splice(0, 0, tempAddress);
