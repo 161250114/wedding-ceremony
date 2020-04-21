@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wedding.mapper.Date_standardMapper" >
+  <resultMap id="BaseResultMap" type="com.wedding.model.po.Date_standard" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="agemin" property="agemin" jdbcType="INTEGER" />
+    <result column="agemax" property="agemax" jdbcType="INTEGER" />
+    <result column="heightmin" property="heightmin" jdbcType="INTEGER" />
+    <result column="heightmax" property="heightmax" jdbcType="INTEGER" />
+    <result column="salary" property="salary" jdbcType="VARCHAR" />
+    <result column="education" property="education" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="marrige" property="marrige" jdbcType="TINYINT" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from date_standard
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wedding.model.po.Date_standard" useGeneratedKeys="true" keyProperty="id">
+    insert into date_standard (id, agemin, agemax,
+      heightmin, heightmax, salary,
+      education, address, marrige
+      )
+    values (#{id,jdbcType=INTEGER}, #{agemin,jdbcType=INTEGER}, #{agemax,jdbcType=INTEGER},
+      #{heightmin,jdbcType=INTEGER}, #{heightmax,jdbcType=INTEGER}, #{salary,jdbcType=VARCHAR},
+      #{education,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{marrige,jdbcType=TINYINT}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Date_standard" >
+    update date_standard
+    set agemin = #{agemin,jdbcType=INTEGER},
+      agemax = #{agemax,jdbcType=INTEGER},
+      heightmin = #{heightmin,jdbcType=INTEGER},
+      heightmax = #{heightmax,jdbcType=INTEGER},
+      salary = #{salary,jdbcType=VARCHAR},
+      education = #{education,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      marrige = #{marrige,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, agemin, agemax, heightmin, heightmax, salary, education, address, marrige
+    from date_standard
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, agemin, agemax, heightmin, heightmax, salary, education, address, marrige
+    from date_standard
+  </select>
+</mapper>

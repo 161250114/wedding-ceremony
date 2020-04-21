@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wedding.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.wedding.model.po.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="usertype" jdbcType="TINYINT" property="usertype" />
+    <result column="limit_browse" jdbcType="TINYINT" property="limitBrowse" />
+    <result column="limit_message" jdbcType="TINYINT" property="limitMessage" />
+    <result column="fullname" jdbcType="VARCHAR" property="fullname" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="height" jdbcType="INTEGER" property="height" />
+    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="education" jdbcType="VARCHAR" property="education" />
+    <result column="marrige" jdbcType="TINYINT" property="marrige" />
+    <result column="salary" jdbcType="VARCHAR" property="salary" />
+    <result column="balance" jdbcType="INTEGER" property="balance" />
+    <result column="trueness" jdbcType="INTEGER" property="trueness" />
+    <result column="profession" jdbcType="VARCHAR" property="profession" />
+    <result column="albumid" jdbcType="INTEGER" property="albumid" />
+    <result column="standardid" jdbcType="INTEGER" property="standardid" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wedding.model.po.User">
+    insert into user (id, username, password,
+      phone, usertype, limit_browse,
+      limit_message, fullname, sex,
+      birthday, height, introduction,
+      address, education, marrige,
+      salary, balance, trueness,
+      profession, albumid, standardid
+      )
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+      #{phone,jdbcType=VARCHAR}, #{usertype,jdbcType=TINYINT}, #{limitBrowse,jdbcType=TINYINT},
+      #{limitMessage,jdbcType=TINYINT}, #{fullname,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT},
+      #{birthday,jdbcType=DATE}, #{height,jdbcType=INTEGER}, #{introduction,jdbcType=VARCHAR},
+      #{address,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR}, #{marrige,jdbcType=TINYINT},
+      #{salary,jdbcType=VARCHAR}, #{balance,jdbcType=INTEGER}, #{trueness,jdbcType=INTEGER},
+      #{profession,jdbcType=VARCHAR}, #{albumid,jdbcType=INTEGER}, #{standardid,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.User">
+    update user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      usertype = #{usertype,jdbcType=TINYINT},
+      limit_browse = #{limitBrowse,jdbcType=TINYINT},
+      limit_message = #{limitMessage,jdbcType=TINYINT},
+      fullname = #{fullname,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=TINYINT},
+      birthday = #{birthday,jdbcType=DATE},
+      height = #{height,jdbcType=INTEGER},
+      introduction = #{introduction,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      education = #{education,jdbcType=VARCHAR},
+      marrige = #{marrige,jdbcType=TINYINT},
+      salary = #{salary,jdbcType=VARCHAR},
+      balance = #{balance,jdbcType=INTEGER},
+      trueness = #{trueness,jdbcType=INTEGER},
+      profession = #{profession,jdbcType=VARCHAR},
+      albumid = #{albumid,jdbcType=INTEGER},
+      standardid = #{standardid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, username, password, phone, usertype, limit_browse, limit_message, fullname,
+    sex, birthday, height, introduction, address, education, marrige, salary, balance,
+    trueness, profession, albumid, standardid
+    from user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, username, password, phone, usertype, limit_browse, limit_message, fullname,
+    sex, birthday, height, introduction, address, education, marrige, salary, balance,
+    trueness, profession, albumid, standardid
+    from user
+  </select>
+  <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, username, password, phone, usertype, limit_browse, limit_message, fullname,
+    sex, birthday, height, introduction, address, education, marrige, salary, balance,
+    trueness, profession, albumid, standardid
+    from user
+    where username = #{username,jdbcType=STRING}
+  </select>
+  <select id="selectByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, username, password, phone, usertype, limit_browse, limit_message, fullname,
+    sex, birthday, height, introduction, address, education, marrige, salary, balance,
+    trueness, profession, albumid, standardid
+    from user
+    where phone = #{phone,jdbcType=STRING}
+  </select>
+</mapper>
