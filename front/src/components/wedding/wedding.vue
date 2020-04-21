@@ -66,6 +66,7 @@
 </template>
 
 <script>
+  import axios from 'axios'
     export default {
       name: "wedding",
       data() {
@@ -107,10 +108,23 @@
           }]
         }
       },
+      created(){
+        this.load();
+      },
       methods: {
         handleClick(row){
         console.log(row.id)
-      },
+        },
+        load(){
+          let app=this
+          axios.get('/wedding/getAll')
+            .then(function(res){
+              app.tableData=res.data
+            })
+            .catch(function(err){
+              console.log(err);
+            });
+        },
         getState(row){
           let app=this
           let table=this.tableData
