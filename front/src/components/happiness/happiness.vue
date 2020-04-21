@@ -14,7 +14,7 @@
       </--el-row-->
     </div>
     <div class="ca">
-      <div><span>{{commentlist[index]}}</span></div>
+      <div><span>{{commentlist[index]["comment"]}}</span></div>
     </div>
     <div class="ia">
       <el-input v-model="input" placeholder="请输入内容" class="send_comment"></el-input>
@@ -49,7 +49,7 @@
               },
             ],
             photolist:[{}],
-            commentlist:[{comment:"123"}],
+            commentlist:[{comment:"123"},{comment:"456"}],
           }
       }
     }

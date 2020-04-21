@@ -4,11 +4,9 @@ import com.wedding.model.po.System_message;
 import com.wedding.weddingconsulthappiness.service.SystemMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -16,9 +14,11 @@ import java.util.List;
 public class SystemMessageController {
     @Autowired
     SystemMessageService ts;
-    @PostMapping("/add")
-    public int addsm(String data){
-        return 1;
+    @ResponseBody
+    @RequestMapping(value="/add",method = RequestMethod.POST)
+    public int addsm(@RequestBody System_message sm, HttpServletRequest resquest){
+        sm.setId(ts.getId());
+        return ts.addSystemMessage(sm);
     }
     @ResponseBody
     @RequestMapping(value = "/get",method = RequestMethod.GET)

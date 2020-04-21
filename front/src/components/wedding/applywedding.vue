@@ -77,11 +77,13 @@
             <el-col :span="15"
             ><el-form-item label="时间范围:">
               <el-input
+                type="date"
                 placeholder="开始时间"
                 suffix-icon="el-icon-date"
                 v-model="wedding.start">
               </el-input>
               <el-input
+                type="date"
                 placeholder="结束时间"
                 suffix-icon="el-icon-date"
                 v-model="wedding.end">
@@ -127,11 +129,14 @@
         </el-form>
         <el-row>
           <el-col :span="15">
-            <el-button style="margin-top: 12px;" @click="changeStep(-1)"
+            <el-button v-if="this.active!=0" style="margin-top: 12px;" @click="changeStep(-1)"
             >上一步</el-button
             >
-            <el-button style="margin-top: 12px;" @click="changeStep(1)"
+            <el-button v-if="this.active!=2" style="margin-top: 12px;" @click="changeStep(1)"
             >下一步</el-button
+            >
+            <el-button v-if="this.active==2" style="margin-top: 12px;" @click="submit()"
+            >提交</el-button
             >
           </el-col>
         </el-row>
@@ -141,6 +146,7 @@
 </template>
 
 <script>
+  import axios from 'axios'
     export default {
       name: "applywedding",
       data(){
@@ -160,6 +166,8 @@
             "../../../static/registerPic4.jpeg"
           ],
           wedding: {
+            id:0,
+            applicantId:1,
             name:"",
             phone:"",
             email:"",
@@ -167,7 +175,8 @@
             start:"",
             end:"",
             location:"",
-            detail:""
+            detail:"",
+            state:0
           },
         }
       },
@@ -183,6 +192,11 @@
           this.active = this.active + index;
         }
       },
+      submit(){
+        axios.post("/wedding/add",this.wedding)
+          .then(successResponse => {alert("lbw")})
+          .catch(failResponse => {}); //失败后的操作
+      }
     }
     }
 </script>
