@@ -32,8 +32,8 @@
                 <el-menu-item index="/personalInfo/baseInfo"
                   >基本资料管理</el-menu-item
                 >
-                <el-menu-item index="/personalInfo/detailInfo"
-                  >详细资料管理</el-menu-item
+                <el-menu-item index="/personalInfo/dateStandard"
+                  >择偶标准管理</el-menu-item
                 >
                 <el-menu-item index="/personalInfo/introduction"
                   >个人介绍管理</el-menu-item

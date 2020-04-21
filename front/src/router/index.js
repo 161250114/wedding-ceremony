@@ -77,8 +77,8 @@ export default new Router({
           component:() => import('@/components/personalInfo/children/dateRecord')
         },
         {
-          path:'detailInfo',
-          component:() => import('@/components/personalInfo/children/detailInfo')
+          path:'dateStandard',
+          component:() => import('@/components/personalInfo/children/dateStandard')
         },
         {
           path:'friends',
