@@ -1,17 +1,24 @@
 <template>
 <div class="hsp">
-  <div class="hp">
+  <div  v-for="(h,index) in list" class="hp":style="'height:' + (500+(h.pnumber/3) * 200) + 'px'">
     <div class="wa">
       <p align="left">fjsdfdsfhsdfhd</p>
     </div>
     <div class="pa">
-      <el-row>
+      <!--el-row>
         <el-col :span="8" v-for="(o, index) in 4" :key="o" :offset=0>
           <el-card :body-style="{ padding: '0px' }">
             <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
           </el-card>
         </el-col>
-      </el-row>
+      </--el-row-->
+    </div>
+    <div class="ca">
+      <div><span>{{commentlist[index]}}</span></div>
+    </div>
+    <div class="ia">
+      <el-input v-model="input" placeholder="请输入内容" class="send_comment"></el-input>
+      <el-button type="primary" class="talk_sub" @click="send()">发送</el-button>
     </div>
     <div class="la">
       <p class="like">&#10084;</p>
@@ -31,15 +38,41 @@
 
 <script>
     export default {
-        name: "happiness"
+      name: "happiness",
+      data(){
+          return{
+            list:[
+              {
+                pnumber:2
+              }, {
+              pnumber:5
+              },
+            ],
+            photolist:[{}],
+            commentlist:[{comment:"123"}],
+          }
+      }
     }
 </script>
 
 <style scoped>
+  .send_comment{
+    width:620px;
+    height:50px;
+    padding:0px;
+    float:left;
+    margin-left:10px;
+    outline:none;
+    text-indent:10px;
+  }
+  .ca{
+    width: 100%;
+    height: 100px;
+    background: lightskyblue;
+  }
   .hsp{
     width: 100%;
     height: 500px;
-    margin:100px;
     background:gainsboro;
     text-align: center;
     overflow:auto;
@@ -59,6 +92,7 @@
     font-size:33px;
     color:#ccc;
     cursor:pointer;
-    margin:20px 700px;
+    border-bottom:20px;
+    border-right:20px;
   }
 </style>

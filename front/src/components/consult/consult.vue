@@ -56,8 +56,7 @@
           data["receiver_id"]=0;
           data["content"]=app.input;
           data["state"]=0;
-          data=JSON.stringify(data);
-            axios.post("/systemmessage/add",data)
+          axios.post("/systemmessage/add",data)
             .then(successResponse => {alert("lbw")})
             .catch(failResponse => {}); //失败后的操作
         },
@@ -70,26 +69,26 @@
 
 <style type="text/css">
   .talk_con{
-    width:600px;
+    width:800px;
     height:500px;
     border:1px solid #666;
     margin:0px auto 0;
     background:#f9f9f9;
   }
   .talk_show{
-    width:580px;
+    width:780px;
     height:420px;
     border:1px solid #666;
     background:#fff;
     margin:10px auto 0;
-    overflow:auto;
+    overflow-y:auto;
   }
   .talk_input{
-    width:580px;
+    width:780px;
     margin:10px auto 0;
   }
   .talk_word{
-    width:420px;
+    width:620px;
     height:50px;
     padding:0px;
     float:left;
@@ -105,8 +104,12 @@
     text-align: center;
   }
   .atalk{
-    margin-top:10px;
-    margin-left:-400px;
+    margin-top:20px;
+    text-align:left;
+    word-wrap: break-word;
+    overflow:hidden;
+    white-space:normal;
+    width: 780px;
   }
   .atalk span{
     display:inline-block;
@@ -114,10 +117,16 @@
     border-radius:10px;
     color:#fff;
     padding:5px 10px;
+    max-width: 350px;
+    word-wrap:break-word ;
   }
   .btalk{
-    margin:10px;
+    margin-top:20px;
     text-align:right;
+    word-wrap: break-word;
+    overflow:hidden;
+    white-space:normal;
+    width: 780px;
   }
   .btalk span{
     display:inline-block;
@@ -125,5 +134,7 @@
     border-radius:10px;
     color:#fff;
     padding:5px 10px;
+    max-width: 350px;
+    word-wrap:break-word ;
   }
 </style>
