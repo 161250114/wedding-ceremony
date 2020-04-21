@@ -20,13 +20,13 @@
   </delete>
   <insert id="insert" parameterType="com.wedding.model.po.Wedding" >
     insert into wedding (id, applicant_id, name, 
-      phone, email, total, start,end,
-      location, detail, state
-      )
+      phone, email, total, 
+      start, end, location, detail, 
+      state)
     values (#{id,jdbcType=INTEGER}, #{applicantId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{total,jdbcType=INTEGER}, #{start,jdbcType=DATE}, #{end,jdbcType=DATE},
-      #{location,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}
-      )
+      #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{total,jdbcType=INTEGER}, 
+      #{start,jdbcType=DATE}, #{end,jdbcType=DATE}, #{location,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, 
+      #{state,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Wedding" >
     update wedding
@@ -43,12 +43,14 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, applicant_id, name, phone, email, total,start,end,location, detail, state
+    select id, applicant_id, name, phone, email, total, start, end, location, detail, 
+    state
     from wedding
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, applicant_id, name, phone, email, total,start,end, location, detail, state
+    select id, applicant_id, name, phone, email, total, start, end, location, detail, 
+    state
     from wedding
   </select>
 </mapper>

@@ -12,10 +12,10 @@
     delete from album_photo
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wedding.model.po.Album_photo" useGeneratedKeys="true" keyProperty="id">
-    insert into album_photo (id, albumid, address,
+  <insert id="insert" parameterType="com.wedding.model.po.Album_photo" >
+    insert into album_photo (id, albumid, address, 
       upload_time, order_number)
-    values (#{id,jdbcType=INTEGER}, #{albumid,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR},
+    values (#{id,jdbcType=INTEGER}, #{albumid,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, 
       #{uploadTime,jdbcType=TIMESTAMP}, #{orderNumber,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Album_photo" >

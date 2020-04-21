@@ -12,10 +12,10 @@
     delete from date_record
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wedding.model.po.Date_record" useGeneratedKeys="true" keyProperty="id">
-    insert into date_record (id, userid2, userid1,
+  <insert id="insert" parameterType="com.wedding.model.po.Date_record" >
+    insert into date_record (id, userid2, userid1, 
       start_date, end_date)
-    values (#{id,jdbcType=INTEGER}, #{userid2,jdbcType=INTEGER}, #{userid1,jdbcType=INTEGER},
+    values (#{id,jdbcType=INTEGER}, #{userid2,jdbcType=INTEGER}, #{userid1,jdbcType=INTEGER}, 
       #{startDate,jdbcType=DATE}, #{endDate,jdbcType=DATE})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Date_record" >

@@ -88,13 +88,13 @@
     sex, birthday, height, introduction, address, education, marrige, salary, balance,
     trueness, profession, albumid, standardid
     from user
-    where username = #{username,jdbcType=STRING}
+    where username = #{username,jdbcType=VARCHAR}
   </select>
   <select id="selectByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
     select id, username, password, phone, usertype, limit_browse, limit_message, fullname,
     sex, birthday, height, introduction, address, education, marrige, salary, balance,
     trueness, profession, albumid, standardid
     from user
-    where phone = #{phone,jdbcType=STRING}
+    where phone = #{phone,jdbcType=VARCHAR}
   </select>
 </mapper>

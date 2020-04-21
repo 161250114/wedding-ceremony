@@ -12,10 +12,10 @@
     delete from bill
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wedding.model.po.Bill" useGeneratedKeys="true" keyProperty="id">
-    insert into bill (id, type, money,
+  <insert id="insert" parameterType="com.wedding.model.po.Bill" >
+    insert into bill (id, type, money, 
       remark, time)
-    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE},
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE}, 
       #{remark,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Bill" >
