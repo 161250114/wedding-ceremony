@@ -5,15 +5,6 @@ public class Happiness_photo {
 
     private Integer happinessId;
 
-    public Happiness_photo(Integer id, Integer happinessId, byte[] photo) {
-        this.id = id;
-        this.happinessId = happinessId;
-        this.photo = photo;
-    }
-
-    public Happiness_photo() {
-    }
-
     private byte[] photo;
 
     public Integer getId() {

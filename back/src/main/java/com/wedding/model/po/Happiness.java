@@ -11,18 +11,6 @@ public class Happiness {
 
     private String content;
 
-    public Happiness() {
-    }
-
-    public Happiness(Integer id, Integer senderId, Date time, String content, Integer likes, Integer state) {
-        this.id = id;
-        this.senderId = senderId;
-        this.time = time;
-        this.content = content;
-        this.likes = likes;
-        this.state = state;
-    }
-
     private Integer likes;
 
     private Integer state;

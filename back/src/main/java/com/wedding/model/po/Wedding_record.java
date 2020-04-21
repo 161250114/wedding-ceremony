@@ -13,17 +13,6 @@ public class Wedding_record {
 
     private Integer result;
 
-    public Wedding_record(Integer id, Integer weddingId, Integer approverId, Date time, Integer result) {
-        this.id = id;
-        this.weddingId = weddingId;
-        this.approverId = approverId;
-        this.time = time;
-        this.result = result;
-    }
-
-    public Wedding_record() {
-    }
-
     public Integer getId() {
         return id;
     }

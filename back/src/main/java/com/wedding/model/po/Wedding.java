@@ -23,40 +23,7 @@ public class Wedding {
 
     private String detail;
 
-    public Wedding() {
-    }
-
     private Integer state;
-
-    public Wedding(Integer id, Integer applicantId, String name, String phone, String email, Integer total, Date start, Date end, String location, String detail, Integer state) {
-        this.id = id;
-        this.applicantId = applicantId;
-        this.name = name;
-        this.phone = phone;
-        this.email = email;
-        this.total = total;
-        this.start = start;
-        this.end = end;
-        this.location = location;
-        this.detail = detail;
-        this.state = state;
-    }
-
-    public Date getStart() {
-        return start;
-    }
-
-    public void setStart(Date start) {
-        this.start = start;
-    }
-
-    public Date getEnd() {
-        return end;
-    }
-
-    public void setEnd(Date end) {
-        this.end = end;
-    }
 
     public Integer getId() {
         return id;
@@ -104,6 +71,22 @@ public class Wedding {
 
     public void setTotal(Integer total) {
         this.total = total;
+    }
+
+    public Date getStart() {
+        return start;
+    }
+
+    public void setStart(Date start) {
+        this.start = start;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public void setEnd(Date end) {
+        this.end = end;
     }
 
     public String getLocation() {

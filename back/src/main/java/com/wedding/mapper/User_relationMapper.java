@@ -3,7 +3,6 @@ package com.wedding.mapper;
 import com.wedding.model.po.User_relation;
 import java.util.List;
 
-
 public interface User_relationMapper {
     int deleteByPrimaryKey(Integer id);
 

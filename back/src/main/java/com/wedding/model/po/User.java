@@ -43,6 +43,8 @@ public class User {
 
     private Integer albumid;
 
+    private Integer standardid;
+
     public Integer getId() {
         return id;
     }
@@ -201,5 +203,13 @@ public class User {
 
     public void setAlbumid(Integer albumid) {
         this.albumid = albumid;
+    }
+
+    public Integer getStandardid() {
+        return standardid;
+    }
+
+    public void setStandardid(Integer standardid) {
+        this.standardid = standardid;
     }
 }
