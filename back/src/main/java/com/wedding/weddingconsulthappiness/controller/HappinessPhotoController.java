@@ -3,12 +3,15 @@ package com.wedding.weddingconsulthappiness.controller;
 
 import com.wedding.model.po.Happiness_photo;
 import com.wedding.weddingconsulthappiness.service.HappinessPhotoService;
+import com.wedding.weddingconsulthappiness.vo.HappinessPhotoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -16,13 +19,6 @@ import java.util.List;
 public class HappinessPhotoController {
     @Autowired
     HappinessPhotoService hps;
-    @ResponseBody
-    @RequestMapping(value="/add",method= RequestMethod.GET)
-    public int add(){
-        Happiness_photo hp=new Happiness_photo();
-        hp.setHappinessId(0);
-        return hps.insert(hp);
-    }
 
     @ResponseBody
     @RequestMapping(value="/get",method= RequestMethod.GET)
@@ -35,6 +31,21 @@ public class HappinessPhotoController {
         return hps.selectAll();
     }
 
+    @ResponseBody
+    @RequestMapping(value="/addlist",method = RequestMethod.POST)
+    public int add(@RequestBody HappinessPhotoVO[] list, HttpServletRequest request){
+        int index=hps.selectAll().size();
+        for(HappinessPhotoVO hp:list){
+            Happiness_photo h=new Happiness_photo();
+            h.setId(index);
+            h.setHappinessId(hp.getHappinessId());
+            h.setPhoto(hp.getPhoto().getBytes());
+            if(hps.insert(h)==0){
+                return 0;
+            }
+        }
+        return 1;
+    }
 
 
     @ResponseBody
