@@ -58,7 +58,11 @@
           data["state"]=0;
           axios.post("/systemmessage/add",data)
             .then(successResponse => {})
-            .catch(failResponse => {}); //失败后的操作
+            .catch(failResponse => {
+              this.$alert("操作失败，请重试", '提示', {
+                confirmButtonText: '确定',
+              });
+            }); //失败后的操作
         },
         addA(word){
 
