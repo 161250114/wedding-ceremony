@@ -3,7 +3,7 @@
     <div class="title" style="text-align: center"><p style="font-size: 20px">正在与管理员聊天</p></div>
     <div class="talk_con">
       <div class="talk_show" id="words">
-        <div  v-for="mess in list"  :class="{'atalk':mess.sender_id==1,'btalk':mess.receiver_id==1}"><span>{{mess.content}}</span></div>
+        <div  v-for="mess in list"  :class="{'atalk':mess.senderId==1,'btalk':mess.receiverId==1}"><span>{{mess.content}}</span></div>
       </div>
       <div class="talk_input">
         <el-input v-model="input" placeholder="请输入内容" class="talk_word"></el-input>
@@ -52,12 +52,12 @@
           let app=this;
           var data = {};
           data["id"] = 0;
-          data["sender_id"]=1;
-          data["receiver_id"]=0;
+          data["senderId"]=1;
+          data["receiverId"]=0;
           data["content"]=app.input;
           data["state"]=0;
           axios.post("/systemmessage/add",data)
-            .then(successResponse => {alert("lbw")})
+            .then(successResponse => {})
             .catch(failResponse => {}); //失败后的操作
         },
         addA(word){

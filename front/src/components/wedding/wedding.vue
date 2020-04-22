@@ -57,8 +57,8 @@
         label="操作"
         width="100">
         <template slot-scope="scope">
-          <el-button v-if="getState(scope.row)==0" @click="handleClick(scope.row)" type="text" size="small">通过</el-button>
-          <el-button v-if="getState(scope.row)==0" @click="handleClick(scope.row)" type="text" size="small">取消</el-button>
+          <el-button v-if="getState(scope.row)=='申请中'" @click="pass(scope.row)" type="text" size="small">通过</el-button>
+          <el-button v-if="getState(scope.row)=='申请中'" @click="pass(scope.row)" type="text" size="small">取消</el-button>
         </template>
       </el-table-column>
   </el-table>
@@ -173,6 +173,24 @@
         }
         this.tableData=result
       },
+        pass(row){
+          row.state="通过"
+          let data=JSON.parse(JSON.stringify(row))
+          data.state=1
+          data.applicantId=1
+          axios.post("/wedding/update",data)
+            .then(successResponse => {alert("succ")})
+            .catch(failResponse => {}); //失败后的操作
+        },
+        cancel(row){
+          row.state="通过"
+          let data=JSON.parse(JSON.stringify(row))
+          data.state=2
+          data.applicantId=1
+          axios.post("/wedding/update",data)
+            .then(successResponse => {alert("succ")})
+            .catch(failResponse => {}); //失败后的操作
+        }
     }
 
     }
