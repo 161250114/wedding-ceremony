@@ -174,13 +174,21 @@
         this.tableData=result
       },
         pass(row){
+          let app=this
           row.state="通过"
           let data=JSON.parse(JSON.stringify(row))
           data.state=1
           data.applicantId=1
           axios.post("/wedding/update",data)
-            .then(successResponse => {alert("succ")})
-            .catch(failResponse => {}); //失败后的操作
+            .then(successResponse => {
+              app.$alert("操作成功", '提示', {
+              confirmButtonText: '确定',
+            });})
+            .catch(failResponse => {
+              this.$alert("操作失败，请刷新页面重试", '提示', {
+                confirmButtonText: '确定',
+              });
+            }); //失败后的操作
         },
         cancel(row){
           row.state="通过"
@@ -188,8 +196,15 @@
           data.state=2
           data.applicantId=1
           axios.post("/wedding/update",data)
-            .then(successResponse => {alert("succ")})
-            .catch(failResponse => {}); //失败后的操作
+            .then(successResponse => {
+              this.$alert("操作成功", '提示', {
+              confirmButtonText: '确定',
+            });})
+            .catch(failResponse => {
+              this.$alert("操作失败，请刷新页面重试", '提示', {
+                confirmButtonText: '确定',
+              });
+            }); //失败后的操作
         }
     }
 

@@ -4,8 +4,10 @@
     <el-input
       type="textarea"
       :rows="2"
+      maxlength="250"
       placeholder="说点什么吧"
-      v-model="words">
+      v-model="happiness.content"
+      show-word-limit>
     </el-input>
   </div>
   <div id="photopanel" class="pp">
@@ -32,6 +34,7 @@
 </template>
 
 <script>
+  import axios from 'axios'
     export default {
       name: "happiness",
       data(){
@@ -39,9 +42,18 @@
           pnumber:0,
           dnumber:0,
           photolist:[],
-          words:"",
           dialogImageUrl: '',
-          dialogVisible: false
+          dialogVisible: false,
+          happiness:{
+            id:0,
+            senderId:1,
+            time:new Date(),
+            content:"",
+            likes:0,
+            state:0
+          },
+          hplist:[],
+          id:0
         }
       },
       methods:{
@@ -53,10 +65,10 @@
           this.dialogImageUrl = file.url;
           this.dialogVisible = true;
         },
-        handleSuccess(file){
-          console.log(file)
-          this.photolist.push(file.url)
-          console.log(this.photolist)
+        handleSuccess(response, file, fileList){
+          this.getBase64(file.raw).then(res => {
+            this.photolist.push(res)
+          });
         },
         addP(file){
           this.pnumber++;
@@ -67,6 +79,95 @@
             return false;
           }
           return true;
+        },
+        getBase64(file) {
+          return new Promise(function(resolve, reject) {
+            let reader = new FileReader();
+            let imgResult = "";
+            reader.readAsDataURL(file);
+            reader.onload = function() {
+              imgResult = reader.result;
+            };
+            reader.onerror = function(error) {
+              reject(error);
+            };
+            reader.onloadend = function() {
+              resolve(imgResult);
+            };
+          });
+        },
+        send(){
+          let app=this
+          console.log(app.photolist)
+          axios.get('/happiness/getId')
+            .then(function(res){
+              console.log(res)
+              app.id=parseInt(res.data)
+              for(let i in app.photolist){
+                let hp=new Object();
+                hp.id=0
+                hp.happinessId=app.id
+                hp.photo=app.photolist[i].toString()
+                app.hplist.push(hp)
+              }
+              axios.post("/happiness/add",app.happiness)
+                .then(successResponse => {})
+                .catch(failResponse => {
+                  this.$alert("操作失败，请刷新页面重试", '提示', {
+                    confirmButtonText: '确定',
+                  });
+                }); //失败后的操作
+              axios.post("/happinessphoto/addlist",app.hplist)
+                .then(successResponse => {
+                  app.$alert("发布成功", '提示', {
+                  confirmButtonText: '确定',
+                });})
+                .catch(failResponse => {
+                  this.$alert("操作失败，请刷新页面重试", '提示', {
+                    confirmButtonText: '确定',
+                  });
+                }); //失败后的操作
+            })
+            .catch(function(err){
+              console.log(err);
+            });
+
+        },
+        save(){
+          let app=this
+          app.happiness.state=1
+          console.log(app.happiness.state)
+          axios.get('/happiness/getId')
+            .then(function(res){
+              console.log(res)
+              app.id=parseInt(res.data)
+              for(let i in app.photolist){
+                let hp=new Object();
+                hp.id=0
+                hp.happinessId=app.id
+                hp.photo=app.photolist[i].toString()
+                app.hplist.push(hp)
+              }
+              axios.post("/happiness/add",app.happiness)
+                .then(successResponse => {})
+                .catch(failResponse => {
+                  this.$alert("操作失败，请刷新页面重试", '提示', {
+                  confirmButtonText: '确定',
+                });}); //失败后的操作
+              axios.post("/happinessphoto/addlist",app.hplist)
+                .then(successResponse => {
+                  app.$alert("发布成功", '提示', {
+                  confirmButtonText: '确定',
+                });})
+                .catch(failResponse => {
+                  this.$alert("操作失败，请刷新页面重试", '提示', {
+                  confirmButtonText: '确定',
+                });}); //失败后的操作
+            })
+            .catch(function(err){
+              console.log(err);
+            });
+
         }
       }
     }
