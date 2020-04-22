@@ -39,9 +39,13 @@ public class WeddingController {
         List result=new ArrayList();
         for(int i=0;i<list.size();i++){
             result.add(new WeddingVO((Wedding)list.get(i)));
-            System.out.println(((WeddingVO)result.get(i)).getEnd());
         }
         return result;
+    }
+    @ResponseBody
+    @RequestMapping(value="/update",method = RequestMethod.POST)
+    public int update(@RequestBody Wedding w, HttpServletRequest request){
+        return ws.updateByPrimaryKey(w);
     }
 
 }

@@ -13,8 +13,12 @@
       action="https://jsonplaceholder.typicode.com/posts/"
       list-type="picture-card"
       :on-preview="handlePictureCardPreview"
-      :on-remove="handleRemove">
-      <i class="el-icon-plus"></i>
+      :on-remove="handleRemove"
+      :on-success="handleSuccess"
+      :before-upload="addP"
+    >
+      <i class="el-icon-plus"
+         v-if="this.pnumber-this.dnumber<10"></i>
     </el-upload>
     <el-dialog :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt="">
@@ -32,20 +36,37 @@
       name: "happiness",
       data(){
         return{
-          photolist:{},
+          pnumber:0,
+          dnumber:0,
+          photolist:[],
           words:"",
           dialogImageUrl: '',
           dialogVisible: false
         }
       },
       methods:{
-        handleRemove(file, fileList) {
-          console.log(file, fileList);
+        handleRemove(file,filelist) {
+          this.dnumber++;
         }
       ,
         handlePictureCardPreview(file) {
           this.dialogImageUrl = file.url;
           this.dialogVisible = true;
+        },
+        handleSuccess(file){
+          console.log(file)
+          this.photolist.push(file.url)
+          console.log(this.photolist)
+        },
+        addP(file){
+          this.pnumber++;
+          if(this.pnumber-this.dnumber==10){
+            this.$alert("至多只能上传九张照片！", '提示', {
+              confirmButtonText: '确定',
+            });
+            return false;
+          }
+          return true;
         }
       }
     }
