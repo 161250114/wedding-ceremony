@@ -95,6 +95,10 @@ export default new Router({
         {
           path:'charge',
           component:() => import('@/components/personalInfo/children/charge')
+        },
+        {
+          path:'uploadPhoto',
+          component:() => import('@/components/personalInfo/children/uploadPhoto')
         }
       ]
     },

@@ -6,12 +6,12 @@
     <el-row>
       <el-col :span="3">&nbsp;</el-col>
       <el-col :span="18">
-        <el-container style="height: 700px; border: 1px solid #eee">
+        <el-container style="height: 750px; border: 1px solid #eee">
           <el-aside width="250px" style="background-color: rgb(238, 241, 246)">
             <div>
               <el-avatar
                 :size="100"
-                src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+                src="../../../static/photo1.jpg"
                 style="margin-top:10px"
               ></el-avatar>
               <p>
@@ -24,7 +24,7 @@
                 <b>账户余额：{{ userinfo.balance }}&nbsp;¥</b>
               </p>
             </div>
-            <el-menu router unique-opened >
+            <el-menu router unique-opened>
               <el-submenu index="1">
                 <template slot="title"
                   ><i class="el-icon-message"></i>个人资料</template
@@ -43,6 +43,9 @@
                 <template slot="title"
                   ><i class="el-icon-picture-outline"></i>相册管理</template
                 >
+                <el-menu-item index="/personalInfo/uploadPhoto"
+                  >上传照片</el-menu-item
+                >
                 <el-menu-item index="/personalInfo/album"
                   >相册管理</el-menu-item
                 >
@@ -59,23 +62,35 @@
                 <template slot="title"
                   ><i class="el-icon-menu"></i>记录查询</template
                 >
-                <el-menu-item index="/personalInfo/consumption">消费记录查询</el-menu-item>
-                <el-menu-item index="/personalInfo/dateRecord">约会记录查询</el-menu-item>
+                <el-menu-item index="/personalInfo/consumption"
+                  >消费记录查询</el-menu-item
+                >
+                <el-menu-item index="/personalInfo/dateRecord"
+                  >约会记录查询</el-menu-item
+                >
               </el-submenu>
               <el-submenu index="5">
                 <template slot="title"
                   ><i class="el-icon-star-off"></i>服务购买</template
                 >
                 <el-menu-item index="/personalInfo/charge">充值</el-menu-item>
-                <el-menu-item index="/personalInfo/beVIP">成为付费会员</el-menu-item>
-                <el-menu-item index="/personalInfo/addAlbumMax">相册容量购买</el-menu-item>
+                <el-menu-item index="/personalInfo/beVIP"
+                  >成为付费会员</el-menu-item
+                >
+                <el-menu-item index="/personalInfo/addAlbumMax"
+                  >相册容量购买</el-menu-item
+                >
               </el-submenu>
               <el-submenu index="6">
                 <template slot="title"
                   ><i class="el-icon-setting"></i>系统设置</template
                 >
-                <el-menu-item index="/personalInfo/limits">权限设置</el-menu-item>
-                <el-menu-item index="/personalInfo/changePassword">修改密码</el-menu-item>
+                <el-menu-item index="/personalInfo/limits"
+                  >权限设置</el-menu-item
+                >
+                <el-menu-item index="/personalInfo/changePassword"
+                  >修改密码</el-menu-item
+                >
               </el-submenu>
             </el-menu>
           </el-aside>
