@@ -264,6 +264,7 @@ export default {
         }
       }
     }
+    app.$emit("getIndex", "/personalInfo/baseInfo");
   }
 };
 </script>

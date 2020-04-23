@@ -24,7 +24,7 @@
                 <b>账户余额：{{ userinfo.balance }}&nbsp;¥</b>
               </p>
             </div>
-            <el-menu router unique-opened>
+            <el-menu router unique-opened :default-active="currentIndex">
               <el-submenu index="1">
                 <template slot="title"
                   ><i class="el-icon-message"></i>个人资料</template
@@ -109,7 +109,7 @@
             </el-header>
 
             <el-main>
-              <router-view></router-view>
+              <router-view @getIndex="getCurrentIndex"></router-view>
             </el-main>
           </el-container>
         </el-container>
@@ -121,14 +121,8 @@
 <script>
 export default {
   data() {
-    const item = {
-      date: "2016-05-02",
-      name: "王小虎",
-      address: "上海市普陀区金沙江路 1518 弄"
-    };
     return {
-      tableData: Array(20).fill(item),
-      currentIndex: "1-1",
+      currentIndex: "/personalInfo/baseInfo",
       userinfo: {
         username: "pikaqiu",
         usertype: 1,
@@ -140,6 +134,10 @@ export default {
     changeIndex() {
       let app = this;
       console.log(app.currentIndex);
+    },
+    getCurrentIndex(newIndex){
+      let app=this
+      app.currentIndex=newIndex
     }
   }
 };

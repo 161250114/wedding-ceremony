@@ -1,11 +1,14 @@
 <template>
-  <div>
-    
-  </div>
+  <div></div>
 </template>
 
 <script>
-export default {};
+export default {
+  created() {
+    let app = this;
+    app.$emit("getIndex", "/personalInfo/beVIP");
+  }
+};
 </script>
 
 <style scoped></style>

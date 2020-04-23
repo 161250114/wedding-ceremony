@@ -200,6 +200,10 @@ export default {
         }
       }
     }
+  },
+  created() {
+    let app = this;
+    app.$emit("getIndex", "/personalInfo/addAlbumMax");
   }
 };
 </script>

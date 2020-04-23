@@ -46,6 +46,7 @@ export default new Router({
       component:ApplyWedding
     },{
       path:'/personalInfo',
+      redirect:'/personalInfo/baseInfo',
       component:PersonalInfo,
       children:[
         {

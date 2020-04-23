@@ -148,13 +148,14 @@ export default {
       let app=this
       app.photos.splice(app.currentIndex-1,1)
       app.$message({
-        message: "已删除第"+app.currentIndex+"张照片！",
+        message: "已删除第"+app.currentIndex+"张照片，当前相册剩余"+app.photos.length+"张！",
         type: "success"
       });
     }
   },
   created() {
     let app = this;
+    app.$emit('getIndex',"/personalInfo/album")
   }
 };
 </script>
