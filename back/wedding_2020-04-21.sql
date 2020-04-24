@@ -250,7 +250,13 @@ CREATE TABLE `wedding_record` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
+DROP TABLE IF EXISTS `happiness_likes`;
+CREATE TABLE `happiness_likes` (
+  `id` int(11) NOT NULL,
+  `happiness_id` int(11) NOT NULL,
+  `like_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
