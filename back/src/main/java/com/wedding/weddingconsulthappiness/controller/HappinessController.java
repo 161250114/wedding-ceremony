@@ -1,7 +1,9 @@
 package com.wedding.weddingconsulthappiness.controller;
 
 import com.wedding.model.po.Happiness;
+import com.wedding.model.po.Happiness_likes;
 import com.wedding.model.po.Happiness_photo;
+import com.wedding.weddingconsulthappiness.service.HappinessLikesService;
 import com.wedding.weddingconsulthappiness.service.HappinessPhotoService;
 import com.wedding.weddingconsulthappiness.service.HappinessService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ import java.util.List;
 public class HappinessController {
     @Autowired
     HappinessService hs;
+    @Autowired
+    HappinessLikesService hls;
     @ResponseBody
     @RequestMapping(value="/add",method = RequestMethod.POST)
     public int add(@RequestBody Happiness h, HttpServletRequest request){
@@ -44,4 +48,17 @@ public class HappinessController {
         return hs.selectAll().size();
     }
 
+    @ResponseBody
+    @RequestMapping(value="/addlikes",method = RequestMethod.GET)
+    public int addl(){
+        Happiness_likes hl=new Happiness_likes(0,1,2);
+        hls.insert(hl);
+        hl.setLikeId(5);
+        return hls.updateByPrimaryKey(hl);
+    }
+    @ResponseBody
+    @RequestMapping(value="/getAlll",method = RequestMethod.GET)
+    public List<Happiness_likes> getAlll(){
+        return hls.selectAll();
+    }
 }
