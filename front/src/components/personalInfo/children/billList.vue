@@ -4,7 +4,7 @@
       <el-col :span="3">&nbsp;</el-col>
       <el-col :span="18">
         <el-table
-          :data="dateRecords"
+          :data="billList"
           style="width: 100%"
           :default-sort="{ prop: 'time', order: 'descending' }"
         >
@@ -53,9 +53,41 @@
 
 <script>
 export default {
+  data() {
+    return {
+      billList: [
+        {
+          type: "充值",
+          money: "50",
+          balance:"50",
+          time: "2020-04-18 14:36:57",
+          remark: "充值了50元钱"
+        },
+        {
+          type: "购买",
+          money: "10",
+          balance:"40",
+          time: "2020-04-19 15:26:34",
+          remark: "续费会员1个月"
+        },
+        {
+          type: "购买",
+          money: "10",
+          balance:"30",
+          time: "2020-04-23 14:37:58",
+          remark: "购买相册容量5张"
+        }
+      ]
+    };
+  },
+  methods: {
+    filterHandler(value, row) {
+      return row.type === value;
+    }
+  },
   created() {
     let app = this;
-    app.$emit("getIndex", "/personalInfo/dateRecord");
+    app.$emit("getIndex", "/personalInfo/billList");
   }
 };
 </script>

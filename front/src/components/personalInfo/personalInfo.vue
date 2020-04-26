@@ -67,7 +67,7 @@
                 <template slot="title"
                   ><i class="el-icon-menu"></i>记录查询</template
                 >
-                <el-menu-item index="/personalInfo/consumption"
+                <el-menu-item index="/personalInfo/billList"
                   >消费记录查询</el-menu-item
                 >
                 <el-menu-item index="/personalInfo/dateRecord"

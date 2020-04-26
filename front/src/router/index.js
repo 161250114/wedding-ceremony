@@ -70,8 +70,8 @@ export default new Router({
           component:() => import('@/components/personalInfo/children/changePassword')
         },
         {
-          path:'consumption',
-          component:() => import('@/components/personalInfo/children/consumption')
+          path:'billList',
+          component:() => import('@/components/personalInfo/children/billList')
         },
         {
           path:'dateRecord',
