@@ -19,17 +19,17 @@
             @click="search"
           ></el-button> </el-input
         ><el-table :data="tableList" style="width: 100%">
-          <el-table-column prop="username" label="用户名" width="180">
+          <el-table-column prop="username" label="用户名" width="180" align="center">
             <template slot-scope="scope">
               <el-tag type="warning">{{ scope.row.username }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="remark" label="备注" width="180">
+          <el-table-column prop="remark" label="备注" width="180" align="center">
             <template slot-scope="scope">
               <el-tag type="success">{{ scope.row.remark }}</el-tag>
             </template> </el-table-column
           >x
-          <el-table-column label="操作" width="300">
+          <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <el-button
                 @click="

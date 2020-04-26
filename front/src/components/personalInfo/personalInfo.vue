@@ -57,9 +57,11 @@
                 <el-menu-item index="/personalInfo/friends"
                   >好友管理</el-menu-item
                 >
-                <el-menu-item index="/personalInfo/friendApply"
-                  >好友申请</el-menu-item
-                >
+                <el-badge :value="3" class="item">
+                  <el-menu-item index="/personalInfo/friendApply"
+                    >好友申请</el-menu-item
+                  >
+                </el-badge>
               </el-submenu>
               <el-submenu index="4">
                 <template slot="title"
@@ -78,7 +80,7 @@
                 >
                 <el-menu-item index="/personalInfo/charge">充值</el-menu-item>
                 <el-menu-item index="/personalInfo/beVIP"
-                  >成为付费会员</el-menu-item
+                  >付费会员</el-menu-item
                 >
                 <el-menu-item index="/personalInfo/addAlbumMax"
                   >相册容量购买</el-menu-item
@@ -138,9 +140,9 @@ export default {
       let app = this;
       console.log(app.currentIndex);
     },
-    getCurrentIndex(newIndex){
-      let app=this
-      app.currentIndex=newIndex
+    getCurrentIndex(newIndex) {
+      let app = this;
+      app.currentIndex = newIndex;
     }
   }
 };

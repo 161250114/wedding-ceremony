@@ -69,7 +69,7 @@
           size="small"
           type="success"
           @click="submitUpload"
-          >上传到服务器</el-button
+          >上传到相册</el-button
         >
       </el-row>
     </el-container>
