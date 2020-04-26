@@ -100,6 +100,10 @@ export default new Router({
         {
           path:'uploadPhoto',
           component:() => import('@/components/personalInfo/children/uploadPhoto')
+        },
+        {
+          path:'friendApply',
+          component:() => import('@/components/personalInfo/children/friendApply')
         }
       ]
     },

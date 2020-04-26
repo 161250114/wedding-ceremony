@@ -57,6 +57,9 @@
                 <el-menu-item index="/personalInfo/friends"
                   >好友管理</el-menu-item
                 >
+                <el-menu-item index="/personalInfo/friendApply"
+                  >好友申请</el-menu-item
+                >
               </el-submenu>
               <el-submenu index="4">
                 <template slot="title"

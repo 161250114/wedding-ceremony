@@ -6,7 +6,7 @@
 export default {
   created() {
     let app = this;
-    app.$emit("getIndex", "/personalInfo/addAlbumMax");
+    app.$emit("getIndex", "/personalInfo/limits");
   }
 };
 </script>

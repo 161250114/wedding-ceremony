@@ -461,7 +461,7 @@ export default {
   created() {
     let app = this;
     app.changeTagList();
-    app.$emit("getIndex", "/personalInfo/addAlbumMax");
+    app.$emit("getIndex", "/personalInfo/introduction");
   }
 };
 </script>
