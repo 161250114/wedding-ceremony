@@ -52,7 +52,7 @@
         <table tableName="user" domainObjectName="User"></table>
         <table tableName="user_relation" domainObjectName="User_relation"></table>
         <table tableName="date_standard" domainObjectName="Date_standard"></table>
-
+        <table tableName="happiness_likes" domainObjectName="Happiness_likes"></table>
 
     </context>
 </generatorConfiguration>
