@@ -39,18 +39,20 @@
         </javaClientGenerator>
 
         <!-- 生成对应的表及类名 -->
-        <table schema="root" tableName="system_message" domainObjectName="System_message"></table>
-        <table schema="root" tableName="happiness" domainObjectName="Happiness"></table>
-        <table schema="root" tableName="happiness_photo" domainObjectName="Happiness_photo"></table>
-        <table schema="root" tableName="comment" domainObjectName="Comment"></table>
-        <table schema="root" tableName="wedding" domainObjectName="Wedding"></table>
-        <table schema="root" tableName="wedding_record" domainObjectName="Wedding_record"></table>
-        <table schema="root" tableName="album" domainObjectName="Album"></table>
-        <table schema="root" tableName="album_photo" domainObjectName="Album_photo"></table>
-        <table schema="root" tableName="bill" domainObjectName="Bill"></table>
-        <table schema="root" tableName="date_record" domainObjectName="Date_record"></table>
-        <table schema="root" tableName="user" domainObjectName="User"></table>
-        <table schema="root" tableName="user_relation" domainObjectName="User_relation"></table>
+        <table tableName="system_message" domainObjectName="System_message"></table>
+        <table tableName="happiness" domainObjectName="Happiness"></table>
+        <table tableName="happiness_photo" domainObjectName="Happiness_photo"></table>
+        <table tableName="comment" domainObjectName="Comment"></table>
+        <table tableName="wedding" domainObjectName="Wedding"></table>
+        <table tableName="wedding_record" domainObjectName="Wedding_record"></table>
+        <table tableName="album" domainObjectName="Album"></table>
+        <table tableName="album_photo" domainObjectName="Album_photo"></table>
+        <table tableName="bill" domainObjectName="Bill"></table>
+        <table tableName="date_record" domainObjectName="Date_record"></table>
+        <table tableName="user" domainObjectName="User"></table>
+        <table tableName="user_relation" domainObjectName="User_relation"></table>
+        <table tableName="date_standard" domainObjectName="Date_standard"></table>
+
 
     </context>
 </generatorConfiguration>
