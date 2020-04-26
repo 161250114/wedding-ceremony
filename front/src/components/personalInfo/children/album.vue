@@ -144,18 +144,23 @@ export default {
         type: "success"
       });
     },
-    deletePhoto(){
-      let app=this
-      app.photos.splice(app.currentIndex-1,1)
+    deletePhoto() {
+      let app = this;
+      app.photos.splice(app.currentIndex-1,1)     
       app.$message({
-        message: "已删除第"+app.currentIndex+"张照片，当前相册剩余"+app.photos.length+"张！",
+        message:
+          "已删除第" +
+          app.currentIndex +
+          "张照片，当前相册剩余" +
+          app.photos.length +
+          "张！",
         type: "success"
       });
     }
   },
   created() {
     let app = this;
-    app.$emit('getIndex',"/personalInfo/album")
+    app.$emit("getIndex", "/personalInfo/album");
   }
 };
 </script>
