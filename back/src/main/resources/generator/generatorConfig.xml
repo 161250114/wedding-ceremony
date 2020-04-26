@@ -53,6 +53,8 @@
         <table tableName="user_relation" domainObjectName="User_relation"></table>
         <table tableName="date_standard" domainObjectName="Date_standard"></table>
         <table tableName="happiness_likes" domainObjectName="Happiness_likes"></table>
+        <table tableName="friend_apply" domainObjectName="Friend_apply"></table>
+
 
     </context>
 </generatorConfiguration>

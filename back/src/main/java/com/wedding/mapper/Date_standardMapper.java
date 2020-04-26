@@ -1,11 +1,8 @@
 package com.wedding.mapper;
 
 import com.wedding.model.po.Date_standard;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
-@Repository
 public interface Date_standardMapper {
     int deleteByPrimaryKey(Integer id);
 

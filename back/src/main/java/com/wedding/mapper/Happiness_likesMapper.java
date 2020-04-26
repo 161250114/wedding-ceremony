@@ -1,7 +1,6 @@
 package com.wedding.mapper;
 
 import com.wedding.model.po.Happiness_likes;
-
 import java.util.List;
 
 public interface Happiness_likesMapper {

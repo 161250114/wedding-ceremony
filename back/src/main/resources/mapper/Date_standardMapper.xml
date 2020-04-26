@@ -16,13 +16,13 @@
     delete from date_standard
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wedding.model.po.Date_standard" useGeneratedKeys="true" keyProperty="id">
-    insert into date_standard (id, agemin, agemax,
-      heightmin, heightmax, salary,
+  <insert id="insert" parameterType="com.wedding.model.po.Date_standard" >
+    insert into date_standard (id, agemin, agemax, 
+      heightmin, heightmax, salary, 
       education, address, marrige
       )
-    values (#{id,jdbcType=INTEGER}, #{agemin,jdbcType=INTEGER}, #{agemax,jdbcType=INTEGER},
-      #{heightmin,jdbcType=INTEGER}, #{heightmax,jdbcType=INTEGER}, #{salary,jdbcType=VARCHAR},
+    values (#{id,jdbcType=INTEGER}, #{agemin,jdbcType=INTEGER}, #{agemax,jdbcType=INTEGER}, 
+      #{heightmin,jdbcType=INTEGER}, #{heightmax,jdbcType=INTEGER}, #{salary,jdbcType=VARCHAR}, 
       #{education,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{marrige,jdbcType=TINYINT}
       )
   </insert>

@@ -7,15 +7,6 @@ public class Happiness_likes {
 
     private Integer likeId;
 
-    public Happiness_likes() {
-    }
-
-    public Happiness_likes(Integer id, Integer happinessId, Integer likeId) {
-        this.id = id;
-        this.happinessId = happinessId;
-        this.likeId = likeId;
-    }
-
     public Integer getId() {
         return id;
     }
