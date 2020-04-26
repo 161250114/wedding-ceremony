@@ -1,5 +1,7 @@
 package com.wedding.model.po;
 
+import java.util.Date;
+
 public class Friend_apply {
     private Integer id;
 
@@ -10,6 +12,10 @@ public class Friend_apply {
     private String applyinfo;
 
     private String result;
+
+    private String replyinfo;
+
+    private Date applydate;
 
     public Integer getId() {
         return id;
@@ -49,5 +55,21 @@ public class Friend_apply {
 
     public void setResult(String result) {
         this.result = result == null ? null : result.trim();
+    }
+
+    public String getReplyinfo() {
+        return replyinfo;
+    }
+
+    public void setReplyinfo(String replyinfo) {
+        this.replyinfo = replyinfo == null ? null : replyinfo.trim();
+    }
+
+    public Date getApplydate() {
+        return applydate;
+    }
+
+    public void setApplydate(Date applydate) {
+        this.applydate = applydate;
     }
 }

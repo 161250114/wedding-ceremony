@@ -15,6 +15,8 @@ public class Bill {
 
     private Integer userid;
 
+    private Double balance;
+
     public Integer getId() {
         return id;
     }
@@ -61,5 +63,13 @@ public class Bill {
 
     public void setUserid(Integer userid) {
         this.userid = userid;
+    }
+
+    public Double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
     }
 }

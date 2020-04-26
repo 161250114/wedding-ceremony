@@ -8,16 +8,19 @@
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="time" property="time" jdbcType="TIMESTAMP" />
     <result column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="balance" property="balance" jdbcType="DOUBLE" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from bill
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wedding.model.po.Bill" >
-    insert into bill (id, type, money,
-      remark, time)
-    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE},
-      #{remark,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}),userid= #{userid,jdbcType=INTEGER}
+    insert into bill (id, type, money, 
+      remark, time, userid, 
+      balance)
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE}, 
+      #{remark,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{userid,jdbcType=INTEGER}, 
+      #{balance,jdbcType=DOUBLE})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Bill" >
     update bill
@@ -25,16 +28,17 @@
       money = #{money,jdbcType=DOUBLE},
       remark = #{remark,jdbcType=VARCHAR},
       time = #{time,jdbcType=TIMESTAMP},
-      userid= #{userid,jdbcType=INTEGER}
+      userid = #{userid,jdbcType=INTEGER},
+      balance = #{balance,jdbcType=DOUBLE}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, type, money, remark, time,userid
+    select id, type, money, remark, time, userid, balance
     from bill
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, type, money, remark, time,userid
+    select id, type, money, remark, time, userid, balance
     from bill
   </select>
 </mapper>
