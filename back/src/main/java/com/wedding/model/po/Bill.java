@@ -13,6 +13,8 @@ public class Bill {
 
     private Date time;
 
+    private Integer userid;
+
     public Integer getId() {
         return id;
     }
@@ -51,5 +53,13 @@ public class Bill {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public Integer getUserid() {
+        return userid;
+    }
+
+    public void setUserid(Integer userid) {
+        this.userid = userid;
     }
 }

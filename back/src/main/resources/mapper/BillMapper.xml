@@ -7,32 +7,34 @@
     <result column="money" property="money" jdbcType="DOUBLE" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="userid" property="userid" jdbcType="INTEGER" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from bill
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wedding.model.po.Bill" >
-    insert into bill (id, type, money, 
+    insert into bill (id, type, money,
       remark, time)
-    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE}, 
-      #{remark,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP})
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE},
+      #{remark,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}),userid= #{userid,jdbcType=INTEGER}
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Bill" >
     update bill
     set type = #{type,jdbcType=VARCHAR},
       money = #{money,jdbcType=DOUBLE},
       remark = #{remark,jdbcType=VARCHAR},
-      time = #{time,jdbcType=TIMESTAMP}
+      time = #{time,jdbcType=TIMESTAMP},
+      userid= #{userid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, type, money, remark, time
+    select id, type, money, remark, time,userid
     from bill
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, type, money, remark, time
+    select id, type, money, remark, time,userid
     from bill
   </select>
 </mapper>

@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.29)
 # Database: wedding
-# Generation Time: 2020-04-26 07:10:59 +0000
+# Generation Time: 2020-04-26 07:40:15 +0000
 # ************************************************************
 
 
@@ -61,6 +61,7 @@ CREATE TABLE `bill` (
   `money` double NOT NULL,
   `remark` varchar(100) DEFAULT NULL,
   `time` datetime NOT NULL,
+  `userid` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
