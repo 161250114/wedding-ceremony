@@ -174,7 +174,7 @@ export default {
           applyDate: "2020-04-20",
           userid: "1000010",
           username: "gjd",
-          applyInfo: "老师加一下好友呗",
+          applyInfo: "老师约个会呗",
           replyInfo: "暂无",
           status: "等待"
         },
@@ -223,7 +223,7 @@ export default {
   },
   created() {
     let app = this;
-    app.$emit("getIndex", "/personalInfo/friendApply");
+    app.$emit("getIndex", "/personalInfo/dateApply");
   }
 };
 </script>

@@ -3,46 +3,25 @@
     <el-row>
       <el-col :span="3">&nbsp;</el-col>
       <el-col :span="18">
-        <el-table
-          :data="dateRecords"
-          style="width: 100%"
-          :default-sort="{ prop: 'time', order: 'descending' }"
-        >
-          <el-table-column
-            label="消费类型"
-            width="100"
-            align="center"
-            :filters="[
-              { text: '购买', value: '购买' },
-              { text: '充值', value: '充值' }
-            ]"
-            :filter-method="filterHandler"
-          >
+        <el-table :data="dateRecords" style="width: 100%">
+          <el-table-column label="状态" align="center">
             <template slot-scope="scope">
-              <el-tag type="warning">{{ scope.row.type }}</el-tag>
+              <el-tag :type="scope.row.status==='在进行'?'success':'danger'">{{ scope.row.status }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="消费金额" width="100" align="center">
+          <el-table-column label="用户名" align="center">
             <template slot-scope="scope">
-              <el-tag>{{ scope.row.money }}</el-tag>
+              <el-tag type="warning">{{ scope.row.username}}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="账户余额" width="100" align="center">
+          <el-table-column label="开始日期" align="center">
             <template slot-scope="scope">
-              <el-tag type="danger">{{ scope.row.balance }}</el-tag>
+              <el-tag>{{ scope.row.startDate }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="time"
-            label="消费时间"
-            width="250"
-            align="center"
-            sortable
-          >
-          </el-table-column>
-          <el-table-column label="备注" align="center">
+          <el-table-column label="结束日期" align="center">
             <template slot-scope="scope">
-              <el-tag type="success">{{ scope.row.remark }}</el-tag>
+              <el-tag>{{ scope.row.endDate }}</el-tag>
             </template>
           </el-table-column>
         </el-table></el-col
@@ -53,6 +32,24 @@
 
 <script>
 export default {
+  data() {
+    return {
+      dateRecords: [
+        {
+          status:"在进行",
+          username: "161250117",
+          startDate: "2020-06-01",
+          endDate: "待续"
+        },
+        {
+          status:"有缘无分",
+          username: "161250117",
+          startDate: "2020-04-01",
+          endDate: "2020-05-30"
+        }
+      ]
+    };
+  },
   created() {
     let app = this;
     app.$emit("getIndex", "/personalInfo/dateRecord");

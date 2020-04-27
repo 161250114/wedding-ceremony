@@ -104,6 +104,10 @@ export default new Router({
         {
           path:'friendApply',
           component:() => import('@/components/personalInfo/children/friendApply')
+        },
+        {
+          path:'dateApply',
+          component:() => import('@/components/personalInfo/children/dateApply')
         }
       ]
     },

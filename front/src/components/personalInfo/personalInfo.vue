@@ -19,6 +19,21 @@
                 ><b id="vip_paid" v-if="userinfo.usertype == 1"
                   >&nbsp;VIP&nbsp;</b
                 ><b id="vip_free" v-else>&nbsp;VIP&nbsp;</b>
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  content="当前没有约会对象"
+                  placement="bottom-start"
+                >
+                  <img
+                    :src="
+                      dateStatus === 0
+                        ? '../../../static/single.png'
+                        : '../../../static/couple.png'
+                    "
+                    style="height:22px;vertical-align:text-top;"
+                  />
+                </el-tooltip>
               </p>
               <p>
                 <b>账户余额：{{ userinfo.balance }}&nbsp;¥</b>
@@ -60,6 +75,11 @@
                 <el-badge :value="3" class="item">
                   <el-menu-item index="/personalInfo/friendApply"
                     >好友申请</el-menu-item
+                  >
+                </el-badge>
+                <el-badge value="新" class="item">
+                  <el-menu-item index="/personalInfo/dateApply"
+                    >约会申请</el-menu-item
                   >
                 </el-badge>
               </el-submenu>
@@ -130,15 +150,17 @@ export default {
       currentIndex: "/personalInfo/baseInfo",
       userinfo: {
         username: "pikaqiu",
-        usertype: 1,
+        usertype: 0,
         balance: 50
-      }
+      },
+      dateStatus: 0
     };
   },
   methods: {
     changeIndex() {
       let app = this;
       console.log(app.currentIndex);
+      console.log(app.dateStatus === 1);
     },
     getCurrentIndex(newIndex) {
       let app = this;
