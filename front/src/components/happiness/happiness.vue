@@ -25,6 +25,7 @@
       <span style="position: relative;;left:-60px;">
           <el-button v-if="!islike[index]" icon="el-icon-thumb" circle @click="like(index)"></el-button>
           <el-button v-if="islike[index]" type="danger" icon="el-icon-thumb" circle @click="like(index)"></el-button>
+          {{list[index]["likes"]}}
       </span>
       <span style="position: relative;left:-30px;">
           <el-button icon="el-icon-delete"circle @click="del(index)"></el-button>
@@ -49,9 +50,19 @@
           return{
             list:[
               {
-                pnumber:2
+                id:0,
+                senderId:1,
+                content:"11391313",
+                likes:3,
+                date:new Date(),
+                state:0,
               }, {
-              pnumber:5
+                id:1,
+                senderId:1,
+                content:"11391313",
+                likes:3,
+                date:new Date(),
+                state:0,
               },
             ],
             islike:[true,false],
@@ -63,6 +74,11 @@
       computed:{
 
       },
+      created:{
+        load(){
+
+        }
+      },
       methods:{
         send(index){
           let word=this.input[index];
@@ -72,9 +88,23 @@
           console.log(this.commentlist)
         },
         like(index){
+          let happinessId=this.list[index]["happinessId"];
+          let newItem = JSON.parse(JSON.stringify(this.list[index]));
+          if(this.islike[index]){
+            newItem["likes"]=newItem["likes"]-1;
+          }
+          else{
+            newItem["likes"]=newItem["likes"]+1;
+          }
+          this.list.splice(index,1,newItem)
           this.islike.splice(index,1,!this.islike[index])
         },
         del(index){
+          let happinessId=this.list[index]["happinessId"]
+          this.list.splice(index,1)
+          this.islike.splice(index,1)
+          this.commentlist.splice(index,1)
+
         }
       }
     }
