@@ -181,9 +181,24 @@
           data.applicantId=1
           axios.post("/wedding/update",data)
             .then(successResponse => {
-              app.$alert("操作成功", '提示', {
-              confirmButtonText: '确定',
-            });})
+              let record=new Object();
+              record["id"]=0;
+              record["weddingId"]=row.id;
+              record["approverId"]=1;
+              record["time"]=new Date();
+              record["result"]=1;
+              axios.post("/weddingrecord/add",record)
+                .then(successResponse=>{
+                  this.$alert("操作成功", '提示', {
+                    confirmButtonText: '确定',
+                  });
+                })
+                .catch(failResponse=>{
+                  this.$alert("操作失败，请刷新页面重试", '提示', {
+                    confirmButtonText: '确定',
+                  });
+                })
+            })
             .catch(failResponse => {
               this.$alert("操作失败，请刷新页面重试", '提示', {
                 confirmButtonText: '确定',
@@ -191,15 +206,30 @@
             }); //失败后的操作
         },
         cancel(row){
-          row.state="通过"
+          row.state="取消"
           let data=JSON.parse(JSON.stringify(row))
           data.state=2
           data.applicantId=1
           axios.post("/wedding/update",data)
             .then(successResponse => {
-              this.$alert("操作成功", '提示', {
-              confirmButtonText: '确定',
-            });})
+              let record=new Object();
+              record["id"]=0;
+              record["weddingId"]=row.id;
+              record["approverId"]=1;
+              record["time"]=new Date();
+              record["result"]=2;
+              axios.post("/weddingrecord/add",record)
+                .then(successResponse=>{
+                  this.$alert("操作成功", '提示', {
+                    confirmButtonText: '确定',
+                  });
+                })
+                .catch(failResponse=>{
+                  this.$alert("操作失败，请刷新页面重试", '提示', {
+                    confirmButtonText: '确定',
+                  });
+                })
+        })
             .catch(failResponse => {
               this.$alert("操作失败，请刷新页面重试", '提示', {
                 confirmButtonText: '确定',
