@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.29)
 # Database: wedding
-# Generation Time: 2020-04-26 09:49:32 +0000
+# Generation Time: 2020-04-27 02:52:34 +0000
 # ************************************************************
 
 
@@ -79,6 +79,24 @@ CREATE TABLE `comment` (
   `sender_id` int(11) NOT NULL,
   `content` varchar(500) NOT NULL,
   `state` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table date_apply
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `date_apply`;
+
+CREATE TABLE `date_apply` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `userid1` int(11) NOT NULL,
+  `userid2` int(11) NOT NULL,
+  `applyinfo` varchar(50) DEFAULT NULL,
+  `replyinfo` varchar(50) DEFAULT '',
+  `result` varchar(10) NOT NULL DEFAULT '',
+  `applydate` date NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
