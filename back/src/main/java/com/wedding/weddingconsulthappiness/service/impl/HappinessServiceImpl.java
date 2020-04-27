@@ -7,6 +7,7 @@ import com.wedding.weddingconsulthappiness.service.HappinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 @Service(value="HappinessService")
 public class HappinessServiceImpl implements HappinessService {
@@ -36,5 +37,17 @@ public class HappinessServiceImpl implements HappinessService {
     @Override
     public List<Happiness> selectAll() {
         return hm.selectAll();
+    }
+
+    @Override
+    public List<Happiness> selectByUserId(List<Integer> list) {
+        List<Happiness>l=hm.selectAll();
+        List<Happiness>result=new ArrayList<>();
+        for(Happiness h:l){
+            if(list.contains(h.getId())){
+                result.add(h);
+            }
+        }
+        return result;
     }
 }
