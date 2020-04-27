@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-tabs v-model="activePane" @tab-click="handleClick">
+    <el-tabs v-model="activePane">
       <el-tab-pane label="已发出申请" name="first">
         <el-table
           :data="sendApplyList"

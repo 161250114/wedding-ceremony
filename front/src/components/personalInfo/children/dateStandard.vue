@@ -138,7 +138,7 @@ export default {
         address: "江苏省/宿迁市/泗阳县",
         marriage: "4"
       },
-      cities: "",
+      cities: [],
       addressCode: [],
       educationList: [
         "不限",
@@ -200,9 +200,6 @@ export default {
         }
       }
     }
-  },
-  created() {
-    let app = this;
     app.$emit("getIndex", "/personalInfo/dateStandard");
   }
 };
