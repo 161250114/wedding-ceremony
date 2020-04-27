@@ -45,6 +45,8 @@ public class User {
 
     private Integer standardid;
 
+    private Date vipEnddate;
+
     public Integer getId() {
         return id;
     }
@@ -211,5 +213,13 @@ public class User {
 
     public void setStandardid(Integer standardid) {
         this.standardid = standardid;
+    }
+
+    public Date getVipEnddate() {
+        return vipEnddate;
+    }
+
+    public void setVipEnddate(Date vipEnddate) {
+        this.vipEnddate = vipEnddate;
     }
 }

@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.29)
 # Database: wedding
-# Generation Time: 2020-04-27 02:52:34 +0000
+# Generation Time: 2020-04-27 03:03:14 +0000
 # ************************************************************
 
 
@@ -244,6 +244,7 @@ CREATE TABLE `user` (
   `profession` varchar(30) NOT NULL DEFAULT '',
   `albumid` int(11) unsigned NOT NULL,
   `standardid` int(11) NOT NULL,
+  `vip_enddate` date NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user2album` (`albumid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

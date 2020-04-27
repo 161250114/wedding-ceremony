@@ -23,6 +23,7 @@
     <result column="profession" jdbcType="VARCHAR" property="profession" />
     <result column="albumid" jdbcType="INTEGER" property="albumid" />
     <result column="standardid" jdbcType="INTEGER" property="standardid" />
+    <result column="vip_enddate" jdbcType="DATE" property="vipEnddate" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user
@@ -35,16 +36,16 @@
       birthday, height, introduction,
       address, education, marrige,
       salary, balance, trueness,
-      profession, albumid, standardid
-      )
+      profession, albumid, standardid,
+      vip_enddate)
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{phone,jdbcType=VARCHAR}, #{usertype,jdbcType=TINYINT}, #{limitBrowse,jdbcType=TINYINT},
       #{limitMessage,jdbcType=TINYINT}, #{fullname,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT},
       #{birthday,jdbcType=DATE}, #{height,jdbcType=INTEGER}, #{introduction,jdbcType=VARCHAR},
       #{address,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR}, #{marrige,jdbcType=TINYINT},
       #{salary,jdbcType=VARCHAR}, #{balance,jdbcType=INTEGER}, #{trueness,jdbcType=INTEGER},
-      #{profession,jdbcType=VARCHAR}, #{albumid,jdbcType=INTEGER}, #{standardid,jdbcType=INTEGER}
-      )
+      #{profession,jdbcType=VARCHAR}, #{albumid,jdbcType=INTEGER}, #{standardid,jdbcType=INTEGER},
+      #{vipEnddate,jdbcType=DATE})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.User">
     update user
@@ -67,33 +68,34 @@
       trueness = #{trueness,jdbcType=INTEGER},
       profession = #{profession,jdbcType=VARCHAR},
       albumid = #{albumid,jdbcType=INTEGER},
-      standardid = #{standardid,jdbcType=INTEGER}
+      standardid = #{standardid,jdbcType=INTEGER},
+      vip_enddate = #{vipEnddate,jdbcType=DATE}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id, username, password, phone, usertype, limit_browse, limit_message, fullname,
     sex, birthday, height, introduction, address, education, marrige, salary, balance,
-    trueness, profession, albumid, standardid
+    trueness, profession, albumid, standardid, vip_enddate
     from user
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select id, username, password, phone, usertype, limit_browse, limit_message, fullname,
     sex, birthday, height, introduction, address, education, marrige, salary, balance,
-    trueness, profession, albumid, standardid
+    trueness, profession, albumid, standardid, vip_enddate
     from user
   </select>
   <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
     select id, username, password, phone, usertype, limit_browse, limit_message, fullname,
     sex, birthday, height, introduction, address, education, marrige, salary, balance,
-    trueness, profession, albumid, standardid
+    trueness, profession, albumid, standardid, vip_enddate
     from user
     where username = #{username,jdbcType=VARCHAR}
   </select>
   <select id="selectByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
     select id, username, password, phone, usertype, limit_browse, limit_message, fullname,
     sex, birthday, height, introduction, address, education, marrige, salary, balance,
-    trueness, profession, albumid, standardid
+    trueness, profession, albumid, standardid, vip_enddate
     from user
     where phone = #{phone,jdbcType=VARCHAR}
   </select>
