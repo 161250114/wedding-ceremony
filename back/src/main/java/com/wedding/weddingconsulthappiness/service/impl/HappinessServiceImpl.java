@@ -41,6 +41,7 @@ public class HappinessServiceImpl implements HappinessService {
 
     @Override
     public List<Happiness> selectByUserId(List<Integer> list) {
+
         List<Happiness>l=hm.selectAll();
         List<Happiness>result=new ArrayList<>();
         for(Happiness h:l){
@@ -48,6 +49,7 @@ public class HappinessServiceImpl implements HappinessService {
                 result.add(h);
             }
         }
+
         return result;
     }
 }
