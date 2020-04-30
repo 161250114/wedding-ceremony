@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.29)
 # Database: wedding
-# Generation Time: 2020-04-30 09:08:16 +0000
+# Generation Time: 2020-04-30 11:06:57 +0000
 # ************************************************************
 
 
@@ -133,6 +133,7 @@ CREATE TABLE `date_standard` (
   `education` varchar(30) NOT NULL DEFAULT '',
   `address` varchar(100) NOT NULL DEFAULT '',
   `marrige` tinyint(4) NOT NULL,
+  `userid` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

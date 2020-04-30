@@ -1,33 +1,63 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.wedding.mapper.Happiness_likesMapper" >
-  <resultMap id="BaseResultMap" type="com.wedding.model.po.Happiness_likes" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="happiness_id" property="happinessId" jdbcType="INTEGER" />
-    <result column="like_id" property="likeId" jdbcType="INTEGER" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wedding.mapper.Happiness_likesMapper">
+  <resultMap id="BaseResultMap" type="com.wedding.model.po.Happiness_likes">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="happiness_id" jdbcType="INTEGER" property="happinessId" />
+    <result column="like_id" jdbcType="INTEGER" property="likeId" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from happiness_likes
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wedding.model.po.Happiness_likes" >
+  <insert id="insert" parameterType="com.wedding.model.po.Happiness_likes">
     insert into happiness_likes (id, happiness_id, like_id
       )
     values (#{id,jdbcType=INTEGER}, #{happinessId,jdbcType=INTEGER}, #{likeId,jdbcType=INTEGER}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Happiness_likes" >
+  <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Happiness_likes">
     update happiness_likes
     set happiness_id = #{happinessId,jdbcType=INTEGER},
       like_id = #{likeId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id, happiness_id, like_id
     from happiness_likes
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, happiness_id, like_id
+    from happiness_likes
+  </select>
+  <resultMap id="BaseResultMap" type="com.wedding.model.po.Happiness_likes">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="happiness_id" jdbcType="INTEGER" property="happinessId" />
+    <result column="like_id" jdbcType="INTEGER" property="likeId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from happiness_likes
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wedding.model.po.Happiness_likes">
+    insert into happiness_likes (id, happiness_id, like_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{happinessId,jdbcType=INTEGER}, #{likeId,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Happiness_likes">
+    update happiness_likes
+    set happiness_id = #{happinessId,jdbcType=INTEGER},
+      like_id = #{likeId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, happiness_id, like_id
+    from happiness_likes
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
     select id, happiness_id, like_id
     from happiness_likes
   </select>
