@@ -13,10 +13,6 @@ public class User {
 
     private Byte usertype;
 
-    private Byte limitBrowse;
-
-    private Byte limitMessage;
-
     private String fullname;
 
     private Byte sex;
@@ -46,6 +42,8 @@ public class User {
     private Integer standardid;
 
     private Date vipEnddate;
+
+    private Byte dateStatus;
 
     public Integer getId() {
         return id;
@@ -85,22 +83,6 @@ public class User {
 
     public void setUsertype(Byte usertype) {
         this.usertype = usertype;
-    }
-
-    public Byte getLimitBrowse() {
-        return limitBrowse;
-    }
-
-    public void setLimitBrowse(Byte limitBrowse) {
-        this.limitBrowse = limitBrowse;
-    }
-
-    public Byte getLimitMessage() {
-        return limitMessage;
-    }
-
-    public void setLimitMessage(Byte limitMessage) {
-        this.limitMessage = limitMessage;
     }
 
     public String getFullname() {
@@ -221,5 +203,13 @@ public class User {
 
     public void setVipEnddate(Date vipEnddate) {
         this.vipEnddate = vipEnddate;
+    }
+
+    public Byte getDateStatus() {
+        return dateStatus;
+    }
+
+    public void setDateStatus(Byte dateStatus) {
+        this.dateStatus = dateStatus;
     }
 }

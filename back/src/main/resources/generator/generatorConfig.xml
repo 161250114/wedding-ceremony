@@ -55,6 +55,7 @@
         <table tableName="happiness_likes" domainObjectName="Happiness_likes"></table>
         <table tableName="friend_apply" domainObjectName="Friend_apply"></table>
         <table tableName="date_apply" domainObjectName="Date_apply"></table>
+        <table tableName="user_limit" domainObjectName="User_limit"></table>
 
 
     </context>
