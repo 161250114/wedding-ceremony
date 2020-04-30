@@ -86,8 +86,6 @@ public class LRServiceImpl implements LRService {
         user.setFullname(registerVO.getFullName());
         user.setHeight(registerVO.getHeight());
         user.setIntroduction(registerVO.getIntroduction());
-        user.setLimitBrowse((byte)0);
-        user.setLimitMessage((byte)0);
         user.setMarrige((byte)registerVO.getMarriage());
         user.setPassword(registerVO.getPassword());
         user.setPhone(registerVO.getPhone());

@@ -3,6 +3,7 @@ package com.wedding.usermanage.controller;
 
 import com.wedding.model.ReturnMessage;
 import com.wedding.usermanage.service.LRService;
+import com.wedding.usermanage.utils.MsgUtil;
 import com.wedding.usermanage.vo.LoginVO;
 import com.wedding.usermanage.vo.RegisterVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,10 @@ public class LRController {
     @ResponseBody
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public ReturnMessage login(@RequestBody LoginVO loginVO, HttpServletRequest httpServletRequest){
-        ReturnMessage returnMessage=lrService.login(loginVO);
-        return returnMessage;
+//        ReturnMessage returnMessage=lrService.login(loginVO);
+//        return returnMessage;
+        MsgUtil.sendMsg("15022218621",httpServletRequest);
+        return new ReturnMessage(true,"ok");
     }
     @ResponseBody
     @RequestMapping(value = "/register",method = RequestMethod.POST)
