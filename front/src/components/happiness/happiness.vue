@@ -24,7 +24,7 @@
     <div class="ica">
       <span style="position: relative;;left:-60px;">
           <el-button v-if="!islike[index]" icon="el-icon-thumb" circle @click="like(index)"></el-button>
-          <el-button v-if="islike[index]" type="danger" icon="el-icon-thumb" circle @click="like(index)"></el-button>
+          <el-button v-if="islike[index]" type="danger" icon="el-icon-thumb" circle></el-button>
           {{list[index]["likes"]}}
       </span>
       <span style="position: relative;left:-30px;">

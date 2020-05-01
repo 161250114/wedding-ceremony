@@ -9,7 +9,7 @@ import Happiness from '@/components/happiness/happiness'
 import ApplyWedding from '@/components/wedding/applywedding'
 import PersonalInfo from '@/components/personalInfo/personalInfo'
 import Wedding from '@/components/wedding/wedding'
-import WeddingDetail from '@/components/wedding/weddingdetail'
+import WeddingRecord from '@/components/wedding/weddingrecord'
 import ConsultList from '@/components/consult/consultlist'
 Vue.use(Router)
 
@@ -116,8 +116,8 @@ export default new Router({
       component:Wedding
     },
     {
-      path:'/weddingdetail',
-      component:WeddingDetail
+      path:'/weddingrecord',
+      component:WeddingRecord
     },
     {
       path:'/consultlist',
