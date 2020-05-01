@@ -1,27 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wedding.mapper.HappinessMapper">
-  <resultMap id="BaseResultMap" type="com.wedding.model.po.Happiness">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="sender_id" jdbcType="INTEGER" property="senderId" />
-    <result column="time" jdbcType="DATE" property="time" />
-    <result column="content" jdbcType="VARCHAR" property="content" />
-    <result column="likes" jdbcType="INTEGER" property="likes" />
-    <result column="state" jdbcType="INTEGER" property="state" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wedding.mapper.HappinessMapper" >
+  <resultMap id="BaseResultMap" type="com.wedding.model.po.Happiness" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="sender_id" property="senderId" jdbcType="INTEGER" />
+    <result column="time" property="time" jdbcType="DATE" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="likes" property="likes" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="INTEGER" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from happiness
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wedding.model.po.Happiness">
-    insert into happiness (id, sender_id, time, 
+  <insert id="insert" parameterType="com.wedding.model.po.Happiness" >
+    insert into happiness (id, sender_id, time,
       content, likes, state
       )
-    values (#{id,jdbcType=INTEGER}, #{senderId,jdbcType=INTEGER}, #{time,jdbcType=DATE}, 
+    values (#{id,jdbcType=INTEGER}, #{senderId,jdbcType=INTEGER}, #{time,jdbcType=DATE},
       #{content,jdbcType=VARCHAR}, #{likes,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Happiness">
+  <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Happiness" >
     update happiness
     set sender_id = #{senderId,jdbcType=INTEGER},
       time = #{time,jdbcType=DATE},
@@ -30,50 +30,12 @@
       state = #{state,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select id, sender_id, time, content, likes, state
     from happiness
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, sender_id, time, content, likes, state
-    from happiness
-  </select>
-  <resultMap id="BaseResultMap" type="com.wedding.model.po.Happiness">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="sender_id" jdbcType="INTEGER" property="senderId" />
-    <result column="time" jdbcType="DATE" property="time" />
-    <result column="content" jdbcType="VARCHAR" property="content" />
-    <result column="likes" jdbcType="INTEGER" property="likes" />
-    <result column="state" jdbcType="INTEGER" property="state" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from happiness
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.wedding.model.po.Happiness">
-    insert into happiness (id, sender_id, time, 
-      content, likes, state
-      )
-    values (#{id,jdbcType=INTEGER}, #{senderId,jdbcType=INTEGER}, #{time,jdbcType=DATE}, 
-      #{content,jdbcType=VARCHAR}, #{likes,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Happiness">
-    update happiness
-    set sender_id = #{senderId,jdbcType=INTEGER},
-      time = #{time,jdbcType=DATE},
-      content = #{content,jdbcType=VARCHAR},
-      likes = #{likes,jdbcType=INTEGER},
-      state = #{state,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, sender_id, time, content, likes, state
-    from happiness
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
+  <select id="selectAll" resultMap="BaseResultMap" >
     select id, sender_id, time, content, likes, state
     from happiness
   </select>

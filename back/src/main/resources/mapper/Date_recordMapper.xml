@@ -1,24 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wedding.mapper.Date_recordMapper">
-  <resultMap id="BaseResultMap" type="com.wedding.model.po.Date_record">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="userid2" jdbcType="INTEGER" property="userid2" />
-    <result column="userid1" jdbcType="INTEGER" property="userid1" />
-    <result column="start_date" jdbcType="DATE" property="startDate" />
-    <result column="end_date" jdbcType="DATE" property="endDate" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wedding.mapper.Date_recordMapper" >
+  <resultMap id="BaseResultMap" type="com.wedding.model.po.Date_record" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="userid2" property="userid2" jdbcType="INTEGER" />
+    <result column="userid1" property="userid1" jdbcType="INTEGER" />
+    <result column="start_date" property="startDate" jdbcType="DATE" />
+    <result column="end_date" property="endDate" jdbcType="DATE" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from date_record
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wedding.model.po.Date_record">
-    insert into date_record (id, userid2, userid1, 
+  <insert id="insert" parameterType="com.wedding.model.po.Date_record" >
+    insert into date_record (id, userid2, userid1,
       start_date, end_date)
-    values (#{id,jdbcType=INTEGER}, #{userid2,jdbcType=INTEGER}, #{userid1,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{userid2,jdbcType=INTEGER}, #{userid1,jdbcType=INTEGER},
       #{startDate,jdbcType=DATE}, #{endDate,jdbcType=DATE})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Date_record">
+  <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Date_record" >
     update date_record
     set userid2 = #{userid2,jdbcType=INTEGER},
       userid1 = #{userid1,jdbcType=INTEGER},
@@ -26,46 +26,12 @@
       end_date = #{endDate,jdbcType=DATE}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select id, userid2, userid1, start_date, end_date
     from date_record
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, userid2, userid1, start_date, end_date
-    from date_record
-  </select>
-  <resultMap id="BaseResultMap" type="com.wedding.model.po.Date_record">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="userid2" jdbcType="INTEGER" property="userid2" />
-    <result column="userid1" jdbcType="INTEGER" property="userid1" />
-    <result column="start_date" jdbcType="DATE" property="startDate" />
-    <result column="end_date" jdbcType="DATE" property="endDate" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from date_record
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.wedding.model.po.Date_record">
-    insert into date_record (id, userid2, userid1, 
-      start_date, end_date)
-    values (#{id,jdbcType=INTEGER}, #{userid2,jdbcType=INTEGER}, #{userid1,jdbcType=INTEGER}, 
-      #{startDate,jdbcType=DATE}, #{endDate,jdbcType=DATE})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Date_record">
-    update date_record
-    set userid2 = #{userid2,jdbcType=INTEGER},
-      userid1 = #{userid1,jdbcType=INTEGER},
-      start_date = #{startDate,jdbcType=DATE},
-      end_date = #{endDate,jdbcType=DATE}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, userid2, userid1, start_date, end_date
-    from date_record
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
+  <select id="selectAll" resultMap="BaseResultMap" >
     select id, userid2, userid1, start_date, end_date
     from date_record
   </select>

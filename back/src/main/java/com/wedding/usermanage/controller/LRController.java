@@ -27,7 +27,7 @@ public class LRController {
     public ReturnMessage login(@RequestBody LoginVO loginVO, HttpServletRequest httpServletRequest){
 //        ReturnMessage returnMessage=lrService.login(loginVO);
 //        return returnMessage;
-        MsgUtil.sendMsg("15022218621",httpServletRequest);
+        MsgUtil.sendMsg("13218051808",httpServletRequest);
         return new ReturnMessage(true,"ok");
     }
     @ResponseBody
