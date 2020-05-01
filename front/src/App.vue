@@ -1,6 +1,6 @@
 <template>
   <div
-    style="display:flex;flex-direction:column;justify-content:space-between;min-height:100%;"
+    style="display:flex;flex-direction:column;justify-content:space-between;height:100%;"
   >
     <div>
       <Myhead v-bind:isLogin="isLogin" @quit="changeLogin"></Myhead>
@@ -54,6 +54,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height:100%;
 }
 
 html, body {
