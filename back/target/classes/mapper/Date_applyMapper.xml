@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wedding.mapper.Date_applyMapper" >
+  <resultMap id="BaseResultMap" type="com.wedding.model.po.Date_apply" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="userid1" property="userid1" jdbcType="INTEGER" />
+    <result column="userid2" property="userid2" jdbcType="INTEGER" />
+    <result column="applyinfo" property="applyinfo" jdbcType="VARCHAR" />
+    <result column="replyinfo" property="replyinfo" jdbcType="VARCHAR" />
+    <result column="result" property="result" jdbcType="VARCHAR" />
+    <result column="applydate" property="applydate" jdbcType="DATE" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from date_apply
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wedding.model.po.Date_apply" >
+    insert into date_apply (id, userid1, userid2,
+      applyinfo, replyinfo, result,
+      applydate)
+    values (#{id,jdbcType=INTEGER}, #{userid1,jdbcType=INTEGER}, #{userid2,jdbcType=INTEGER},
+      #{applyinfo,jdbcType=VARCHAR}, #{replyinfo,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR},
+      #{applydate,jdbcType=DATE})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Date_apply" >
+    update date_apply
+    set userid1 = #{userid1,jdbcType=INTEGER},
+      userid2 = #{userid2,jdbcType=INTEGER},
+      applyinfo = #{applyinfo,jdbcType=VARCHAR},
+      replyinfo = #{replyinfo,jdbcType=VARCHAR},
+      result = #{result,jdbcType=VARCHAR},
+      applydate = #{applydate,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, userid1, userid2, applyinfo, replyinfo, result, applydate
+    from date_apply
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, userid1, userid2, applyinfo, replyinfo, result, applydate
+    from date_apply
+  </select>
+</mapper>

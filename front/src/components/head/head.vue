@@ -7,12 +7,7 @@
         </el-col>
         <router-link to="/home">
           <el-col :span="2">
-            <el-avatar
-              shape="square"
-              :size="55"
-              fit="fill"
-              src="../../../static/timg.jpg"
-            ></el-avatar>
+            <el-avatar shape="square" :size="55" fit="fill" src="../../../static/timg.jpg"></el-avatar>
           </el-col>
           <el-col :span="3">
             <img src="../../../static/title.png" class="title-img" />
@@ -22,14 +17,8 @@
           &nbsp;
         </el-col>
         <el-col :span="3" v-show="!isLogin">
-          <router-link to="/login"
-            ><el-button type="text" style="margin-top:10px;"
-              >登录</el-button
-            ></router-link
-          >&nbsp;&nbsp;&nbsp;
-          <router-link to="/register"
-            ><el-button type="text">注册</el-button></router-link
-          >
+          <router-link to="/login"><el-button type="text" style="margin-top:10px;">登录</el-button></router-link>&nbsp;&nbsp;&nbsp;
+          <router-link to="/register"><el-button type="text">注册</el-button></router-link>
         </el-col>
         <el-col :span="3" v-show="isLogin">
           <p style="margin-top:15px">
@@ -40,14 +29,11 @@
               </span>
               <el-dropdown-menu slot="dropdown">
                 <router-link to="/personalInfo">
-                  <el-dropdown-item>个人中心</el-dropdown-item></router-link
-                >
+                  <el-dropdown-item>个人中心</el-dropdown-item></router-link>
                 <el-dropdown-item>功能2</el-dropdown-item>
                 <el-dropdown-item>功能3</el-dropdown-item>
                 <el-dropdown-item>功能4</el-dropdown-item>
-                <el-dropdown-item divided @click="quit"
-                  >退出登录</el-dropdown-item
-                >
+                <el-dropdown-item divided @click="quit">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </p>
@@ -59,26 +45,26 @@
 
 <script>
 export default {
-  name: "head",
+  name: 'head',
   props: {
     index: {
       type: String
     },
     isLogin: Boolean
   },
-  data() {
+  data () {
     return {
-      username: "pikaqiu"
-    };
+      username: 'pikaqiu'
+    }
   },
-  created() {},
+  created () {},
   methods: {
     quit() {
-      let app = this;
-      app.$emit("quit", false);
+      let app = this
+      app.$emit('quit', false)
     }
   }
-};
+}
 </script>
 
 <style scoped>
