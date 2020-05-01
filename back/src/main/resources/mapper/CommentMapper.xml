@@ -13,9 +13,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wedding.model.po.Comment" >
-    insert into comment (id, happiness_id, sender_id, 
+    insert into comment (id, happiness_id, sender_id,
       content, state)
-    values (#{id,jdbcType=INTEGER}, #{happinessId,jdbcType=INTEGER}, #{senderId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{happinessId,jdbcType=INTEGER}, #{senderId,jdbcType=INTEGER},
       #{content,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Comment" >

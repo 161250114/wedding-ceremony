@@ -13,9 +13,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wedding.model.po.Wedding_record" >
-    insert into wedding_record (id, wedding_id, approver_id, 
+    insert into wedding_record (id, wedding_id, approver_id,
       time, result)
-    values (#{id,jdbcType=INTEGER}, #{weddingId,jdbcType=INTEGER}, #{approverId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{weddingId,jdbcType=INTEGER}, #{approverId,jdbcType=INTEGER},
       #{time,jdbcType=DATE}, #{result,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Wedding_record" >

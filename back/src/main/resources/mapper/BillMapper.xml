@@ -15,11 +15,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wedding.model.po.Bill" >
-    insert into bill (id, type, money, 
-      remark, time, userid, 
+    insert into bill (id, type, money,
+      remark, time, userid,
       balance)
-    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE}, 
-      #{remark,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{userid,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE},
+      #{remark,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{userid,jdbcType=INTEGER},
       #{balance,jdbcType=DOUBLE})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Bill" >

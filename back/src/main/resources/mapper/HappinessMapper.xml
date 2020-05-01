@@ -14,10 +14,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wedding.model.po.Happiness" >
-    insert into happiness (id, sender_id, time, 
+    insert into happiness (id, sender_id, time,
       content, likes, state
       )
-    values (#{id,jdbcType=INTEGER}, #{senderId,jdbcType=INTEGER}, #{time,jdbcType=DATE}, 
+    values (#{id,jdbcType=INTEGER}, #{senderId,jdbcType=INTEGER}, #{time,jdbcType=DATE},
       #{content,jdbcType=VARCHAR}, #{likes,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}
       )
   </insert>

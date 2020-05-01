@@ -13,9 +13,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wedding.model.po.System_message" >
-    insert into system_message (id, sender_id, receiver_id, 
+    insert into system_message (id, sender_id, receiver_id,
       content, state)
-    values (#{id,jdbcType=INTEGER}, #{senderId,jdbcType=INTEGER}, #{receiverId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{senderId,jdbcType=INTEGER}, #{receiverId,jdbcType=INTEGER},
       #{content,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.System_message" >

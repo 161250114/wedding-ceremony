@@ -1,24 +1,24 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.wedding.mapper.Album_photoMapper" >
-  <resultMap id="BaseResultMap" type="com.wedding.model.po.Album_photo" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="albumid" property="albumid" jdbcType="INTEGER" />
-    <result column="address" property="address" jdbcType="VARCHAR" />
-    <result column="upload_time" property="uploadTime" jdbcType="TIMESTAMP" />
-    <result column="order_number" property="orderNumber" jdbcType="INTEGER" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wedding.mapper.Album_photoMapper">
+  <resultMap id="BaseResultMap" type="com.wedding.model.po.Album_photo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="albumid" jdbcType="INTEGER" property="albumid" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="upload_time" jdbcType="TIMESTAMP" property="uploadTime" />
+    <result column="order_number" jdbcType="INTEGER" property="orderNumber" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from album_photo
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wedding.model.po.Album_photo" >
-    insert into album_photo (id, albumid, address, 
+  <insert id="insert" parameterType="com.wedding.model.po.Album_photo">
+    insert into album_photo (id, albumid, address,
       upload_time, order_number)
-    values (#{id,jdbcType=INTEGER}, #{albumid,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{albumid,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR},
       #{uploadTime,jdbcType=TIMESTAMP}, #{orderNumber,jdbcType=INTEGER})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Album_photo" >
+  <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Album_photo">
     update album_photo
     set albumid = #{albumid,jdbcType=INTEGER},
       address = #{address,jdbcType=VARCHAR},
@@ -26,12 +26,12 @@
       order_number = #{orderNumber,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id, albumid, address, upload_time, order_number
     from album_photo
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+  <select id="selectAll" resultMap="BaseResultMap">
     select id, albumid, address, upload_time, order_number
     from album_photo
   </select>

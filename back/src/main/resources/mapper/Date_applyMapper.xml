@@ -15,11 +15,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wedding.model.po.Date_apply" >
-    insert into date_apply (id, userid1, userid2, 
-      applyinfo, replyinfo, result, 
+    insert into date_apply (id, userid1, userid2,
+      applyinfo, replyinfo, result,
       applydate)
-    values (#{id,jdbcType=INTEGER}, #{userid1,jdbcType=INTEGER}, #{userid2,jdbcType=INTEGER}, 
-      #{applyinfo,jdbcType=VARCHAR}, #{replyinfo,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{userid1,jdbcType=INTEGER}, #{userid2,jdbcType=INTEGER},
+      #{applyinfo,jdbcType=VARCHAR}, #{replyinfo,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR},
       #{applydate,jdbcType=DATE})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Date_apply" >
