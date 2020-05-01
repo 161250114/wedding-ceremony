@@ -14,19 +14,32 @@
       <ChatRoom></ChatRoom>
     </el-dialog>
 
-    <div style="margin-top: 20px">
+    <div style="margin-top: 20px; height: 400px">
       <el-card class="simpleInfo">
-        <div style="height: 210px; width: 30%;display: inline">
+        <div style="height: 300px; width: 30%;display: inline">
           <figure>
             <img src="../recommend/girl2.jpg"/>
+<!--            <img v-bind:src="album.get(0).address">-->
           </figure>
         </div>
-        <div style="height: 210px">
-          <h2 style="font-size: 30px">{{records.username}}</h2>
+
+        <div style="height: 300px">
+
+          <div style="width: 900px">
+            <el-carousel height="120px" type="card" autoplay="false">
+              <el-carousel-item v-for="(item,index) in 4" :key="index" style="width: 200px">
+                <img src="../recommend/logo.png"/>
+<!--                <img style="width: 100%;height: 120px" v-bind:src="item.address"/>-->
+              </el-carousel-item>
+            </el-carousel>
+          </div>
+
+          <p>用户编号：<span style="font-size: 30px">{{records.username}}</span></p>
           <p>用户编号：<span>{{records.id}}</span></p>
           <p>会员身份：<span>{{userType}}</span></p>
           <p>诚信等级：<span>{{records.trueness}}</span></p>
         </div>
+
         <div style="margin-top: 20px">
           <el-button type="primary" plain @click="handleDisplay()" class="sayHi" style="margin-left: 40px">打招呼
           </el-button>
@@ -52,7 +65,7 @@
           <p style="width: 50%;float: right">身高：<span>{{records.height}}cm</span></p>
         </div>
         <div style="line-height: 4px">
-          <p style="width: 50%;float: left">年龄：<span>{{records.age}}岁</span></p>
+          <p style="width: 50%;float: left">生日：<span>{{records.birthday}}</span></p>
           <p style="width: 50%;float: right">月薪：<span>{{records.salary}}元</span></p>
         </div>
         <div style="line-height: 4px">
@@ -66,16 +79,15 @@
         </li>
         <div style="line-height: 4px">
           <p style="width: 50%;float: left">年龄：<span>{{selectRequire.leastAge}}~{{selectRequire.oldestAge}}岁</span></p>
-          <p style="width: 50%;float: right">
-            身高：<span>{{selectRequire.shortestHeight}}~{{selectRequire.tallestHeight}}cm</span></p>
+          <p style="width: 50%;float: right">身高：<span>{{selectRequire.shortestHeight}}~{{selectRequire.tallestHeight}}cm</span></p>
         </div>
         <div style="line-height: 4px">
-          <p style="width: 50%;float: left">民族：<span>{{selectRequire.nation}}</span></p>
           <p style="width: 50%;float: right">学历：<span>{{selectRequire.education}}</span></p>
+          <p style="width: 50%;float: left">月收入：<span>{{selectRequire.salary}}</span></p>
         </div>
         <div style="line-height: 4px">
           <p style="width: 50%;float: left">婚姻状况：<span>{{selectRequire.marriage}}</span></p>
-          <p style="width: 50%;float: right">所在地：<span>{{records.address}}</span></p>
+          <p style="width: 50%;float: right">所在地：<span>{{selectRequire.address}}</span></p>
         </div>
       </el-card>
       <el-card style="margin-bottom: 20px" shadow="false">
@@ -114,7 +126,7 @@
       </el-card>
     </div>
 
-    <div style="margin-top: 100px">
+    <div style="margin-top: 100px; width: 100%">
       <el-card shadow="false" style="width: 1600px;margin: 0 auto; border: none">
         <p style="text-align: center">关于我们|联系我们|加入我们|合作伙伴| 意见反馈|安全中心|网站地图 | 帮助中心|精英会员|个人信息保护政策</p>
         <p style="text-align: center">品牌：10年专业婚恋服务 专业：庞大的资深红娘队伍</p>
@@ -135,11 +147,11 @@
     name: 'Check',
     data () {
       return {
+        album: {},
         userState: true,
         chatRoomVisible: false,
         id: '',
-        user: 666, //当前用户
-        activeNames: ['1'],
+        userId: 111, //当前用户
         userType: '普通会员',
         records: {},
         /*form->record how much times that these tags are checked,
@@ -161,7 +173,7 @@
           oldestAge: 30,
           shortestHeight: 175,
           tallestHeight: 185,
-          nation: '汉族',
+          salary: '10000 ~ 20000元',
           education: '本科',
           marriage: '未婚',
           address: '北京朝阳'
@@ -191,6 +203,7 @@
     created () {
       this.id = this.$route.params.id
       this.getData()
+      this.getDateStandard()
       this.getUserLabel()
       this.addCheckHistory()
     },
@@ -201,11 +214,39 @@
           // console.log(res)
           this.records = res.data
           // console.log(url)
+          this.getAlbumPhotos()
           if (this.records.usertype === 0) {
             this.userType = '普通会员'
           } else if (this.records.usertype === 1) {
             this.userType = '高级会员'
           }
+        })
+      },
+      getDateStandard(){
+        let url_1 = `http://localhost:8999/wedding/date_standard/select/${this.id}`
+        axios.get(url_1).then((res) => {
+          // console.log(res)
+          this.selectRequire.leastAge=res.data.agemin
+          this.selectRequire.oldestAge=res.data.agemax;
+          this.selectRequire.shortestHeight=res.data.heightmin;
+          this.selectRequire.tallestHeight=res.data.heightmax;
+          this.selectRequire.salary=res.data.salary;
+          this.selectRequire.education=res.data.education;
+          this.selectRequire.address=res.data.address;
+          if (res.data.marrige === 0) {
+            this.selectRequire.marriage = '未婚'
+          } else if (res.data.marrige === 1) {
+            this.selectRequire.marriage = '有过婚史'
+          }
+          // console.log(url)
+        })
+      },
+      getAlbumPhotos(){
+        let url_album = `http://localhost:8999/wedding/album/select/${this.records.albumid}`
+        axios.get(url_album).then((res) => {
+          // console.log(res)
+          this.album = res.data
+          // console.log(url)
         })
       },
       getUserLabel () {
@@ -227,6 +268,7 @@
       addCheckHistory () {
         let url = 'http://localhost:8999/wedding/checkHistory/add'
         this.checkHistoryform.checkedUserId = this.id
+        this.checkHistoryform.userId = this.userId
         this.$axios.post(url, this.checkHistoryform)
           .then((res) => {
             console.log(res.data)
@@ -256,12 +298,13 @@
 <style scoped>
 
   .simpleInfo {
-    width: 1250px;
+    width: 1200px;
+    height: 400px;
     margin: 0 auto;
   }
 
   .show_detail {
-    width: 1250px;
+    width: 1200px;
     margin: 0 auto;
   }
 
@@ -274,9 +317,9 @@
     justify-content: center;
     align-items: center;
     width: 210px;
-    height: 210px;
+    height: 280px;
     float: left;
-    border: 1px solid #ccc;
+    border: none;
   }
 
   figure img {

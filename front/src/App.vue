@@ -1,7 +1,5 @@
 <template>
-  <div
-    style="display:flex;flex-direction:column;justify-content:space-between;height:100%;"
-  >
+  <div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">
     <div>
       <Myhead v-bind:isLogin="isLogin" @quit="changeLogin"></Myhead>
     </div>

@@ -65,7 +65,7 @@
         name: "Recommend",
         data() {
             return {
-                user: 666,
+                userId: 111,
                 activeIndex: '2',
                 activeTab: '猜你喜欢',
                 preferList: {},
@@ -87,12 +87,13 @@
             Head
         },
         created() {
+            this.userId = this.$route.params.id
             this.getData()
             this.getHottestLabel()
         },
         methods: {
             getData() {
-                let url = `http://localhost:8999/wedding/user/preferList/${this.user}`
+                let url = `http://localhost:8999/wedding/user/preferList/${this.userId}`
                 axios.get(url).then((res) => {
                     // console.log(res)
                     this.preferList = res.data
