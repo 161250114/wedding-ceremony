@@ -1,12 +1,7 @@
-package com.nju.wedding.controller;
+package com.wedding.rec_search_check.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
-import javax.annotation.Resource;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;

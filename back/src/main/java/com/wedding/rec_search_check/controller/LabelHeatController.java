@@ -1,10 +1,13 @@
-package com.nju.wedding.controller;
+package com.wedding.rec_search_check.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.nju.wedding.model.LabelHeat;
-import com.nju.wedding.model.UserLabel;
-import com.nju.wedding.service.LabelHeatService;
-import org.springframework.web.bind.annotation.*;
+import com.wedding.model.po.LabelHeat;
+import com.wedding.model.po.UserLabel;
+import com.wedding.rec_search_check.service.LabelHeatService;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -48,7 +51,7 @@ public class LabelHeatController {
      */
     @RequestMapping("addHeat")
     public String addHeat(@RequestBody UserLabel userLabel){
-        System.out.println(userLabel.toString());
+//        System.out.println(userLabel.toString());
         labelHeatService.addHeat(userLabel.getLabel1());
         labelHeatService.addHeat(userLabel.getLabel2());
         labelHeatService.addHeat(userLabel.getLabel3());

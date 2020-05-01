@@ -1,9 +1,9 @@
-package com.nju.wedding.service;
+package com.wedding.rec_search_check.service;
 
 import com.github.pagehelper.PageInfo;
-import com.nju.wedding.model.Search;
-import com.nju.wedding.model.Standard;
-import com.nju.wedding.model.User;
+import com.wedding.model.po.Date_standard;
+import com.wedding.model.po.Search;
+import com.wedding.model.po.User;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public interface UserService {
      * 根据择偶标准查询
      * @return
      */
-    public List<User> selByStandard(Standard standard);
+    public List<User> selByStandard(Date_standard date_standard);
 
     /**
      * 新增

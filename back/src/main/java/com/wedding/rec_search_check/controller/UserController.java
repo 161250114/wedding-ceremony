@@ -1,20 +1,18 @@
-package com.nju.wedding.controller;
+package com.wedding.rec_search_check.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.nju.wedding.model.CheckHistory;
-import com.nju.wedding.model.Search;
-import com.nju.wedding.model.Standard;
-import com.nju.wedding.model.User;
-import com.nju.wedding.service.CheckHistoryService;
-import com.nju.wedding.service.StandardService;
-import com.nju.wedding.service.UserService;
+import com.wedding.model.po.Date_standard;
+import com.wedding.model.po.Search;
+import com.wedding.model.po.User;
+import com.wedding.rec_search_check.service.CheckHistoryService;
+import com.wedding.rec_search_check.service.DateStandardService;
+import com.wedding.rec_search_check.service.UserService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,7 +26,7 @@ public class UserController {
     private CheckHistoryService checkHistoryService;
 
     @Resource
-    private StandardService standardService;
+    private DateStandardService dateStandardService;
 
 //    @RequestMapping("get")
 //    public ChatHistory get(Integer id){
@@ -53,19 +51,19 @@ public class UserController {
     @RequestMapping("preferList/{user_id}")
     public List<User> preferList(@PathVariable Integer user_id){
         //根据用户的择偶要求来推荐，若不够，则放宽要求，只要address，marriage
-        Standard standard = standardService.selByUserId(user_id);
-        List<User> selectedListByStandard = userService.selByStandard(standard);
+        Date_standard date_standard = dateStandardService.selByUserId(user_id);
+        List<User> selectedListByStandard = userService.selByStandard(date_standard);
 //        System.out.println(selectedListByStandard.size());
         if(selectedListByStandard.size()>=8){
             return selectedListByStandard.subList(selectedListByStandard.size()-8,selectedListByStandard.size());
         }
         else {
-            standard.setEducation("");
-            standard.setYoungest(20);
-            standard.setOldest(50);
-            standard.setShortest(0);
-            standard.setTallest(300);
-            selectedListByStandard = userService.selByStandard(standard);
+            date_standard.setEducation("");
+            date_standard.setAgemin(20);
+            date_standard.setAgemax(50);
+            date_standard.setHeightmin(0);
+            date_standard.setHeightmax(300);
+            selectedListByStandard = userService.selByStandard(date_standard);
         }
         return selectedListByStandard;
     }
@@ -87,13 +85,13 @@ public class UserController {
     }
 
     @RequestMapping("queryLabelSearch/{page}&{label}")
-    public PageInfo<User> queryLabelSearch(@PathVariable Integer page,@PathVariable String label){
+    public PageInfo<User> queryLabelSearch(@PathVariable Integer page, @PathVariable String label){
         System.out.println(page);
         return userService.selLabel(page,label);
     }
 
     @RequestMapping("queryDetailSearch/{page}")
-    public PageInfo<User> queryDetailSearch(@PathVariable Integer page,@RequestBody Search search){
+    public PageInfo<User> queryDetailSearch(@PathVariable Integer page, @RequestBody Search search){
         return userService.selDetail(page,search);
     }
 

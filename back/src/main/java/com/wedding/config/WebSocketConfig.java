@@ -1,4 +1,4 @@
-package com.nju.wedding.config;
+package com.wedding.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

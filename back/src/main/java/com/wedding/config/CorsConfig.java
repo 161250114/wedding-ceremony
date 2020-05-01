@@ -1,4 +1,4 @@
-package com.nju.wedding.config;
+package com.wedding.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +27,4 @@ public class CorsConfig {
         source.registerCorsConfiguration("/**", corsConfiguration);
         return new CorsFilter(source);
     }
-
-
 }

@@ -2,19 +2,19 @@ package com.wedding.rec_search_check.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.wedding.mapper.StandardMapper;
-import com.wedding.model.po.Standard;
-import com.wedding.rec_search_check.service.StandardService;
+import com.wedding.mapper.Date_standardMapper;
+import com.wedding.model.po.Date_standard;
+import com.wedding.rec_search_check.service.DateStandardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class StandardServiceImpl implements StandardService {
+public class DateStandardServiceImpl implements DateStandardService {
 
     @Autowired
-    private StandardMapper standardMapper;
+    private Date_standardMapper date_standardMapper;
 
     /**
      * 根据键加载记录
@@ -22,8 +22,8 @@ public class StandardServiceImpl implements StandardService {
      * @return
      */
     @Override
-    public Standard selById(Integer id) {
-        return standardMapper.selectByPrimaryKey(id);
+    public Date_standard selById(Integer id) {
+        return date_standardMapper.selectByPrimaryKey(id);
     }
 
     /**
@@ -32,8 +32,8 @@ public class StandardServiceImpl implements StandardService {
      * @return
      */
     @Override
-    public Standard selByUserId(Integer user_id) {
-        return standardMapper.selectByUserId(user_id);
+    public Date_standard selByUserId(Integer user_id) {
+        return date_standardMapper.selectByUserId(user_id);
     }
 
     /**
@@ -41,17 +41,17 @@ public class StandardServiceImpl implements StandardService {
      * @return
      */
     @Override
-    public List<Standard> selAll() {
-        return standardMapper.selectAll();
+    public List<Date_standard> selAll() {
+        return date_standardMapper.selectAll();
     }
 
     /**
      * 新增
-     * @param standard
+     * @param date_standard
      */
     @Override
-    public void add(Standard standard) {
-        standardMapper.insert(standard);
+    public void add(Date_standard date_standard) {
+        date_standardMapper.insert(date_standard);
     }
 
     /**
@@ -60,16 +60,16 @@ public class StandardServiceImpl implements StandardService {
      */
     @Override
     public void del(Integer id) {
-        standardMapper.deleteByPrimaryKey(id);
+        date_standardMapper.deleteByPrimaryKey(id);
     }
 
     /**
      * 修改
-     * @param standard
+     * @param date_standard
      */
     @Override
-    public void update(Standard standard) {
-        standardMapper.updateByPrimaryKey(standard);
+    public void update(Date_standard date_standard) {
+        date_standardMapper.updateByPrimaryKey(date_standard);
     }
 
     /**
@@ -78,12 +78,12 @@ public class StandardServiceImpl implements StandardService {
      * @return
      */
     @Override
-    public PageInfo<Standard> selAll(Integer currPage) {
+    public PageInfo<Date_standard> selAll(Integer currPage) {
         if(currPage == null) currPage = 1;
         //设置从第几页开始查询2条
         PageHelper.startPage(currPage,8);
         //分页查询
-        PageInfo<Standard> pageInfo = new PageInfo<>(standardMapper.selectAll());
+        PageInfo<Date_standard> pageInfo = new PageInfo<>(date_standardMapper.selectAll());
         return pageInfo;
     }
 }

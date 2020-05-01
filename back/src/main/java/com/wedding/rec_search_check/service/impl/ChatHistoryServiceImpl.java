@@ -1,10 +1,9 @@
-package com.wedding.rec_search_check.impl;
+package com.wedding.rec_search_check.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
-import com.wedding.rec_search_check.mapper.ChatHistoryMapper;
-import com.wedding.rec_search_check.model.ChatHistory;
+import com.wedding.mapper.ChatHistoryMapper;
+import com.wedding.model.po.ChatHistory;
 import com.wedding.rec_search_check.service.ChatHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +32,7 @@ public class ChatHistoryServiceImpl implements ChatHistoryService {
      * @return
      */
     @Override
-    public ChatHistory selByUserId(Integer user_id) {
+    public List<ChatHistory> selByUserId(Integer user_id) {
         return chatHistoryMapper.selectByUserId(user_id);
     }
 

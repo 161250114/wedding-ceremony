@@ -1,10 +1,9 @@
-package com.wedding.rec_search_check.impl;
+package com.wedding.rec_search_check.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
-import com.wedding.rec_search_check.mapper.LabelHeatMapper;
-import com.wedding.rec_search_check.model.LabelHeat;
+import com.wedding.mapper.LabelHeatMapper;
+import com.wedding.model.po.LabelHeat;
 import com.wedding.rec_search_check.service.LabelHeatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

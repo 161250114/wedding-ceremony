@@ -1,8 +1,7 @@
-package com.nju.wedding.service;
+package com.wedding.rec_search_check.service;
 
 import com.github.pagehelper.PageInfo;
-import com.nju.wedding.model.LabelHeat;
-import com.nju.wedding.model.UserLabel;
+import com.wedding.model.po.LabelHeat;
 
 import java.util.List;
 

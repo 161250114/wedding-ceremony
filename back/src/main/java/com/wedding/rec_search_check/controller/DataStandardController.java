@@ -1,8 +1,8 @@
 package com.wedding.rec_search_check.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.wedding.model.po.Standard;
-import com.wedding.rec_search_check.service.StandardService;
+import com.wedding.model.po.Date_standard;
+import com.wedding.rec_search_check.service.DateStandardService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,11 +12,11 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-@RequestMapping("/standard")
-public class StandardController {
+@RequestMapping("/data_standard")
+public class DataStandardController {
 
     @Resource
-    private StandardService standardService;
+    private DateStandardService dateStandardService;
 
 //    @RequestMapping("get")
 //    public ChatHistory get(Integer id){
@@ -29,33 +29,33 @@ public class StandardController {
      * @return
      */
     @RequestMapping("get/{id}")
-    public Standard load(@PathVariable Integer id){
-        return standardService.selById(id);
+    public Date_standard load(@PathVariable Integer id){
+        return dateStandardService.selById(id);
     }
 
     @RequestMapping("select/{user_id}")
-    public Standard select(@PathVariable Integer user_id){
-        return standardService.selByUserId(user_id);
+    public Date_standard select(@PathVariable Integer user_id){
+        return dateStandardService.selByUserId(user_id);
     }
 
     @RequestMapping("list")
-    public List<Standard> list(){
-        return standardService.selAll();
+    public List<Date_standard> list(){
+        return dateStandardService.selAll();
     }
 
     @RequestMapping("query/{page}")
-    public PageInfo<Standard> query(@PathVariable Integer page){
-        return standardService.selAll(page);
+    public PageInfo<Date_standard> query(@PathVariable Integer page){
+        return dateStandardService.selAll(page);
     }
 
     /**
      * 新增
-     * @param standard
+     * @param date_standard
      * @return
      */
     @RequestMapping("add")
-    public String add(@RequestBody Standard standard){
-        standardService.add(standard);
+    public String add(@RequestBody Date_standard date_standard){
+        dateStandardService.add(date_standard);
         return "succ";
     }
 }

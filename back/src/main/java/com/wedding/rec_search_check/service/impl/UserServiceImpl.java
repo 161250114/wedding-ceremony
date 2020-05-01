@@ -1,11 +1,11 @@
-package com.wedding.rec_search_check.impl;
+package com.wedding.rec_search_check.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.wedding.rec_search_check.mapper.UserMapper;
-import com.wedding.rec_search_check.model.Search;
-import com.wedding.rec_search_check.model.Standard;
-import com.wedding.rec_search_check.model.User;
+import com.wedding.mapper.UserMapper;
+import com.wedding.model.po.Date_standard;
+import com.wedding.model.po.Search;
+import com.wedding.model.po.User;
 import com.wedding.rec_search_check.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,8 +61,8 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public List<User> selByStandard(Standard standard) {
-        return userMapper.selectByStandard(standard);
+    public List<User> selByStandard(Date_standard date_standard) {
+        return userMapper.selectByStandard(date_standard);
     }
 
     /**

@@ -1,7 +1,8 @@
-package com.nju.wedding.service;
+package com.wedding.rec_search_check.service;
 
 import com.github.pagehelper.PageInfo;
-import com.nju.wedding.model.ChatHistory;
+import com.wedding.model.po.ChatHistory;
+
 import java.util.List;
 
 public interface ChatHistoryService {
@@ -18,7 +19,7 @@ public interface ChatHistoryService {
      * @param user_id
      * @return
      */
-    public ChatHistory selByUserId(Integer user_id);
+    public List<ChatHistory> selByUserId(Integer user_id);
 
     /**
      * 查所有记录

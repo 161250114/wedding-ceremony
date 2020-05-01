@@ -1,7 +1,7 @@
-package com.nju.wedding.service;
+package com.wedding.rec_search_check.service;
 
 import com.github.pagehelper.PageInfo;
-import com.nju.wedding.model.CheckHistory;
+import com.wedding.model.po.CheckHistory;
 
 import java.util.List;
 

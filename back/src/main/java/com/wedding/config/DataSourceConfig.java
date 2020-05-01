@@ -1,4 +1,4 @@
-package com.nju.wedding.config;
+package com.wedding.config;
 
 import com.github.pagehelper.PageInterceptor;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
@@ -29,9 +29,9 @@ import java.util.Properties;
 public class DataSourceConfig {
 
     // 精确到 cluster 目录，以便跟其他数据源隔离
-    static final String PACKAGE = "com.nju.wedding.mapper";
+    static final String PACKAGE = "com.wedding.mapper";
     static final String MAPPER_LOCATION = "classpath:mapper/*.xml";
-    static final String ALIAS = "com.nju.wedding.model";
+    static final String ALIAS = "com.wedding.model.po";
 
     @Value("${spring.datasource.url}")
     private String url;

@@ -13,4 +13,8 @@ public interface LabelHeatMapper {
     List<LabelHeat> selectAll();
 
     int updateByPrimaryKey(LabelHeat record);
+
+    List<LabelHeat> selectHottest();
+
+    int updateByLabel(String label);
 }

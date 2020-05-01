@@ -1,7 +1,8 @@
-package com.nju.wedding.service;
+package com.wedding.rec_search_check.service;
 
 import com.github.pagehelper.PageInfo;
-import com.nju.wedding.model.UserLabel;
+import com.wedding.model.po.UserLabel;
+
 import java.util.List;
 
 public interface UserLabelService {

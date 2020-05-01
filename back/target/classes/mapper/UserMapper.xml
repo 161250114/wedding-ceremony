@@ -7,8 +7,6 @@
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="usertype" jdbcType="TINYINT" property="usertype" />
-    <result column="limit_browse" jdbcType="TINYINT" property="limitBrowse" />
-    <result column="limit_message" jdbcType="TINYINT" property="limitMessage" />
     <result column="fullname" jdbcType="VARCHAR" property="fullname" />
     <result column="sex" jdbcType="TINYINT" property="sex" />
     <result column="birthday" jdbcType="DATE" property="birthday" />
@@ -23,6 +21,8 @@
     <result column="profession" jdbcType="VARCHAR" property="profession" />
     <result column="albumid" jdbcType="INTEGER" property="albumid" />
     <result column="standardid" jdbcType="INTEGER" property="standardid" />
+    <result column="vip_enddate" jdbcType="DATE" property="vipEnddate" />
+    <result column="date_status" jdbcType="TINYINT" property="dateStatus" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user
@@ -30,20 +30,20 @@
   </delete>
   <insert id="insert" parameterType="com.wedding.model.po.User">
     insert into user (id, username, password,
-      phone, usertype, limit_browse,
-      limit_message, fullname, sex,
-      birthday, height, introduction,
-      address, education, marrige,
-      salary, balance, trueness,
-      profession, albumid, standardid
+      phone, usertype, fullname,
+      sex, birthday, height,
+      introduction, address, education,
+      marrige, salary, balance,
+      trueness, profession, albumid,
+      standardid, vip_enddate, date_status
       )
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
-      #{phone,jdbcType=VARCHAR}, #{usertype,jdbcType=TINYINT}, #{limitBrowse,jdbcType=TINYINT},
-      #{limitMessage,jdbcType=TINYINT}, #{fullname,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT},
-      #{birthday,jdbcType=DATE}, #{height,jdbcType=INTEGER}, #{introduction,jdbcType=VARCHAR},
-      #{address,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR}, #{marrige,jdbcType=TINYINT},
-      #{salary,jdbcType=VARCHAR}, #{balance,jdbcType=INTEGER}, #{trueness,jdbcType=INTEGER},
-      #{profession,jdbcType=VARCHAR}, #{albumid,jdbcType=INTEGER}, #{standardid,jdbcType=INTEGER}
+      #{phone,jdbcType=VARCHAR}, #{usertype,jdbcType=TINYINT}, #{fullname,jdbcType=VARCHAR},
+      #{sex,jdbcType=TINYINT}, #{birthday,jdbcType=DATE}, #{height,jdbcType=INTEGER},
+      #{introduction,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR},
+      #{marrige,jdbcType=TINYINT}, #{salary,jdbcType=VARCHAR}, #{balance,jdbcType=INTEGER},
+      #{trueness,jdbcType=INTEGER}, #{profession,jdbcType=VARCHAR}, #{albumid,jdbcType=INTEGER},
+      #{standardid,jdbcType=INTEGER}, #{vipEnddate,jdbcType=DATE}, #{dateStatus,jdbcType=TINYINT}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.User">
@@ -52,8 +52,6 @@
       password = #{password,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       usertype = #{usertype,jdbcType=TINYINT},
-      limit_browse = #{limitBrowse,jdbcType=TINYINT},
-      limit_message = #{limitMessage,jdbcType=TINYINT},
       fullname = #{fullname,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=TINYINT},
       birthday = #{birthday,jdbcType=DATE},
@@ -67,34 +65,69 @@
       trueness = #{trueness,jdbcType=INTEGER},
       profession = #{profession,jdbcType=VARCHAR},
       albumid = #{albumid,jdbcType=INTEGER},
-      standardid = #{standardid,jdbcType=INTEGER}
+      standardid = #{standardid,jdbcType=INTEGER},
+      vip_enddate = #{vipEnddate,jdbcType=DATE},
+      date_status = #{dateStatus,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, username, password, phone, usertype, limit_browse, limit_message, fullname,
-    sex, birthday, height, introduction, address, education, marrige, salary, balance,
-    trueness, profession, albumid, standardid
+    select id, username, password, phone, usertype, fullname, sex, birthday, height,
+    introduction, address, education, marrige, salary, balance, trueness, profession,
+    albumid, standardid, vip_enddate, date_status
     from user
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, username, password, phone, usertype, limit_browse, limit_message, fullname,
-    sex, birthday, height, introduction, address, education, marrige, salary, balance,
-    trueness, profession, albumid, standardid
+    select id, username, password, phone, usertype, fullname, sex, birthday, height,
+    introduction, address, education, marrige, salary, balance, trueness, profession,
+    albumid, standardid, vip_enddate, date_status
     from user
   </select>
   <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select id, username, password, phone, usertype, limit_browse, limit_message, fullname,
-    sex, birthday, height, introduction, address, education, marrige, salary, balance,
-    trueness, profession, albumid, standardid
+    select id, username, password, phone, usertype, fullname, sex, birthday, height,
+    introduction, address, education, marrige, salary, balance, trueness, profession,
+    albumid, standardid, vip_enddate, date_status
     from user
     where username = #{username,jdbcType=VARCHAR}
   </select>
   <select id="selectByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select id, username, password, phone, usertype, limit_browse, limit_message, fullname,
-    sex, birthday, height, introduction, address, education, marrige, salary, balance,
-    trueness, profession, albumid, standardid
+    select id, username, password, phone, usertype, fullname, sex, birthday, height,
+    introduction, address, education, marrige, salary, balance, trueness, profession,
+    albumid, standardid, vip_enddate, date_status
     from user
     where phone = #{phone,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByLabel" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select user.id, username, password, phone, usertype, fullname,
+    sex, birthday, height, introduction, address, education, marrige, salary, balance,
+    trueness, profession, albumid, standardid, vip_enddate, date_status
+    from user INNER JOIN user_label ON user.id = user_label.user_id
+    where label_1 = #{label,jdbcType=VARCHAR} or label_2 = #{label,jdbcType=VARCHAR} or label_3 = #{label,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByDetail" parameterType="com.wedding.model.po.Search" resultMap="BaseResultMap">
+    select id, username, password, phone, usertype, fullname, sex, birthday, height,
+    introduction, address, education, marrige, salary, balance, trueness, profession,
+    albumid, standardid, vip_enddate, date_status
+    from user
+    where sex = #{sex}
+        and age between #{youngest} and #{oldest}
+        and height between #{shortest} and #{tallest}
+        and salary between #{lowest} and #{highest}
+        and education = #{education}
+        and profession = #{profession}
+        and marrige = #{marrige}
+        and address like #{address}
+  </select>
+  <select id="selectByStandard" parameterType="com.wedding.model.po.Date_standard" resultMap="BaseResultMap">
+    select id, username, password, phone, usertype, fullname, sex, birthday, height,
+    introduction, address, education, marrige, salary, balance, trueness, profession,
+    albumid, standardid, vip_enddate, date_status
+    from user
+    where age between #{youngest} and #{oldest}
+        and sex = #{sex}
+        and height between #{shortest} and #{tallest}
+        and education like concat('%',#{education},'%')
+        and marrige = #{marriage}
+        and address like concat('%',#{address},'%')
   </select>
 </mapper>

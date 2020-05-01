@@ -1,12 +1,10 @@
-package com.nju.wedding.controller;
+package com.wedding.rec_search_check.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.nju.wedding.model.ChatHistory;
-import com.nju.wedding.service.ChatHistoryService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.wedding.model.po.ChatHistory;
+import com.wedding.rec_search_check.service.ChatHistoryService;
+import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -33,7 +31,7 @@ public class ChatHistoryController {
     }
 
     @RequestMapping("select/{user_id}")
-    public ChatHistory select(@PathVariable Integer user_id){
+    public List<ChatHistory> select(@PathVariable Integer user_id){
         return chatHistoryService.selByUserId(user_id);
     }
 

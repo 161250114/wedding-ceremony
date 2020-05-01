@@ -1,9 +1,9 @@
-package com.wedding.rec_search_check.impl;
+package com.wedding.rec_search_check.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.wedding.rec_search_check.mapper.CheckHistoryMapper;
-import com.wedding.rec_search_check.model.CheckHistory;
+import com.wedding.mapper.CheckHistoryMapper;
+import com.wedding.model.po.CheckHistory;
 import com.wedding.rec_search_check.service.CheckHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.nju.wedding.util;
+package com.wedding.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConnDB {
 
-    private static String url = "jdbc:mysql://localhost:3306/graduation?useUnicode=true&characterEncoding=utf8";
+    private static String url = "jdbc:mysql://localhost:3306/wedding?useUnicode=true&characterEncoding=utf8";
 
     private static String username = "root";
 

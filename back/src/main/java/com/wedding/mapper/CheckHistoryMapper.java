@@ -13,4 +13,6 @@ public interface CheckHistoryMapper {
     List<CheckHistory> selectAll();
 
     int updateByPrimaryKey(CheckHistory record);
+
+    List<CheckHistory> selectByUserId(Integer user_id);
 }
