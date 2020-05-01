@@ -21,7 +21,7 @@
                        @click="handleIDSearch(idInputSearch)"></i>
                 </el-input>
             </div>
-            <ul style="width: 100%">
+            <ul>
                 <li style="margin-bottom: 30px; float: left"><strong style="font-weight: bolder">热门标签</strong>
                     <el-tag v-for="(item,index) in hottestLabel" :key="index"
                             @click="handleLabelSearch(item.label)" class="hottestLabel" effect="plain">
@@ -29,8 +29,7 @@
                     </el-tag>
                 </li>
             </ul>
-
-            <ul style="width: 100%">
+            <ul>
                 <li style="margin-bottom: 30px; float: left"><strong style="font-weight: bolder">基本条件</strong>
 
                     <el-select v-model="sex_label" clearable placeholder="性别"
