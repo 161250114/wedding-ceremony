@@ -1,10 +1,16 @@
 <template>
-  <div>
-    <Myhead v-bind:isLogin="isLogin" @quit="changeLogin"></Myhead>
+  <div
+    style="display:flex;flex-direction:column;justify-content:space-between;min-height:100%;"
+  >
+    <div>
+      <Myhead v-bind:isLogin="isLogin" @quit="changeLogin"></Myhead>
+    </div>
     <div id="app">
       <router-view @login="changeLogin" />
     </div>
-    <Myfooter></Myfooter>
+    <div>
+      <Myfooter></Myfooter>
+    </div>
   </div>
 </template>
 
@@ -48,5 +54,11 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+html, body {
+  height: 95%;
+  margin: 0;
+  padding: 0;
 }
 </style>
