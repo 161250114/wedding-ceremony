@@ -19,6 +19,8 @@ public class Date_standard {
 
     private Byte marrige;
 
+    private Integer userid;
+
     public Integer getId() {
         return id;
     }
@@ -89,5 +91,13 @@ public class Date_standard {
 
     public void setMarrige(Byte marrige) {
         this.marrige = marrige;
+    }
+
+    public Integer getUserid() {
+        return userid;
+    }
+
+    public void setUserid(Integer userid) {
+        this.userid = userid;
     }
 }
