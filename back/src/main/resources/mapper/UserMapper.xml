@@ -97,4 +97,37 @@
     from user
     where phone = #{phone,jdbcType=VARCHAR}
   </select>
+  <select id="selectByLabel" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select user.id, username, password, phone, usertype, fullname,
+    sex, birthday, height, introduction, address, education, marrige, salary, balance,
+    trueness, profession, albumid, standardid, vip_enddate, date_status
+    from user INNER JOIN user_label ON user.id = user_label.user_id
+    where label_1 = #{label,jdbcType=VARCHAR} or label_2 = #{label,jdbcType=VARCHAR} or label_3 = #{label,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByDetail" parameterType="com.wedding.model.po.Search" resultMap="BaseResultMap">
+    select id, username, password, phone, usertype, fullname, sex, birthday, height,
+    introduction, address, education, marrige, salary, balance, trueness, profession,
+    albumid, standardid, vip_enddate, date_status
+    from user
+    where sex = #{sex}
+        and age between #{youngest} and #{oldest}
+        and height between #{shortest} and #{tallest}
+        and salary between #{lowest} and #{highest}
+        and education = #{education}
+        and profession = #{profession}
+        and marrige = #{marrige}
+        and address like #{address}
+  </select>
+  <select id="selectByStandard" parameterType="com.wedding.model.po.Date_standard" resultMap="BaseResultMap">
+    select id, username, password, phone, usertype, fullname, sex, birthday, height,
+    introduction, address, education, marrige, salary, balance, trueness, profession,
+    albumid, standardid, vip_enddate, date_status
+    from user
+    where age between #{youngest} and #{oldest}
+        and sex = #{sex}
+        and height between #{shortest} and #{tallest}
+        and education like concat('%',#{education},'%')
+        and marrige = #{marriage}
+        and address like concat('%',#{address},'%')
+  </select>
 </mapper>
