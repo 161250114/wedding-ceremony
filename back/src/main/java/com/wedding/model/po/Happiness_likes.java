@@ -11,6 +11,15 @@ public class Happiness_likes {
         return id;
     }
 
+    public Happiness_likes() {
+    }
+
+    public Happiness_likes(Integer id, Integer happinessId, Integer likeId) {
+        this.id = id;
+        this.happinessId = happinessId;
+        this.likeId = likeId;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }

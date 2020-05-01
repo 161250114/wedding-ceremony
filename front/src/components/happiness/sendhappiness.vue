@@ -18,6 +18,7 @@
       :on-remove="handleRemove"
       :on-success="handleSuccess"
       :before-upload="addP"
+      :on-error="handleError"
     >
       <i class="el-icon-plus"
          v-if="this.pnumber-this.dnumber<10"></i>
@@ -44,6 +45,7 @@
           photolist:[],
           dialogImageUrl: '',
           dialogVisible: false,
+          onpro:false,
           happiness:{
             id:0,
             senderId:1,
@@ -59,18 +61,25 @@
       methods:{
         handleRemove(file,filelist) {
           this.dnumber++;
-        }
-      ,
+        },
+        handleError(err,file,filelist){
+          this.$alert("部分文件上传失败！", '提示', {
+            confirmButtonText: '确定',
+          });
+          this.onpro=false;
+        },
         handlePictureCardPreview(file) {
           this.dialogImageUrl = file.url;
           this.dialogVisible = true;
         },
         handleSuccess(response, file, fileList){
+          this.onpro=false;
           this.getBase64(file.raw).then(res => {
             this.photolist.push(res)
           });
         },
         addP(file){
+          this.onpro=true;
           this.pnumber++;
           if(this.pnumber-this.dnumber==10){
             this.$alert("至多只能上传九张照片！", '提示', {
@@ -99,6 +108,12 @@
         send(){
           let app=this
           console.log(app.photolist)
+          if(app.onpro){
+            this.$alert("还有文件正在上传！", '提示', {
+              confirmButtonText: '确定',
+            });
+            return
+          }
           axios.get('/happiness/getId')
             .then(function(res){
               console.log(res)
