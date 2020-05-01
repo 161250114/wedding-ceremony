@@ -145,6 +145,7 @@
 <style scoped>
     .el-carousel {
         margin-bottom: 20px;
+        margin-top: 20px;
     }
 
     .recommend {
@@ -152,15 +153,6 @@
         text-align: center;
         margin: 0 auto;
     }
-
-    /*.el-carousel__item h3 {*/
-    /*    color: #475669;*/
-    /*    font-size: 20px;*/
-    /*    opacity: 0.75;*/
-    /*    line-height: 150px;*/
-    /*    margin : 0 auto;*/
-    /*    vertical-align: middle;*/
-    /*}*/
 
     .el-carousel__item:nth-child(2n) {
         background-color: #99a9bf;
