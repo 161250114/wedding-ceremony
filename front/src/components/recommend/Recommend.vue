@@ -7,7 +7,7 @@
             </div>
         </el-backtop>
 
-        <Head :index="activeIndex"></Head>
+<!--        <Head :index="activeIndex"></Head>-->
 
         <div class="recommend">
             <el-carousel height="300px" class="el-carousel">
@@ -110,8 +110,14 @@
             handleClick(tab, event) {
                 // console.log(event.target.getAttribute('id'))
                 if (event.target.getAttribute('id') === "tab-猜你喜欢") {
-                    console.log('aa')
-                } else {
+                  let url = `http://localhost:8999/wedding/user/preferList/${this.user}`
+                  axios.get(url).then((res) => {
+                    // console.log(res)
+                    this.preferList = res.data
+                    // console.log(url)
+                  })
+                }
+                else {
                     var label = event.target.getAttribute('id').substr(4)
 
                     let url = `http://localhost:8999/wedding/user/label_search/${label}`

@@ -7,7 +7,7 @@
             </div>
         </el-backtop>
 
-        <Head :index="activeIndex"></Head>
+<!--        <Head :index="activeIndex"></Head>-->
 
         <el-card class="box-card">
             <div slot="header" style="height: 40px; vertical-align: middle">
@@ -21,16 +21,17 @@
                        @click="handleIDSearch(idInputSearch)"></i>
                 </el-input>
             </div>
-            <ul>
-                <li style="margin-bottom: 30px"><strong style="font-weight: bolder">热门标签</strong>
+            <ul style="width: 100%">
+                <li style="margin-bottom: 30px; float: left"><strong style="font-weight: bolder">热门标签</strong>
                     <el-tag v-for="(item,index) in hottestLabel" :key="index"
                             @click="handleLabelSearch(item.label)" class="hottestLabel" effect="plain">
                         {{item.label}}
                     </el-tag>
                 </li>
             </ul>
-            <ul>
-                <li style="margin-bottom: 30px"><strong style="font-weight: bolder">基本条件</strong>
+
+            <ul style="width: 100%">
+                <li style="margin-bottom: 30px; float: left"><strong style="font-weight: bolder">基本条件</strong>
 
                     <el-select v-model="sex_label" clearable placeholder="性别"
                                style="margin-left: 20px; width: 80px" @change="changeLocationValue_sex">
@@ -91,7 +92,7 @@
             </ul>
 
             <ul>
-                <li style="margin-bottom: 20px"><strong style="font-weight: bolder">高级搜索</strong>
+                <li style="margin-bottom: 20px; float: left"><strong style="font-weight: bolder">高级搜索</strong>
 
                     <el-select v-model="education_label" clearable placeholder="学历"
                                style="margin-left: 20px; width: 145px" @change="changeLocationValue_education">
