@@ -7,7 +7,7 @@
             </div>
         </el-backtop>
 
-        <Head :index="activeIndex"></Head>
+<!--        <Head :index="activeIndex"></Head>-->
 
         <div class="recommend">
             <el-carousel height="300px" class="el-carousel">
@@ -65,7 +65,7 @@
         name: "Recommend",
         data() {
             return {
-                user: 666,
+                userId: 111,
                 activeIndex: '2',
                 activeTab: '猜你喜欢',
                 preferList: {},
@@ -87,12 +87,13 @@
             Head
         },
         created() {
+            this.userId = this.$route.params.id
             this.getData()
             this.getHottestLabel()
         },
         methods: {
             getData() {
-                let url = `http://localhost:8999/wedding/user/preferList/${this.user}`
+                let url = `http://localhost:8999/wedding/user/preferList/${this.userId}`
                 axios.get(url).then((res) => {
                     // console.log(res)
                     this.preferList = res.data
@@ -110,8 +111,14 @@
             handleClick(tab, event) {
                 // console.log(event.target.getAttribute('id'))
                 if (event.target.getAttribute('id') === "tab-猜你喜欢") {
-                    console.log('aa')
-                } else {
+                  let url = `http://localhost:8999/wedding/user/preferList/${this.user}`
+                  axios.get(url).then((res) => {
+                    // console.log(res)
+                    this.preferList = res.data
+                    // console.log(url)
+                  })
+                }
+                else {
                     var label = event.target.getAttribute('id').substr(4)
 
                     let url = `http://localhost:8999/wedding/user/label_search/${label}`
@@ -139,6 +146,7 @@
 <style scoped>
     .el-carousel {
         margin-bottom: 20px;
+        margin-top: 20px;
     }
 
     .recommend {
@@ -146,15 +154,6 @@
         text-align: center;
         margin: 0 auto;
     }
-
-    /*.el-carousel__item h3 {*/
-    /*    color: #475669;*/
-    /*    font-size: 20px;*/
-    /*    opacity: 0.75;*/
-    /*    line-height: 150px;*/
-    /*    margin : 0 auto;*/
-    /*    vertical-align: middle;*/
-    /*}*/
 
     .el-carousel__item:nth-child(2n) {
         background-color: #99a9bf;

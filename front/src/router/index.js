@@ -11,6 +11,11 @@ import PersonalInfo from '@/components/personalInfo/personalInfo'
 import Wedding from '@/components/wedding/wedding'
 import WeddingRecord from '@/components/wedding/weddingrecord'
 import ConsultList from '@/components/consult/consultlist'
+import ChatRoom from "../components/chatRoom/ChatRoom"
+import Check from "../components/check/Check"
+import Recommend from "../components/recommend/Recommend"
+import Search from "../components/search/Search"
+
 Vue.use(Router)
 
 export default new Router({
@@ -32,6 +37,22 @@ export default new Router({
     {
       path:'/consult',
       component:Consult
+    },
+    {
+      path: '/search/:id',
+      component: Search
+    },
+    {
+      path: '/recommend/:id',
+      component: Recommend
+    },
+    {
+      path: '/check/:id',
+      component: Check
+    },
+    {
+      path: '/chatRoom',
+      component: ChatRoom
     },
     {
       path:'/sendhappiness',

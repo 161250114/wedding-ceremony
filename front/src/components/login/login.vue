@@ -19,7 +19,7 @@
               <el-input v-model="userinfo.uname_phone"></el-input>
             </el-form-item>
             <el-form-item label="密码：">
-              <el-input v-model="userinfo.password"></el-input>
+              <el-input v-model="userinfo.password" show-password></el-input>
               <el-button type="text" style="float:right;" size="small"
                 >忘记密码</el-button
               >

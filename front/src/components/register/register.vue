@@ -52,6 +52,7 @@
             <el-col :span="15"
               ><el-form-item label="密码:">
                 <el-input
+                  show-password
                   prefix-icon="el-icon-postcard"
                   placeholder="不超过15个字符"
                   v-model="userInfo.password"
@@ -62,6 +63,7 @@
             <el-col :span="15"
               ><el-form-item label="确认密码:">
                 <el-input
+                  show-password
                   prefix-icon="el-icon-postcard"
                   placeholder="重复密码"
                   v-model="password2"
