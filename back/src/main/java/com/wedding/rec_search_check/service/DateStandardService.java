@@ -15,10 +15,10 @@ public interface DateStandardService {
 
     /**
      * 根据用户id加载记录
-     * @param user_id
+     * @param userid
      * @return
      */
-    public Date_standard selByUserId(Integer user_id);
+    public Date_standard selByUserId(Integer userid);
 
     /**
      * 查所有记录

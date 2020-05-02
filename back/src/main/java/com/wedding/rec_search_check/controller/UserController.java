@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -40,6 +43,7 @@ public class UserController {
      */
     @RequestMapping("get/{id}")
     public User load(@PathVariable Integer id){
+        System.out.println("successful");
         return userService.selById(id);
     }
 
@@ -51,11 +55,43 @@ public class UserController {
     @RequestMapping("preferList/{user_id}")
     public List<User> preferList(@PathVariable Integer user_id){
         User currentUser = userService.selById(user_id);
+        //获取当前年份
+        Calendar cal=Calendar.getInstance();
+        int year=cal.get(Calendar.YEAR);
+
         //根据用户的择偶要求来推荐，若不够，则放宽要求，只要address，marriage
         Date_standard date_standard = dateStandardService.selByUserId(user_id);
-        List<User> selectedListByStandard = userService.selByStandard(date_standard);
-        for(int i=0;i<selectedListByStandard.size();i++){
+        List<User> selectedListByStandard = null;
+        if(date_standard.getMarrige()==3){//婚姻状况不限
+            date_standard.setMarrige((byte) 0);
+            List<User> selectedListByStandard_1 = userService.selByStandard(date_standard);
+            selectedListByStandard.addAll(selectedListByStandard_1);
+            date_standard.setMarrige((byte) 1);
+            List<User> selectedListByStandard_2 = userService.selByStandard(date_standard);
+            selectedListByStandard.addAll(selectedListByStandard_2);
+            date_standard.setMarrige((byte) 2);
+            List<User> selectedListByStandard_3 = userService.selByStandard(date_standard);
+            selectedListByStandard.addAll(selectedListByStandard_3);
+        }
+        else {
+            selectedListByStandard = userService.selByStandard(date_standard);
+        }
+
+        for(int i=0;i<selectedListByStandard.size();i++){//性别相反
             if(selectedListByStandard.get(i).getSex()== currentUser.getSex()){
+                selectedListByStandard.remove(i);
+                i--;
+            }
+        }
+
+        for(int i=0;i<selectedListByStandard.size();i++){//年龄在范围之内
+            //获取用户出生年份
+            Date birthday= selectedListByStandard.get(i).getBirthday();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss aa");
+            String birth_year=sdf.format(birthday).substring(0,4);
+            //得到年龄
+            int age = year-Integer.parseInt(birth_year);
+            if(age<date_standard.getAgemin()||age>date_standard.getAgemax()){
                 selectedListByStandard.remove(i);
                 i--;
             }
@@ -65,15 +101,43 @@ public class UserController {
             return selectedListByStandard.subList(selectedListByStandard.size()-8,selectedListByStandard.size());
         }
         else {
+            //扩大范围
             date_standard.setEducation("");
             date_standard.setAgemin(20);
             date_standard.setAgemax(50);
             date_standard.setHeightmin(0);
             date_standard.setHeightmax(300);
-            selectedListByStandard = userService.selByStandard(date_standard);
+
+            if(date_standard.getMarrige()==3){//婚姻状况不限
+                date_standard.setMarrige((byte) 0);
+                List<User> selectedListByStandard_1 = userService.selByStandard(date_standard);
+                selectedListByStandard.addAll(selectedListByStandard_1);
+                date_standard.setMarrige((byte) 1);
+                List<User> selectedListByStandard_2 = userService.selByStandard(date_standard);
+                selectedListByStandard.addAll(selectedListByStandard_2);
+                date_standard.setMarrige((byte) 2);
+                List<User> selectedListByStandard_3 = userService.selByStandard(date_standard);
+                selectedListByStandard.addAll(selectedListByStandard_3);
+            }
+            else {
+                selectedListByStandard = userService.selByStandard(date_standard);
+            }
 
             for(int i=0;i<selectedListByStandard.size();i++){
                 if(selectedListByStandard.get(i).getSex()== currentUser.getSex()){
+                    selectedListByStandard.remove(i);
+                    i--;
+                }
+            }
+
+            for(int i=0;i<selectedListByStandard.size();i++){//年龄在范围之内
+                //获取用户出生年份
+                Date birthday= selectedListByStandard.get(i).getBirthday();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss aa");
+                String birth_year=sdf.format(birthday).substring(0,4);
+                //得到年龄
+                int age = year-Integer.parseInt(birth_year);
+                if(age<date_standard.getAgemin()||age>date_standard.getAgemax()){
                     selectedListByStandard.remove(i);
                     i--;
                 }
@@ -97,7 +161,40 @@ public class UserController {
 
     @RequestMapping("detail_search")
     public List<User> detailSearch(@RequestBody Search search){
-        return userService.selByDetail(search);
+        //获取当前年份
+        Calendar cal=Calendar.getInstance();
+        int year=cal.get(Calendar.YEAR);
+
+        List<User> selectedListByDetail = null;
+        if(search.getMarrige()==3){//婚姻状况不限
+            search.setMarrige(0);
+            List<User> selectedListByDetail_1 = userService.selByDetail(search);
+            selectedListByDetail.addAll(selectedListByDetail_1);
+            search.setMarrige(1);
+            List<User> selectedListByDetail_2 = userService.selByDetail(search);
+            selectedListByDetail.addAll(selectedListByDetail_2);
+            search.setMarrige(2);
+            List<User> selectedListByDetail_3 = userService.selByDetail(search);
+            selectedListByDetail.addAll(selectedListByDetail_3);
+        }
+        else {
+            selectedListByDetail = userService.selByDetail(search);
+        }
+
+        for(int i=0;i<selectedListByDetail.size();i++){//年龄在范围之内
+            //获取用户出生年份
+            Date birthday= selectedListByDetail.get(i).getBirthday();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss aa");
+            String birth_year=sdf.format(birthday).substring(0,4);
+            //得到年龄
+            int age = year-Integer.parseInt(birth_year);
+
+            if(age<search.getYoungest()||age>search.getOldest()){
+                selectedListByDetail.remove(i);
+                i--;
+            }
+        }
+        return selectedListByDetail;
     }
 
     @RequestMapping("query/{page}")

@@ -7,8 +7,6 @@
             </div>
         </el-backtop>
 
-<!--        <Head :index="activeIndex"></Head>-->
-
         <div class="recommend">
             <el-carousel height="300px" class="el-carousel">
                 <el-carousel-item v-for="(item,index) in carouselList" :key="index">
@@ -55,7 +53,6 @@
 </template>
 
 <script>
-    import Head from '../head/Head'
     import axios from 'axios'
     import head_img1 from './sample2.jpg'
     import head_img2 from './sample3.jpg'
@@ -83,34 +80,31 @@
                 }]
             }
         },
-        components: {
-            Head
-        },
         created() {
             this.getData()
             this.getHottestLabel()
         },
         methods: {
             getData() {
-                let url = `http://localhost:8080/user/preferList/${this.userId}`
+                let url = `/user/preferList/${this.userId}`
                 axios.get(url).then((res) => {
-                    // console.log(res)
+                    console.log(res)
                     this.preferList = res.data
-                    // console.log(url)
+                    console.log(url)
                 })
             },
             getHottestLabel() {
-                let url = 'http://localhost:8080/labelHeat/heat_list'
+                let url = '/labelHeat/heat_list'
                 axios.get(url).then((res) => {
-                    // console.log(res)
+                    console.log(res)
                     this.hottestLabel = res.data
-                    // console.log(url)
+                    console.log(url)
                 })
             },
             handleClick(tab, event) {
                 // console.log(event.target.getAttribute('id'))
                 if (event.target.getAttribute('id') === "tab-猜你喜欢") {
-                  let url = `http://localhost:8080/user/preferList/${this.userId}`
+                  let url = `/user/preferList/${this.userId}`
                   axios.get(url).then((res) => {
                     // console.log(res)
                     this.preferList = res.data
@@ -119,7 +113,7 @@
                 }
                 else {
                     var label = event.target.getAttribute('id').substr(4)
-                    let url = `http://localhost:8080/user/label_search/${label}&${this.userId}`
+                    let url = `/user/label_search/${label}&${this.userId}`
                     axios.get(url).then((res) => {
                         // console.log(res)
                         this.userList = res.data

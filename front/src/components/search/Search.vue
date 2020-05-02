@@ -7,8 +7,6 @@
       </div>
     </el-backtop>
 
-<!--            <Head :index="activeIndex"></Head>-->
-
     <div style="margin-top: 20px">
       <el-card class="box-card">
         <div slot="header" style="height: 40px; vertical-align: middle">
@@ -30,6 +28,7 @@
             </el-tag>
           </li>
         </ul>
+
         <ul>
           <li style="margin-bottom: 30px"><strong style="font-weight: bolder">基本条件</strong>
 
@@ -73,7 +72,6 @@
                          :label="item.height_label" :value="item.height_value">
               </el-option>
             </el-select>
-
           </li>
         </ul>
 
@@ -112,7 +110,6 @@
 <!--                         :label="item.salary_label" :value="item.salary_value">-->
 <!--              </el-option>-->
 <!--            </el-select>-->
-
           </li>
         </ul>
 
@@ -154,7 +151,6 @@
 </template>
 
 <script>
-  import Head from '../head/Head'
   import axios from 'axios'
 
   export default {
@@ -172,9 +168,9 @@
           shortest: 0,
           tallest: 300,
           salary: '10000 ~ 20000元',
-          education: '学历不限',
-          profession: '职业不限',
-          marrige: 3
+          education: '',
+          profession: '',
+          marrige: 0
         },
         currentPage: 1,
         pageInfo: {},
@@ -285,7 +281,7 @@
           marrige_value: '选项4',
           marrige_label: '丧偶'
         }],
-        marrige_label: '不限',
+        marrige_label: '未婚',
         sex: [{
           sex_value: '选项1',
           sex_label: '男'
@@ -1117,12 +1113,9 @@
       this.getHottestLabel()
       this.getData()
     },
-    components: {
-      Head
-    },
     methods: {
       getHottestLabel () {//获取热门标签
-        let url = 'http://localhost:8080/labelHeat/heat_list'
+        let url = '/labelHeat/heat_list'
         axios.get(url).then((res) => {
           // console.log(res)
           this.hottestLabel = res.data
@@ -1132,7 +1125,7 @@
       handleLabelSearch (label) {
         this.searchType = 1
         this.currentLabel = label
-        let url = `http://localhost:8080/user/label_search/${label}&${this.userId}`
+        let url = `/user/label_search/${label}&${this.userId}`
         axios.get(url).then((res) => {
           //console.log(res)
           this.userList = res.data
@@ -1142,7 +1135,7 @@
       },
       getLabelSearchData () {//post请求获取分页显示的pageInfo
         this.searchType = 1
-        let url = `http://localhost:8080/user/queryLabelSearch/${this.currentPage}&${this.currentLabel}&${this.userId}`
+        let url = `/user/queryLabelSearch/${this.currentPage}&${this.currentLabel}&${this.userId}`
         // console.log(`d3+${this.currentPage}+${this.currentLabel}`)
         axios.get(url).then((res) => {
           //console.log(res)
@@ -1151,7 +1144,7 @@
         })
       },
       getData () {//post请求获取分页显示的pageInfo
-        let url_1 = `http://localhost:8080/date_standard/select/${this.userId}`
+        let url_1 = `/date_standard/select/${this.userId}`
         axios.get(url_1).then((res) => {
           // console.log(res)
           this.searchForm.address = res.data.address
@@ -1163,7 +1156,7 @@
           this.oldest_label = res.data.agemax
           // console.log(url)
         })
-        let url_2 = `http://localhost:8080/user/get/${this.userId}`
+        let url_2 = `/user/get/${this.userId}`
         axios.get(url_2).then((res) => {
           // console.log(res)
           if(res.data.sex === 0){
@@ -1176,7 +1169,7 @@
           }
           // console.log(url)
         })
-        let url = `http://localhost:8080/user/queryDetailSearch/${this.currentPage}`
+        let url = `/user/queryDetailSearch/${this.currentPage}`
         this.$axios.post(url, this.searchForm).then((res) => {
           // console.log(this.searchForm)
           this.pageInfo = res.data
@@ -1185,7 +1178,7 @@
       },
       handleDetailSearch () {
         this.searchType = 2
-        let url = `http://localhost:8080/user/queryDetailSearch/${this.currentPage}`
+        let url = `/user/queryDetailSearch/${this.currentPage}`
         this.$axios.post(url, this.searchForm).then((res) => {
           // console.log(this.searchForm)
           this.pageInfo = res.data
@@ -1369,7 +1362,7 @@
         if (id === '') {
           this.$message('请输入ID')
         } else {
-          let url = `http://localhost:8080/user/get/${id}`
+          let url = `/user/get/${id}`
           axios.get(url).then((res) => {
             // console.log(res.data)
             if (res.data === '') {

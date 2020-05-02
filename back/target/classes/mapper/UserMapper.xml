@@ -110,12 +110,11 @@
     albumid, standardid, vip_enddate, date_status
     from user
     where sex = #{sex}
-        and age between #{youngest} and #{oldest}
         and height between #{shortest} and #{tallest}
         and salary like concat('%',#{salary},'%')
         and education like concat('%',#{education},'%')
         and profession like concat('%',#{profession},'%')
-        and (marrige = #{marrige} or #{marrige} = 3)
+        and marrige = #{marrige}
         and address like concat('%',#{address},'%')
   </select>
   <select id="selectByStandard" parameterType="com.wedding.model.po.Date_standard" resultMap="BaseResultMap">
@@ -123,11 +122,10 @@
     introduction, address, education, marrige, salary, balance, trueness, profession,
     albumid, standardid, vip_enddate, date_status
     from user
-    where age between #{youngest} and #{oldest}
-        and height between #{shortest} and #{tallest}
+    where height between #{heightmin} and #{heightmax}
         and salary like concat('%',#{salary},'%')
         and education like concat('%',#{education},'%')
-        and (marrige = #{marrige} or #{marrige} = 3)
+        and marrige = #{marrige}
         and address like concat('%',#{address},'%')
   </select>
 </mapper>
