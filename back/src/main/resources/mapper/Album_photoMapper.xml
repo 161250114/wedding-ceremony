@@ -31,6 +31,11 @@
     from album_photo
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByAlbumId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, albumid, address, upload_time, order_number
+    from album_photo
+    where albumid = #{albumid,jdbcType=INTEGER}
+  </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select id, albumid, address, upload_time, order_number
     from album_photo

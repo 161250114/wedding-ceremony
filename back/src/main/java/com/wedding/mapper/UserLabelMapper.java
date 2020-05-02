@@ -14,7 +14,11 @@ public interface UserLabelMapper {
 
     int updateByPrimaryKey(UserLabel record);
 
+<<<<<<< HEAD
     UserLabel selectByUserId(Integer user_id);
+=======
+    List<UserLabel> selectByUserId(Integer user_id);
+>>>>>>> 0c6a6b02f133443f0d976f10236fd737e7cc4ecd
 
     List<UserLabel> selectByLabel(String label);
 }

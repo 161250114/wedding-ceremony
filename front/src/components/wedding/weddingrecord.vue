@@ -1,5 +1,5 @@
 <template>
-  <div style="text-align: center">
+  <div>
     <div style="width: 100%;height: 100px"><el-input style="width: 200px;margin:20px"v-model="input" placeholder="按姓名或编号查询"></el-input><el-button type="primary" @click="search(input)">搜索</el-button></div>
     <el-table
       :data="tableData"

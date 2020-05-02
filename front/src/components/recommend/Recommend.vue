@@ -87,7 +87,6 @@
             Head
         },
         created() {
-            this.userId = this.$route.params.id
             this.getData()
             this.getHottestLabel()
         },
@@ -111,7 +110,7 @@
             handleClick(tab, event) {
                 // console.log(event.target.getAttribute('id'))
                 if (event.target.getAttribute('id') === "tab-猜你喜欢") {
-                  let url = `http://localhost:8999/wedding/user/preferList/${this.user}`
+                  let url = `http://localhost:8999/wedding/user/preferList/${this.userId}`
                   axios.get(url).then((res) => {
                     // console.log(res)
                     this.preferList = res.data

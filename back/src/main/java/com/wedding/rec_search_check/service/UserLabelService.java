@@ -19,7 +19,7 @@ public interface UserLabelService {
      * @param user_id
      * @return
      */
-    public UserLabel selByUserId(Integer user_id);
+    public List<UserLabel> selByUserId(Integer user_id);
 
     /**
      * 根据标签加载符合条件的用户

@@ -100,7 +100,7 @@
 
             <el-select v-model="income_label" clearable placeholder="选择月收入范围"
                        style="margin-left: 15px; margin-right:3px; width: 250px"
-                       @change="changeLocationValue_lowest">
+                       @change="changeLocationValue_salary">
               <el-option v-for="item in salary" :key="item.salary_value"
                          :label="item.salary_label" :value="item.salary_value">
               </el-option>
@@ -171,8 +171,7 @@
           address: '%江苏苏州%',
           shortest: 0,
           tallest: 300,
-          lowest: 0,
-          highest: 1000000,
+          salary: '10000 ~ 20000元',
           education: '本科',
           profession: '教育',
           marrige: 0
@@ -1196,7 +1195,6 @@
       }
     },
     created () {
-      this.userId = this.$route.params.id
       this.getHottestLabel()
       this.getDetailSearchData()
     },
@@ -1369,7 +1367,7 @@
           // console.log(parseInt(obj.salary_label))
         }
       },
-      changeLocationValue_lowest (val) {
+      changeLocationValue_salary (val) {
         //locations是v-for里面的,也是datas里面的值
         let obj = {}
         obj = this.salary.find((item) => {
@@ -1377,26 +1375,26 @@
         })
         // console.log(obj)
         if (obj.salary_label === '收入不限') {
-          this.searchForm.lowest = 0
+          this.searchForm.salary = ''
         } else {
-          this.searchForm.lowest = parseInt(obj.salary_label)
+          this.searchForm.salary = obj.salary_label
           // console.log(parseInt(this.searchForm.lowest))
         }
       },
-      changeLocationValue_highest (val) {
-        //locations是v-for里面的,也是datas里面的值
-        let obj = {}
-        obj = this.salary.find((item) => {
-          return item.salary_value === val
-        })
-        // console.log(obj)
-        if (obj.salary_label === '收入不限') {
-          this.searchForm.highest = 1000000
-        } else {
-          this.searchForm.highest = parseInt(obj.salary_label)
-          // console.log(parseInt(this.searchForm.highest))
-        }
-      },
+      // changeLocationValue_highest (val) {
+      //   //locations是v-for里面的,也是datas里面的值
+      //   let obj = {}
+      //   obj = this.salary.find((item) => {
+      //     return item.salary_value === val
+      //   })
+      //   // console.log(obj)
+      //   if (obj.salary_label === '收入不限') {
+      //     this.searchForm.highest = 1000000
+      //   } else {
+      //     this.searchForm.highest = parseInt(obj.salary_label)
+      //     // console.log(parseInt(this.searchForm.highest))
+      //   }
+      // },
       changeLocationValue_education (val) {
         //locations是v-for里面的,也是datas里面的值
         let obj = {}

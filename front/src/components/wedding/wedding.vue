@@ -1,10 +1,6 @@
 <template>
-<div style="text-align: center;">
-  <div style="width: 100%;height: 100px">
-    <el-input style="width: 200px;margin:20px"v-model="input" placeholder="按姓名或编号查询"></el-input>
-    <el-button type="primary" @click="search(input)">搜索</el-button>
-    <el-button type="primary" @click="showAll()">显示全部</el-button>
-  </div>
+<div>
+  <div style="width: 100%;height: 100px"><el-input style="width: 200px;margin:20px"v-model="input" placeholder="按姓名或编号查询"></el-input><el-button type="primary" @click="search(input)">搜索</el-button></div>
   <el-table
     :data="tableData"
     height="400"
@@ -76,40 +72,6 @@
       data() {
         return {
           input:"",
-          storage:[{
-            id:"100001",
-            name:"卢本伟",
-            phone:"",
-            email:"",
-            total:100,
-            start:"",
-            end:"",
-            location:"777777",
-            detail:"2155",
-            state:0
-          }, {
-            id:"100002",
-            name:"五五开",
-            phone:"",
-            email:"",
-            total:120,
-            start:"",
-            end:"",
-            location:"35325",
-            detail:"2532",
-            state:1
-          }, {
-            id:"100003",
-            name:"pdd",
-            phone:"",
-            email:"",
-            total:200,
-            start:"",
-            end:"",
-            location:"2314",
-            detail:"144345315",
-            state:0
-          }],
           tableData: [{
             id:"100001",
             name:"卢本伟",
@@ -150,9 +112,6 @@
         this.load();
       },
       methods: {
-        showAll(){
-          this.tableData=JSON.parse(JSON.stringify(this.storage))
-        },
         handleClick(row){
         console.log(row.id)
         },
@@ -161,7 +120,6 @@
           axios.get('/wedding/getAll')
             .then(function(res){
               app.tableData=res.data
-              app.storage=JSON.parse(JSON.stringify(res.data))
             })
             .catch(function(err){
               console.log(err);
@@ -204,12 +162,6 @@
           });
         },
       search(input){
-        if(input==""){
-          this.$alert("请输入搜索关键字", '提示', {
-            confirmButtonText: '确定',
-          });
-          return;
-        }
         let app=this
         let table=this.tableData
         let result=new Array();

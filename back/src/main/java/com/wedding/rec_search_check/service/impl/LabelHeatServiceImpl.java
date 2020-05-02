@@ -77,7 +77,7 @@ public class LabelHeatServiceImpl implements LabelHeatService {
      */
     @Override
     public List<LabelHeat> selHottest() {
-        return labelHeatMapper.selectHottest().subList(0,3);
+        return labelHeatMapper.selectHottest().subList(0,4);
     }
 
     /**

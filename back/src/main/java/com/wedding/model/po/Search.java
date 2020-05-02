@@ -15,9 +15,7 @@ public class Search {
 
     private Integer tallest;
 
-    private Integer lowest;
-
-    private Integer highest;
+    private String salary;
 
     private String education;
 
@@ -81,20 +79,12 @@ public class Search {
         this.tallest = tallest;
     }
 
-    public Integer getLowest() {
-        return lowest;
+    public String getSalary() {
+        return salary;
     }
 
-    public void setLowest(Integer lowest) {
-        this.lowest = lowest;
-    }
-
-    public Integer getHighest() {
-        return highest;
-    }
-
-    public void setHighest(Integer highest) {
-        this.highest = highest;
+    public void setSalary(String salary) {
+        this.salary = salary;
     }
 
     public String getEducation() {

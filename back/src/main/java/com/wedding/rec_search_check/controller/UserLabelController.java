@@ -35,7 +35,7 @@ public class UserLabelController {
     }
 
     @RequestMapping("select/{user_id}")
-    public UserLabel select(@PathVariable Integer user_id){
+    public List<UserLabel> select(@PathVariable Integer user_id){
         return userLabelService.selByUserId(user_id);
     }
 
