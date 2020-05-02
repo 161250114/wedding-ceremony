@@ -178,13 +178,14 @@ CREATE TABLE `happiness` (
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `happiness_likes`;
-
 CREATE TABLE `happiness_likes` (
-                                   `id` int(11) NOT NULL,
-                                   `happiness_id` int(11) NOT NULL,
-                                   `like_id` int(11) NOT NULL,
-                                   PRIMARY KEY (`id`)
+                                 `id` int(11) NOT NULL,
+                                 `happiness_id` int(11) NOT NULL,
+                                 `like_id` int(11) NOT NULL,
+                                 `state` int(11) NOT NULL DEFAULT '0',
+                                 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 
 
