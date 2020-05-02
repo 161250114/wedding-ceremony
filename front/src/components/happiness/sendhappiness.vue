@@ -193,6 +193,7 @@
     width:800px;
     height:200px;
     margin:100px 200px;
+    text-align: center;
   }
   .pp{
     width: 800px;

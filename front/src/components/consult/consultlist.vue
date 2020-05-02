@@ -67,7 +67,12 @@
           this.tableData=result
         },
         jump(row){
-          this.$router.push("/consult")
+          this.$router.push({
+            path: './consult',
+            query: {
+              id: row.toid
+            }
+          })
         }
       }
     }
