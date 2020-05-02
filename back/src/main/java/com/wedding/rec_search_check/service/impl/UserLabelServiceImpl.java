@@ -33,7 +33,7 @@ public class UserLabelServiceImpl implements UserLabelService {
      * @return
      */
     @Override
-    public UserLabel selByUserId(Integer user_id) {
+    public List<UserLabel> selByUserId(Integer user_id) {
         return userLabelMapper.selectByUserId(user_id);
     }
 

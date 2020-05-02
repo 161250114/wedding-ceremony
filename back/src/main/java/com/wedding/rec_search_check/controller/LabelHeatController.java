@@ -52,9 +52,7 @@ public class LabelHeatController {
     @RequestMapping("addHeat")
     public String addHeat(@RequestBody UserLabel userLabel){
 //        System.out.println(userLabel.toString());
-        labelHeatService.addHeat(userLabel.getLabel1());
-        labelHeatService.addHeat(userLabel.getLabel2());
-        labelHeatService.addHeat(userLabel.getLabel3());
+        labelHeatService.addHeat(userLabel.getLabel());
 //        System.out.println("succ");
         return "succ";
     }

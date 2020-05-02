@@ -5,32 +5,30 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="happiness_id" property="happinessId" jdbcType="INTEGER" />
     <result column="like_id" property="likeId" jdbcType="INTEGER" />
-    <result column="state" property="state" jdbcType="INTEGER" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from happiness_likes
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wedding.model.po.Happiness_likes" >
-    insert into happiness_likes (id, happiness_id, like_id,state
+    insert into happiness_likes (id, happiness_id, like_id
       )
-    values (#{id,jdbcType=INTEGER}, #{happinessId,jdbcType=INTEGER}, #{likeId,jdbcType=INTEGER},#{state,jdbcType=INTEGER}
+    values (#{id,jdbcType=INTEGER}, #{happinessId,jdbcType=INTEGER}, #{likeId,jdbcType=INTEGER}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Happiness_likes" >
     update happiness_likes
     set happiness_id = #{happinessId,jdbcType=INTEGER},
-      like_id = #{likeId,jdbcType=INTEGER},
-      state = ##{state,jdbcType=INTEGER}
+      like_id = #{likeId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, happiness_id, like_id,state
+    select id, happiness_id, like_id
     from happiness_likes
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, happiness_id, like_id,state
+    select id, happiness_id, like_id
     from happiness_likes
   </select>
 </mapper>

@@ -39,11 +39,11 @@ export default new Router({
       component:Consult
     },
     {
-      path: '/search/:id',
+      path: '/search',
       component: Search
     },
     {
-      path: '/recommend/:id',
+      path: '/recommend',
       component: Recommend
     },
     {

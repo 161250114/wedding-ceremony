@@ -14,38 +14,39 @@
       <ChatRoom></ChatRoom>
     </el-dialog>
 
-    <div style="margin-top: 20px; height: 400px">
+    <div style="margin-top: 20px; height: 350px">
       <el-card class="simpleInfo">
-        <div style="height: 300px; width: 30%;display: inline">
-          <figure>
+        <div style="height: 100%; width: 30%; float: left">
+          <figure style="height: 70%; margin-bottom: 20px">
             <img src="../recommend/girl2.jpg"/>
-<!--            <img v-bind:src="album.get(0).address">-->
+            <!--            <img v-bind:src="album.get(0).address">-->
           </figure>
+
+          <div style="height: 30%">
+            <el-button type="primary" plain @click="handleSayHi()" class="sayHi" style="margin-left: 40px">打招呼
+            </el-button>
+            <el-button type="primary" plain @click="handleChat()" class="sayHi" style="margin-left: 10px" :disabled="userState">发消息
+            </el-button>
+          </div>
         </div>
 
-        <div style="height: 300px">
-
-          <div style="width: 900px">
+        <div style="height: 100%; width: 70%; float: left">
+          <div style="width: 80%">
             <el-carousel height="120px" type="card" autoplay="false">
               <el-carousel-item v-for="(item,index) in 4" :key="index" style="width: 200px">
+                <!--                <el-carousel-item v-for="(item,index) in album" :key="index" style="width: 200px">-->
                 <img src="../recommend/logo.png"/>
-<!--                <img style="width: 100%;height: 120px" v-bind:src="item.address"/>-->
+                <!--                <img style="width: 100%;height: 120px" v-bind:src="item.address"/>-->
+                <!--                </el-carousel-item>-->
               </el-carousel-item>
             </el-carousel>
           </div>
 
-          <p>用户编号：<span style="font-size: 30px">{{records.username}}</span></p>
-          <p>用户编号：<span>{{records.id}}</span></p>
-          <p>会员身份：<span>{{userType}}</span></p>
-          <p>诚信等级：<span>{{records.trueness}}</span></p>
-        </div>
-
-        <div style="margin-top: 20px">
-          <el-button type="primary" plain @click="handleDisplay()" class="sayHi" style="margin-left: 40px">打招呼
-          </el-button>
-          <el-button type="primary" plain @click="handleChat()" class="sayHi" style="margin-left: 10px"
-                     :disabled="userState">发消息
-          </el-button>
+          <div>
+            <p>用户名：<span style="font-size: 30px">{{records.username}}</span></p>
+            <p>用户编号：<span>{{records.id}}</span></p>
+            <p>诚信等级：<span>{{records.trueness}}</span></p>
+          </div>
         </div>
       </el-card>
     </div>
@@ -79,7 +80,8 @@
         </li>
         <div style="line-height: 4px">
           <p style="width: 50%;float: left">年龄：<span>{{selectRequire.leastAge}}~{{selectRequire.oldestAge}}岁</span></p>
-          <p style="width: 50%;float: right">身高：<span>{{selectRequire.shortestHeight}}~{{selectRequire.tallestHeight}}cm</span></p>
+          <p style="width: 50%;float: right">
+            身高：<span>{{selectRequire.shortestHeight}}~{{selectRequire.tallestHeight}}cm</span></p>
         </div>
         <div style="line-height: 4px">
           <p style="width: 50%;float: right">学历：<span>{{selectRequire.education}}</span></p>
@@ -222,17 +224,17 @@
           }
         })
       },
-      getDateStandard(){
+      getDateStandard () {
         let url_1 = `http://localhost:8999/wedding/date_standard/select/${this.id}`
         axios.get(url_1).then((res) => {
           // console.log(res)
-          this.selectRequire.leastAge=res.data.agemin
-          this.selectRequire.oldestAge=res.data.agemax;
-          this.selectRequire.shortestHeight=res.data.heightmin;
-          this.selectRequire.tallestHeight=res.data.heightmax;
-          this.selectRequire.salary=res.data.salary;
-          this.selectRequire.education=res.data.education;
-          this.selectRequire.address=res.data.address;
+          this.selectRequire.leastAge = res.data.agemin
+          this.selectRequire.oldestAge = res.data.agemax
+          this.selectRequire.shortestHeight = res.data.heightmin
+          this.selectRequire.tallestHeight = res.data.heightmax
+          this.selectRequire.salary = res.data.salary
+          this.selectRequire.education = res.data.education
+          this.selectRequire.address = res.data.address
           if (res.data.marrige === 0) {
             this.selectRequire.marriage = '未婚'
           } else if (res.data.marrige === 1) {
@@ -241,7 +243,7 @@
           // console.log(url)
         })
       },
-      getAlbumPhotos(){
+      getAlbumPhotos () {
         let url_album = `http://localhost:8999/wedding/album/select/${this.records.albumid}`
         axios.get(url_album).then((res) => {
           // console.log(res)
@@ -274,8 +276,12 @@
             console.log(res.data)
           })
       },
-      handleDisplay () {
-        this.$message('成功打招呼')
+      handleSayHi () {
+        this.$message({
+          message: '成功打招呼',
+          type: 'success',
+          center: true
+        })
       },
       handleChange (val) {
         console.log(val)
@@ -299,7 +305,7 @@
 
   .simpleInfo {
     width: 1200px;
-    height: 400px;
+    height: 350px;
     margin: 0 auto;
   }
 

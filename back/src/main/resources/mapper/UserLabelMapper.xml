@@ -27,6 +27,16 @@
     from user_label
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, user_id, label
+    from user_label
+    where user_id = #{user_id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByLabel" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, user_id, label
+    from user_label
+    where label = #{label,jdbcType=VARCHAR}
+  </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select id, user_id, label
     from user_label

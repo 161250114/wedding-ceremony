@@ -1,48 +1,48 @@
 <template>
-  <div
-    style="display:flex;flex-direction:column;justify-content:space-between;min-height:100%;border:1px solid;position:absolute;width:100%"
-  >
-    <div id="app">
+  <div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">
+    <div>
       <Myhead v-bind:isLogin="isLogin" @quit="changeLogin"></Myhead>
+    </div>
+    <div id="app">
       <router-view @login="changeLogin" />
     </div>
-    <div id="footer">
+    <div>
       <Myfooter></Myfooter>
     </div>
   </div>
 </template>
 
 <script>
-import Vue from "vue";
-import Myhead from "./components/head/head";
-import Myfooter from "./components/footer/footer";
-import axios from "axios";
+import Vue from 'vue'
+import Myhead from './components/head/head'
+import Myfooter from './components/footer/footer'
+import axios from 'axios'
 
-Vue.prototype.$axios = axios;
-axios.defaults.headers.post["Content-Type"] = "application/json;charset=utf-8";
-axios.defaults.baseURL = "/api";
+Vue.prototype.$axios = axios
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8'
+axios.defaults.baseURL = '/api'
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
     Myhead,
     Myfooter
   },
-  data() {
+  data () {
     return {
       isLogin: false
-    };
-  },
-  methods: {
-    changeLogin(isLogin) {
-      this.isLogin = isLogin;
-      console.log(this.isLogin);
     }
   },
-  created() {
-    console.log("OK");
+  methods: {
+    changeLogin (isLogin) {
+      this.isLogin = isLogin
+      console.log(this.isLogin)
+    }
+  },
+  created () {
+    console.log('OK')
   }
-};
+}
 </script>
 
 <style>
@@ -51,19 +51,12 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  height:100%;
 }
 
-html,
-body {
-  height: 100%;
+html, body {
+  height: 95%;
   margin: 0;
   padding: 0;
-}
-
-#footer {
 }
 </style>

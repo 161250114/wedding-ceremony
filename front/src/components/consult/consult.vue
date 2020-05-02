@@ -25,7 +25,7 @@
       }
       },
       created(){
-        this.load(this.$route.toid);
+        this.load();
       },
       mounted: function () {
         if(this.timer){
@@ -38,7 +38,7 @@
         }
       },
       methods:{
-        load(toid){
+        load(){
           let app=this
           axios.get('/systemmessage/getAll')
             .then(function(res){

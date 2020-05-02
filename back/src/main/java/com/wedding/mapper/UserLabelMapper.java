@@ -13,4 +13,8 @@ public interface UserLabelMapper {
     List<UserLabel> selectAll();
 
     int updateByPrimaryKey(UserLabel record);
+
+    List<UserLabel> selectByUserId(Integer user_id);
+
+    List<UserLabel> selectByLabel(String label);
 }
