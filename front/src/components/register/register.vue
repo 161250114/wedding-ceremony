@@ -50,7 +50,7 @@
           </el-row>
           <el-row>
             <el-col :span="15"
-              ><el-form-item label="密码:">
+              ><el-form-item label="密码:" prop="password">
                 <el-input
                   show-password
                   prefix-icon="el-icon-postcard"
@@ -61,7 +61,7 @@
           </el-row>
           <el-row>
             <el-col :span="15"
-              ><el-form-item label="确认密码:">
+              ><el-form-item label="确认密码:" prop="password2">
                 <el-input
                   show-password
                   prefix-icon="el-icon-postcard"
@@ -72,7 +72,7 @@
           </el-row>
           <el-row>
             <el-col :span="15"
-              ><el-form-item label="手机号:">
+              ><el-form-item label="手机号:" prop="phone">
                 <el-input
                   prefix-icon="el-icon-phone"
                   placeholder="请输入手机号"
@@ -82,10 +82,11 @@
           </el-row>
           <el-row>
             <el-col :span="10"
-              ><el-form-item label="验证码:">
+              ><el-form-item label="验证码:" prop="validateNumber">
                 <el-input
                   prefix-icon="el-icon-message"
                   placeholder="请输入验证码"
+                  v-model="validateNumber"
                 ></el-input> </el-form-item
             ></el-col>
             <el-col :span="1">
@@ -314,6 +315,58 @@ export default {
         }
       }, 1000);
     };
+    var checkPassword = (rule, value, callback) => {
+      if (value == "") {
+        return callback(new Error("密码不能为空"));
+      }
+      setTimeout(() => {
+        if (value.length > 15) {
+          callback(new Error("长度超出范围"));
+        } else {
+          callback();
+        }
+      }, 1000);
+    };
+    var checkPassword2 = (rule, value, callback) => {
+      if (value == "") {
+        return callback(new Error("确认密码不能为空"));
+      }
+      setTimeout(() => {
+        if (value != this.userInfo.password) {
+          callback(new Error("两次密码输入不一致"));
+        } else {
+          callback();
+        }
+      }, 1000);
+    };
+    var checkPhone = (rule, value, callback) => {
+      if (value == "") {
+        return callback(new Error("手机不能为空"));
+      }
+      setTimeout(() => {
+        if (!Number.isInteger(value)) {
+          callback(new Error("请输入数字值"));
+        } else if (value.length != 11) {
+          callback(new Error("手机号长度错误"));
+        } else {
+          callback();
+        }
+      }, 1000);
+    };
+    var checkValidateNumber = (rule, value, callback) => {
+      if (value == "") {
+        return callback(new Error("验证码不能为空"));
+      }
+      setTimeout(() => {
+        if (!Number.isInteger(value)) {
+          callback(new Error("请输入数字值"));
+        } else if (value.length != 4) {
+          callback(new Error("验证码长度错误"));
+        } else {
+          callback();
+        }
+      }, 1000);
+    };
     return {
       active: 0,
       validateButton: {
@@ -322,6 +375,7 @@ export default {
         leftSeconds: 0,
         maxSeconds: 10
       },
+      validateNumber: "",
       validateTimer: null,
       picUrls: [
         "../../../static/registerPic1.png",
@@ -409,7 +463,11 @@ export default {
       ],
       introductionPane: "first",
       rules1: {
-        username: [{ validator: checkUsername, trigger: "blur" }]
+        username: [{ validator: checkUsername, trigger: "blur" }],
+        password: [{ validator: checkPassword, trigger: "blur" }],
+        password2: [{ validator: checkPassword2, trigger: "blur" }],
+        phone: [{ validator: checkPhone, trigger: "blur" }],
+        validateNumber: [{ validator: checkValidateNumber, trigger: "blur" }]
       }
     };
   },
@@ -438,6 +496,9 @@ export default {
     },
     sendKey() {
       let app = this;
+      Axios.post("register/sendValidateNumber", app.userInfo.phone)
+        .then(function(res) {})
+        .catch(function(error) {});
       app.validateButton.active = false;
       app.validateButton.leftSeconds = app.validateButton.maxSeconds;
       app.validateTimer = setInterval(function() {

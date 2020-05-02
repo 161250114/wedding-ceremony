@@ -63,7 +63,4 @@ body {
   margin: 0;
   padding: 0;
 }
-
-#footer {
-}
 </style>

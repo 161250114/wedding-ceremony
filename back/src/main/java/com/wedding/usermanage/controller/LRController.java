@@ -25,15 +25,20 @@ public class LRController {
     @ResponseBody
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public ReturnMessage login(@RequestBody LoginVO loginVO, HttpServletRequest httpServletRequest){
-//        ReturnMessage returnMessage=lrService.login(loginVO);
-//        return returnMessage;
-        MsgUtil.sendMsg("13218051808",httpServletRequest);
-        return new ReturnMessage(true,"ok");
+        ReturnMessage returnMessage=lrService.login(loginVO);
+        return returnMessage;
     }
     @ResponseBody
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public ReturnMessage register(@RequestBody RegisterVO registerVO, HttpServletRequest httpServletRequest){
         ReturnMessage returnMessage=lrService.register(registerVO);
         return returnMessage;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/register/sendValidateNumber",method = RequestMethod.POST)
+    public ReturnMessage register(@RequestBody String phone, HttpServletRequest httpServletRequest){
+        MsgUtil.sendMsg(phone,httpServletRequest);
+        return new ReturnMessage(true,"ok");
     }
 }

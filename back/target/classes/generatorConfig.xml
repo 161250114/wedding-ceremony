@@ -19,7 +19,7 @@
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://localhost:3306/wedding"
                         userId="root"
-                        password="980328">
+                        password="161250114">
         </jdbcConnection>
 
         <!--生成model类的存放位置 -->
@@ -56,14 +56,15 @@
 <!--        <table tableName="friend_apply" domainObjectName="Friend_apply"></table>-->
 <!--        <table tableName="date_apply" domainObjectName="Date_apply"></table>-->
 <!--        <table tableName="user_limit" domainObjectName="User_limit"></table>-->
-            <table tableName="date_standard" domainObjectName="Date_standard" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+<!--        <table tableName="date_standard" domainObjectName="Date_standard" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
 
 <!--        <table tableName="chat_history" domainObjectName="ChatHistory" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
 <!--        <table tableName="check_history" domainObjectName="CheckHistory" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
-<!--        <table tableName="user_label" domainObjectName="UserLabel" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+        <table tableName="user_label" domainObjectName="UserLabel" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
 <!--        <table tableName="label_heat" domainObjectName="LabelHeat" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
 <!--        <table tableName="search" domainObjectName="Search" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
-<!--        <table tableName="standard" domainObjectName="Standard" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+<!--        <table tableName="standard" domainObjectName="Standard" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>--><!--        <table tableName="search" domainObjectName="Search" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+                <table tableName="user_question" domainObjectName="UserQuestion" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
 
     </context>
 </generatorConfiguration>
