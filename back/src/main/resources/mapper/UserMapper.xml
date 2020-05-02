@@ -112,7 +112,7 @@
     where sex = #{sex}
         and age between #{youngest} and #{oldest}
         and height between #{shortest} and #{tallest}
-        and salary between #{lowest} and #{highest}
+        and salary like #{salary}
         and education = #{education}
         and profession = #{profession}
         and marrige = #{marrige}
