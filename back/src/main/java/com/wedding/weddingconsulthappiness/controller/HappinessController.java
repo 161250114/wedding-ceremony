@@ -51,7 +51,7 @@ public class HappinessController {
     @ResponseBody
     @RequestMapping(value="/addlikes",method = RequestMethod.GET)
     public int addl(){
-        Happiness_likes hl=new Happiness_likes(0,1,2);
+        Happiness_likes hl=new Happiness_likes(0,1,2,0);
         hls.insert(hl);
         hl.setLikeId(5);
         return hls.updateByPrimaryKey(hl);
