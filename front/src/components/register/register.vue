@@ -34,13 +34,17 @@
           label-position="left"
           label-width="80px"
           v-if="this.active == 0"
+          :rules="rules1"
+          :model="userInfo"
+          ref="ruleForm1"
         >
           <el-row>
             <el-col :span="15"
-              ><el-form-item label="用户名:">
+              ><el-form-item label="用户名:" prop="username">
                 <el-input
                   prefix-icon="el-icon-user"
-                  placeholder="不超过15个字符" v-model="userInfo.username"
+                  placeholder="不超过15个字符"
+                  v-model="userInfo.username"
                 ></el-input> </el-form-item
             ></el-col>
           </el-row>
@@ -50,7 +54,8 @@
                 <el-input
                   show-password
                   prefix-icon="el-icon-postcard"
-                  placeholder="不超过15个字符" v-model="userInfo.password"
+                  placeholder="不超过15个字符"
+                  v-model="userInfo.password"
                 ></el-input> </el-form-item
             ></el-col>
           </el-row>
@@ -70,7 +75,8 @@
               ><el-form-item label="手机号:" prop="phone">
                 <el-input
                   prefix-icon="el-icon-phone"
-                  placeholder="请输入手机号" v-model="userInfo.phone"
+                  placeholder="请输入手机号"
+                  v-model="userInfo.phone"
                 ></el-input> </el-form-item
             ></el-col>
           </el-row>
@@ -244,9 +250,25 @@
             </el-col>
           </el-row>
         </el-form>
+        <div v-else>
+          <el-row style="margin-top:10%">
+            <el-col :span="16">
+              <el-alert
+                type="success"
+                title="注册成功"
+                show-icon
+                :closable="false"
+                >恭喜您注册成功，页面将在5秒内跳转！</el-alert
+              >
+            </el-col>
+          </el-row>
+        </div>
         <el-row>
           <el-col :span="15">
-            <el-button style="margin-top: 12px;" @click="changeStep(-1)"
+            <el-button
+              style="margin-top: 12px;"
+              @click="changeStep(-1)"
+              v-if="this.active != 3"
               >上一步</el-button
             >
             <el-button
@@ -261,6 +283,14 @@
               v-show="this.active == 2"
               >提交</el-button
             >
+            <router-link to="/login">
+              <el-button
+                style="margin-top: 20%;"
+                v-show="this.active == 3"
+                type="primary"
+                >返回登录页面</el-button
+              ></router-link
+            >
           </el-col>
         </el-row>
       </el-col>
@@ -273,6 +303,18 @@ import { regionData } from "element-china-area-data";
 import Axios from "axios";
 export default {
   data() {
+    var checkUsername = (rule, value, callback) => {
+      if (value == "") {
+        return callback(new Error("名称不能为空"));
+      }
+      setTimeout(() => {
+        if (value.length > 15) {
+          callback(new Error("长度超出范围"));
+        } else {
+          callback();
+        }
+      }, 1000);
+    };
     var checkUsername = (rule, value, callback) => {
       if (value == "") {
         return callback(new Error("名称不能为空"));
@@ -368,7 +410,7 @@ export default {
         salary: "",
         profession: ""
       },
-      password2:"",
+      password2: "",
       cities: "",
       educationList: [
         "高中中专及以下",
@@ -444,13 +486,24 @@ export default {
   methods: {
     changeStep(index) {
       let app = this;
+      if (app.active == 0 && index == 1) {
+        this.$refs["ruleForm1"].validate(valid => {
+          if (valid) {
+            app.active = app.active + index;
+          } else {
+            app.$message({
+              message: "请正确填写！",
+              type: "warning"
+            });
+            return false;
+          }
+        });
+      }
       if (app.active == 0 && index == -1) {
         app.$message({
           message: "已回到第一步！",
           type: "warning"
         });
-      } else {
-        this.active = this.active + index;
       }
     },
     sendKey() {
@@ -487,7 +540,8 @@ export default {
       let app = this;
       Axios.post("register", app.userInfo)
         .then(function(res) {
-          console.log(res)
+          console.log(res);
+          app.active = 3;
         })
         .catch(function(error) {});
     }

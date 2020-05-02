@@ -159,13 +159,7 @@
         /*form->record how much times that these tags are checked,
         and use the time to represent heat
          */
-        form: {
-          id: 0,
-          user_id: 0,
-          label1: '',
-          label2: '',
-          label3: '',
-        },
+        form: {},
         checkHistoryform: {
           userId: 111,
           checkedUserId: 921,
@@ -237,7 +231,9 @@
           this.selectRequire.address = res.data.address
           if (res.data.marrige === 0) {
             this.selectRequire.marriage = '未婚'
-          } else if (res.data.marrige === 1) {
+          } else if (res.data.marrige === 3) {
+            this.selectRequire.marriage = '不限'
+          }else{
             this.selectRequire.marriage = '有过婚史'
           }
           // console.log(url)
@@ -256,16 +252,16 @@
         axios.get(url).then((res) => {
           // console.log(res),
           this.form = res.data
-          // console.log(this.form.label1 + " " + this.form.label2 + " " + this.form.label3)
           this.addLabelHeat()
         })
       },
       addLabelHeat () {
         let url = 'http://localhost:8999/wedding/labelHeat/addHeat'
-        this.$axios.post(url, this.form)
-          .then((res) => {
-            console.log(res.data)
-          })
+        for(let item in this.form) {
+          this.$axios.post(url, item).then((res) => {
+              console.log(res.data)
+            })
+        }
       },
       addCheckHistory () {
         let url = 'http://localhost:8999/wedding/checkHistory/add'
