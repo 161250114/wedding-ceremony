@@ -1,48 +1,48 @@
 <template>
-  <div style="display:flex;flex-direction:column;justify-content:space-between;min-height:100%;">
-    <div>
-      <Myhead v-bind:isLogin="isLogin" @quit="changeLogin"></Myhead>
-    </div>
+  <div
+    style="display:flex;flex-direction:column;justify-content:space-between;min-height:100%;border:1px solid;position:absolute;width:100%"
+  >
     <div id="app">
+      <Myhead v-bind:isLogin="isLogin" @quit="changeLogin"></Myhead>
       <router-view @login="changeLogin" />
     </div>
-    <div>
+    <div id="footer">
       <Myfooter></Myfooter>
     </div>
   </div>
 </template>
 
 <script>
-import Vue from 'vue'
-import Myhead from './components/head/head'
-import Myfooter from './components/footer/footer'
-import axios from 'axios'
+import Vue from "vue";
+import Myhead from "./components/head/head";
+import Myfooter from "./components/footer/footer";
+import axios from "axios";
 
-Vue.prototype.$axios = axios
-axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8'
-axios.defaults.baseURL = '/api'
+Vue.prototype.$axios = axios;
+axios.defaults.headers.post["Content-Type"] = "application/json;charset=utf-8";
+axios.defaults.baseURL = "/api";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Myhead,
     Myfooter
   },
-  data () {
+  data() {
     return {
       isLogin: false
-    }
+    };
   },
   methods: {
-    changeLogin (isLogin) {
-      this.isLogin = isLogin
-      console.log(this.isLogin)
+    changeLogin(isLogin) {
+      this.isLogin = isLogin;
+      console.log(this.isLogin);
     }
   },
-  created () {
-    console.log('OK')
+  created() {
+    console.log("OK");
   }
-}
+};
 </script>
 
 <style>
@@ -51,13 +51,19 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  min-height:100%;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
-html, body {
-  height: 95%;
+html,
+body {
+  height: 100%;
   margin: 0;
   padding: 0;
+}
+
+#footer {
 }
 </style>
