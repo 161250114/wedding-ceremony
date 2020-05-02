@@ -13,9 +13,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wedding.model.po.UserLabel">
-    insert into user_label (id, user_id, label_1, 
+    insert into user_label (id, user_id, label_1,
       label_2, label_3)
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{label1,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{label1,jdbcType=VARCHAR},
       #{label2,jdbcType=VARCHAR}, #{label3,jdbcType=VARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.UserLabel">
@@ -32,24 +32,14 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-<<<<<<< HEAD
-    select id, user_id, label_1, label_2, label_3
-=======
     select id, user_id, label
->>>>>>> 0c6a6b02f133443f0d976f10236fd737e7cc4ecd
     from user_label
     where user_id = #{user_id,jdbcType=INTEGER}
   </select>
   <select id="selectByLabel" parameterType="java.lang.String" resultMap="BaseResultMap">
-<<<<<<< HEAD
-    select id, user_id, label_1, label_2, label_3
-    from user_label
-    where label_1 = #{label,jdbcType=VARCHAR} or label_2 = #{label,jdbcType=VARCHAR} or label_3 = #{label,jdbcType=VARCHAR}
-=======
     select id, user_id, label
     from user_label
     where label = #{label,jdbcType=VARCHAR}
->>>>>>> 0c6a6b02f133443f0d976f10236fd737e7cc4ecd
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select id, user_id, label_1, label_2, label_3
