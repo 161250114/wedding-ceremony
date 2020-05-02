@@ -8,7 +8,7 @@
       <el-col :span="18">
         <el-container style="height: 750px; border: 1px solid #eee">
           <el-aside width="250px" style="background-color: rgb(238, 241, 246)">
-            <div>
+            <div style="display:flex;flex-direction:column;align-items:center">
               <el-avatar
                 :size="100"
                 src="../../../static/photo1.jpg"
