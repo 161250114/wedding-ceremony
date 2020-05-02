@@ -69,7 +69,7 @@ public interface UserService {
      * @param currPage 第几页
      * @return
      */
-    public PageInfo<User> selLabel(Integer currPage, String label) ;
+    public PageInfo<User> selLabel(Integer currPage, String label, Integer user_id) ;
 
     /**
      * 对详细搜索后的结果进行分页查询

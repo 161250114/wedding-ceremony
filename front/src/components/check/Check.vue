@@ -205,7 +205,7 @@
     },
     methods: {
       getData () {
-        let url = `http://localhost:8999/wedding/user/get/${this.id}`
+        let url = `http://localhost:8080/user/get/${this.id}`
         axios.get(url).then((res) => {
           // console.log(res)
           this.records = res.data
@@ -219,7 +219,7 @@
         })
       },
       getDateStandard () {
-        let url_1 = `http://localhost:8999/wedding/date_standard/select/${this.id}`
+        let url_1 = `http://localhost:8080/date_standard/select/${this.id}`
         axios.get(url_1).then((res) => {
           // console.log(res)
           this.selectRequire.leastAge = res.data.agemin
@@ -240,7 +240,7 @@
         })
       },
       getAlbumPhotos () {
-        let url_album = `http://localhost:8999/wedding/album/select/${this.records.albumid}`
+        let url_album = `http://localhost:8080/album/select/${this.records.albumid}`
         axios.get(url_album).then((res) => {
           // console.log(res)
           this.album = res.data
@@ -248,7 +248,7 @@
         })
       },
       getUserLabel () {
-        let url = `http://localhost:8999/wedding/userLabel/select/${this.id}`
+        let url = `http://localhost:8080/userLabel/select/${this.id}`
         axios.get(url).then((res) => {
           // console.log(res),
           this.form = res.data
@@ -256,7 +256,7 @@
         })
       },
       addLabelHeat () {
-        let url = 'http://localhost:8999/wedding/labelHeat/addHeat'
+        let url = 'http://localhost:8080/labelHeat/addHeat'
         for(let item in this.form) {
           this.$axios.post(url, item).then((res) => {
               console.log(res.data)
@@ -264,7 +264,7 @@
         }
       },
       addCheckHistory () {
-        let url = 'http://localhost:8999/wedding/checkHistory/add'
+        let url = 'http://localhost:8080/checkHistory/add'
         this.checkHistoryform.checkedUserId = this.id
         this.checkHistoryform.userId = this.userId
         this.$axios.post(url, this.checkHistoryform)

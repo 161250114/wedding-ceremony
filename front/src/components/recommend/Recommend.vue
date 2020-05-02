@@ -92,7 +92,7 @@
         },
         methods: {
             getData() {
-                let url = `http://localhost:8999/wedding/user/preferList/${this.userId}`
+                let url = `http://localhost:8080/user/preferList/${this.userId}`
                 axios.get(url).then((res) => {
                     // console.log(res)
                     this.preferList = res.data
@@ -100,7 +100,7 @@
                 })
             },
             getHottestLabel() {
-                let url = 'http://localhost:8999/wedding/labelHeat/heat_list'
+                let url = 'http://localhost:8080/labelHeat/heat_list'
                 axios.get(url).then((res) => {
                     // console.log(res)
                     this.hottestLabel = res.data
@@ -110,7 +110,7 @@
             handleClick(tab, event) {
                 // console.log(event.target.getAttribute('id'))
                 if (event.target.getAttribute('id') === "tab-猜你喜欢") {
-                  let url = `http://localhost:8999/wedding/user/preferList/${this.userId}`
+                  let url = `http://localhost:8080/user/preferList/${this.userId}`
                   axios.get(url).then((res) => {
                     // console.log(res)
                     this.preferList = res.data
@@ -119,8 +119,7 @@
                 }
                 else {
                     var label = event.target.getAttribute('id').substr(4)
-
-                    let url = `http://localhost:8999/wedding/user/label_search/${label}`
+                    let url = `http://localhost:8080/user/label_search/${label}&${this.userId}`
                     axios.get(url).then((res) => {
                         // console.log(res)
                         this.userList = res.data

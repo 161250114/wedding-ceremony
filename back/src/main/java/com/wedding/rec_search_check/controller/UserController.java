@@ -50,9 +50,16 @@ public class UserController {
 
     @RequestMapping("preferList/{user_id}")
     public List<User> preferList(@PathVariable Integer user_id){
+        User currentUser = userService.selById(user_id);
         //根据用户的择偶要求来推荐，若不够，则放宽要求，只要address，marriage
         Date_standard date_standard = dateStandardService.selByUserId(user_id);
         List<User> selectedListByStandard = userService.selByStandard(date_standard);
+        for(int i=0;i<selectedListByStandard.size();i++){
+            if(selectedListByStandard.get(i).getSex()== currentUser.getSex()){
+                selectedListByStandard.remove(i);
+                i--;
+            }
+        }
 //        System.out.println(selectedListByStandard.size());
         if(selectedListByStandard.size()>=8){
             return selectedListByStandard.subList(selectedListByStandard.size()-8,selectedListByStandard.size());
@@ -64,18 +71,32 @@ public class UserController {
             date_standard.setHeightmin(0);
             date_standard.setHeightmax(300);
             selectedListByStandard = userService.selByStandard(date_standard);
+
+            for(int i=0;i<selectedListByStandard.size();i++){
+                if(selectedListByStandard.get(i).getSex()== currentUser.getSex()){
+                    selectedListByStandard.remove(i);
+                    i--;
+                }
+            }
         }
         return selectedListByStandard;
     }
 
-    @RequestMapping("label_search/{label}")
-    public List<User> labelSearch(@PathVariable String label){
-        return userService.selByLabel(label);
+    @RequestMapping("label_search/{label}&{user_id}")
+    public List<User> labelSearch(@PathVariable String label, @PathVariable Integer user_id){
+        User currentUser = userService.selById(user_id);
+        List<User> userListByLabel = userService.selByLabel(label);
+        for(int i=0;i<userListByLabel.size();i++){
+            if(userListByLabel.get(i).getSex()== currentUser.getSex()){
+                userListByLabel.remove(i);
+                i--;
+            }
+        }
+        return userListByLabel;
     }
 
     @RequestMapping("detail_search")
     public List<User> detailSearch(@RequestBody Search search){
-        System.out.println(search);
         return userService.selByDetail(search);
     }
 
@@ -84,10 +105,9 @@ public class UserController {
         return userService.selAll(page);
     }
 
-    @RequestMapping("queryLabelSearch/{page}&{label}")
-    public PageInfo<User> queryLabelSearch(@PathVariable Integer page, @PathVariable String label){
-        System.out.println(page);
-        return userService.selLabel(page,label);
+    @RequestMapping("queryLabelSearch/{page}&{label}&{user_id}")
+    public PageInfo<User> queryLabelSearch(@PathVariable Integer page, @PathVariable String label, @PathVariable Integer user_id){
+        return userService.selLabel(page,label,user_id);
     }
 
     @RequestMapping("queryDetailSearch/{page}")
