@@ -102,7 +102,7 @@
     sex, birthday, height, introduction, address, education, marrige, salary, balance,
     trueness, profession, albumid, standardid, vip_enddate, date_status
     from user INNER JOIN user_label ON user.id = user_label.user_id
-    where label_1 = #{label,jdbcType=VARCHAR} or label_2 = #{label,jdbcType=VARCHAR} or label_3 = #{label,jdbcType=VARCHAR}
+    where label=#{label,jdbcType=VARCHAR}
   </select>
   <select id="selectByDetail" parameterType="com.wedding.model.po.Search" resultMap="BaseResultMap">
     select id, username, password, phone, usertype, fullname, sex, birthday, height,
