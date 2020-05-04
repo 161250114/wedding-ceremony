@@ -7,10 +7,20 @@
       </div>
     </el-backtop>
 
-    <el-dialog style="" title="聊天室" :close-on-click-modal="false" :lock-scroll="false" :visible.sync="chatRoomVisible"
-               width="40%" :before-close="handleClose">
-      <ChatRoom></ChatRoom>
-    </el-dialog>
+    <!--    <el-dialog style="" title="聊天室" :close-on-click-modal="false" :lock-scroll="false" :visible.sync="chatRoomVisible"-->
+    <!--               width="40%" :before-close="handleClose">-->
+    <!--      <div style="text-align: center">-->
+    <!--        &lt;!&ndash;        <br>欢迎使用<strong>VueTest</strong>极简聊天室：<br/><br/>&ndash;&gt;-->
+    <!--        <textarea id="content" v-model="content" style="width: 100%; height: 300px" readonly="readonly"></textarea>-->
+    <!--        <div style="width: 100%; margin: 0 auto">-->
+    <!--          <el-input type="textarea" style="width: 100%; height: 50px; border: none" placeholder="请输入内容" v-model="message"></el-input>-->
+    <!--&lt;!&ndash;          <input style="width: 600px; height: 50px; border: none" type="text" v-model="message">&ndash;&gt;-->
+    <!--          <button type="button" @click="sendMsg()" style="float: right;margin-top: 5px">发送消息</button>-->
+    <!--          &lt;!&ndash;        <button @click="joinRoom()">加入群聊</button>&ndash;&gt;-->
+    <!--          &lt;!&ndash;        <button style="vertical-align: middle" @click="exitRoom()">结束聊天</button>&ndash;&gt;-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </el-dialog>-->
 
     <div style="margin-top: 20px; height: 350px">
       <el-card class="simpleInfo">
@@ -20,7 +30,7 @@
             <!--            <img v-bind:src="album.get(0).address">-->
           </figure>
 
-          <div style="height: 30%">
+          <div style="height: 25%;float:bottom;">
             <el-button type="primary" plain @click="handleSayHi()" class="sayHi" style="margin-left: 40px">打招呼
             </el-button>
             <el-button type="primary" plain @click="handleChat()" class="sayHi" style="margin-left: 10px"
@@ -42,9 +52,11 @@
           </div>
 
           <div>
-            <p>用户名：<span style="font-size: 30px">{{records.username}}</span></p>
-            <p>用户编号：<span>{{records.id}}</span></p>
-            <p>诚信等级：<span>{{records.trueness}}</span></p>
+            <p style="line-height: 25px">用户名：<span style="font-size: 30px">{{records.username}}</span></p>
+            <p style="line-height: 25px">用户编号：<span>{{records.id}}</span></p>
+            <p style="line-height: 25px">诚信等级：
+              <el-rate style="display: inline-block" v-model="truth" disabled show-score text-color="#ff9900" :colors="colors"></el-rate>
+            </p>
           </div>
         </div>
       </el-card>
@@ -56,7 +68,8 @@
           style="font-size: 20px; font-weight: bolder">个人标签</strong></li>
         <div>
           <el-tag v-for="(item,index) in this.form" :key="index"
-                  style="font-size:15px; height: 35px; width: 80px;margin-left: 30px;vertical-align: middle;text-align: center;color: black;border-radius: 20px" effect="plain">
+                  style="font-size:15px; height: 35px; width: 80px;margin-left: 30px;vertical-align: middle;text-align: center;color: black;border-radius: 20px"
+                  effect="plain">
             {{item.label}}
           </el-tag>
         </div>
@@ -122,7 +135,7 @@
 
     <div style="margin-top: 100px; width: 100%">
       <el-card shadow="false" style="width: 1600px;margin: 0 auto; border: none">
-        <p style="text-align: center">关于我们|联系我们|加入我们|合作伙伴| 意见反馈|安全中心|网站地图 | 帮助中心|精英会员|个人信息保护政策</p>
+        <p style="text-align: center">关于我们|联系我们|加入我们|合作伙伴|意见反馈|安全中心|网站地图|帮助中心|精英会员|个人信息保护政策</p>
         <p style="text-align: center">品牌：10年专业婚恋服务 专业：庞大的资深红娘队伍</p>
         <p style="text-align: center">客服热线：4001-520-520（周一至周日：9:00-21:00）客服信箱：1234567890@jingying.com</p>
         <p style="text-align: center">违法和不良信息举报 4001-520-520 举报信箱：1234567891@jingying.com</p>
@@ -134,14 +147,19 @@
 
 <script>
   import axios from 'axios'
-  import ChatRoom from '../chatRoom/ChatRoom'
 
   export default {
     name: 'Check',
     data () {
       return {
+        // url: 'ws://' + window.location.host + '/chatRoom/',
+        // ws: null,
+        // message: '',
+        // content: '',
         album: {},
-        userState: true,
+        truth: 0,
+        colors: ['#99A9BF', '#F7BA2A', '#FF9900'],  // 等同于 { 2: '#99A9BF', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' }
+        userState: false,
         chatRoomVisible: false,
         id: '',
         userId: 111, //当前用户
@@ -183,9 +201,6 @@
         // }
       }
     },
-    components: {
-      ChatRoom,
-    },
     created () {
       this.id = this.$route.params.id
       this.getData()
@@ -199,9 +214,10 @@
         let url = `/user/get/${this.id}`
         axios.get(url).then((res) => {
           this.records = res.data
+          this.truth = this.records.trueness * 1.0 / 20
           let nowDate = new Date()
           let currentYear = nowDate.getFullYear()
-          this.age = currentYear-parseInt(this.records.birthday.substr(0,4))
+          this.age = currentYear - parseInt(this.records.birthday.substr(0, 4))
           this.getAlbumPhotos()
         })
       },
@@ -231,14 +247,14 @@
         let url_album = `/album/select/${this.records.albumid}`
         axios.get(url_album).then((res) => {
           this.album = res.data
-          console.log("album")
+          console.log('album')
           console.log(this.album)
         })
       },
       getHobby () {
         let url_hobby = `/userQuestion/select/${this.id}`
         axios.get(url_hobby).then((res) => {
-          for(let index=0; index < res.data.length; index++) {
+          for (let index = 0; index < res.data.length; index++) {
             if (res.data[index].questionid === 0) {//game
               this.hobby.game = res.data[index].answer
             } else if (res.data[index].questionid === 1) {//exercise
@@ -265,7 +281,7 @@
       },
       addLabelHeat () {
         let url = '/labelHeat/addHeat'
-        for(let index=0; index < this.form.length; index++){
+        for (let index = 0; index < this.form.length; index++) {
           console.log(this.form[index])
           this.$axios.post(url, this.form[index]).then((res) => {
             console.log(res.data)
@@ -292,16 +308,66 @@
         console.log(val)
       },
       // eslint-disable-next-line no-unused-vars
-      handleClose (done) {
-        this.chatRoomVisible = false
-      },
-      // handleCloseRoom(){
-      //     this.chatRoomVisible = false;
+      // handleClose (done) {
+      //   this.chatRoomVisible = false
+      //   this.exitRoom()
       // },
       handleChat () {
-        //设置菜单权限
-        this.chatRoomVisible = true
+        let routeData = this.$router.resolve({
+          path: '/chatRoom',
+          query: {
+            name: 'Sara',
+          }
+        })
+        window.open(routeData.href, '_blank')
+        //open the chatRoom and join the room
+        // this.chatRoomVisible = true
+        // this.joinRoom()
       },
+      //methods for chatRoom
+      // async joinRoom () {
+      //   // let username
+      //   // let url = `/user/get/${this.userId}`
+      //   // axios.get(url).then((res) => {
+      //   //   username = res.data.username
+      //   // })
+      //   // console.log(this.records.username)
+      //   this.ws = new WebSocket(`ws://localhost:8080/chatRoom/${this.records.username}`)  // 后端的启动端口
+      //   this.ws.onopen = this.webscoketonopen
+      //   this.ws.onmessage = this.webscoketonmessage
+      //   //正常关闭触发
+      //   this.ws.onclose = function () {
+      //     console.log('连接关闭')
+      //   }
+      // },
+      // webscoketonopen () {
+      //   console.log('与服务器成功建立连接')
+      // },
+      // webscoketonmessage (value) {
+      //   // console.log(value)
+      //   this.content += (value.data + '\r\n')
+      // },
+      // exitRoom () {
+      //   this.closeWebSocket()
+      // },
+      // sendMsg () {
+      //   if (!this.ws) {
+      //     alert('你已经掉线，请重新加入')
+      //     return
+      //   }
+      //   if (this.ws.readyState === 1) {
+      //     this.ws.send(this.message)
+      //     this.message = ''
+      //   } else {
+      //     alert('发送失败')
+      //   }
+      // },
+      // closeWebSocket () {
+      //   if (this.ws) {
+      //     this.ws.close()
+      //     this.ws = null
+      //   }
+      // }
     }
   }
 </script>
