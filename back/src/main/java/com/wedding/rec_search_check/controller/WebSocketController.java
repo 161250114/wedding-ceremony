@@ -1,4 +1,4 @@
-package com.wedding.rec_search_check.service.impl;
+package com.wedding.rec_search_check.controller;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -24,12 +24,12 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 @ServerEndpoint(value = "/websocket/{nickname}")
 @Component
-public class WebSocketService {
+public class WebSocketController {
     private String nickname;
     private Session session;
 
     //用来存放每个客户端对应的MyWebSocket对象。
-    private static CopyOnWriteArraySet<WebSocketService> webSocketSet = new CopyOnWriteArraySet<WebSocketService>();
+    private static CopyOnWriteArraySet<WebSocketController> webSocketSet = new CopyOnWriteArraySet<WebSocketController>();
     //与某个客户端的连接会话，需要通过它来给客户端发送数据
     //用来记录sessionId和该session进行绑定
     private static Map<String, Session> map = new HashMap<>();
@@ -123,7 +123,7 @@ public class WebSocketService {
      * 群发自定义消息
      */
     public void broadcast(String message) {
-        for (WebSocketService item : webSocketSet) {
+        for (WebSocketController item : webSocketSet) {
             item.session.getAsyncRemote().sendText(message);//异步发送消息.
         }
     }
