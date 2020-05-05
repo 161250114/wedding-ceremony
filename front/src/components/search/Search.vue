@@ -7,8 +7,6 @@
       </div>
     </el-backtop>
 
-<!--            <Head :index="activeIndex"></Head>-->
-
     <div style="margin-top: 20px">
       <el-card class="box-card">
         <div slot="header" style="height: 40px; vertical-align: middle">
@@ -30,6 +28,7 @@
             </el-tag>
           </li>
         </ul>
+
         <ul>
           <li style="margin-bottom: 30px"><strong style="font-weight: bolder">基本条件</strong>
 
@@ -73,7 +72,6 @@
                          :label="item.height_label" :value="item.height_value">
               </el-option>
             </el-select>
-
           </li>
         </ul>
 
@@ -112,11 +110,10 @@
 <!--                         :label="item.salary_label" :value="item.salary_value">-->
 <!--              </el-option>-->
 <!--            </el-select>-->
-
           </li>
         </ul>
 
-        <el-button class="searchButton" plain type="text" @click="getDetailSearchData">搜索
+        <el-button class="searchButton" plain type="text" @click="handleDetailSearch()">搜索
         </el-button>
       </el-card>
     </div>
@@ -154,7 +151,6 @@
 </template>
 
 <script>
-  import Head from '../head/Head'
   import axios from 'axios'
 
   export default {
@@ -162,18 +158,18 @@
     data () {
       return {
         userId: 111,
-        searchType: 1,
+        searchType: 2,
         searchForm: {
           id: 1,
           sex: 1,
           youngest: 22,
           oldest: 36,
-          address: '%江苏苏州%',
+          address: '北京朝阳',
           shortest: 0,
           tallest: 300,
           salary: '10000 ~ 20000元',
-          education: '本科',
-          profession: '教育',
+          education: '',
+          profession: '',
           marrige: 0
         },
         currentPage: 1,
@@ -186,28 +182,31 @@
         userList: {},
         education: [{
           education_value: '选项1',
+          education_label: '学历不限'
+        },{
+          education_value: '选项2',
           education_label: '高中中专及以下'
         }, {
-          education_value: '选项2',
+          education_value: '选项3',
           education_label: '大专'
         }, {
-          education_value: '选项3',
+          education_value: '选项4',
           education_label: '本科'
         }, {
-          education_value: '选项4',
+          education_value: '选项5',
           education_label: '硕士'
         }, {
-          education_value: '选项5',
+          education_value: '选项6',
           education_label: '博士'
         }, {
-          education_value: '选项6',
+          education_value: '选项7',
           education_label: '博士后'
         }],
-        education_label: '本科',
+        education_label: '学历不限',
         profession: [{
           profession_value: '选项1',
-          profession_label: '在校学生'
-        }, {
+          profession_label: '职业不限'
+        },{
           profession_value: '选项2',
           profession_label: '计算机/互联网/IT'
         }, {
@@ -263,110 +262,26 @@
           profession_label: '自由职业者'
         }, {
           profession_value: '选项20',
+          profession_label: '在校学生'
+        }, {
+          profession_value: '选项21',
           profession_label: '其他'
         }],
-        profession_label: '教育',
-        nation: [{
-          nation_value: '选项1',
-          nation_label: '汉族'
-        }, {
-          nation_value: '选项2',
-          nation_label: '藏族'
-        }, {
-          nation_value: '选项3',
-          nation_label: '朝鲜族'
-        }, {
-          nation_value: '选项4',
-          nation_label: '蒙古族'
-        }, {
-          nation_value: '选项5',
-          nation_label: '回族'
-        }, {
-          nation_value: '选项6',
-          nation_label: '满族'
-        }, {
-          nation_value: '选项7',
-          nation_label: '维吾尔族'
-        }, {
-          nation_value: '选项8',
-          nation_label: '彝族'
-        }, {
-          nation_value: '选项9',
-          nation_label: '苗族'
-        }, {
-          nation_value: '选项10',
-          nation_label: '壮族'
-        }, {
-          nation_value: '选项11',
-          nation_label: '其他'
-        }],
-        nation_label: '汉族',
+        profession_label: '职业不限',
         marrige: [{
           marrige_value: '选项1',
+          marrige_label: '不限'
+        },{
+          marrige_value: '选项2',
           marrige_label: '未婚'
         }, {
-          marrige_value: '选项2',
+          marrige_value: '选项3',
           marrige_label: '离异'
         }, {
-          marrige_value: '选项3',
-          marrige_label: '丧偶'
-        }, {
           marrige_value: '选项4',
-          marrige_label: '未婚、离异'
-        }, {
-          marrige_value: '选项5',
-          marrige_label: '未婚、丧偶'
-        }, {
-          marrige_value: '选项6',
-          marrige_label: '离异、丧偶'
+          marrige_label: '丧偶'
         }],
         marrige_label: '未婚',
-        house: [{
-          house_value: '选项1',
-          house_label: '未购房'
-        }, {
-          house_value: '选项2',
-          house_label: '需要时购置'
-        }, {
-          house_value: '选项3',
-          house_label: '已购房(有贷款)'
-        }, {
-          house_value: '选项4',
-          house_label: '已购房(无贷款)'
-        }, {
-          house_value: '选项5',
-          house_label: '已购房'
-        }, {
-          house_value: '选项6',
-          house_label: '与人合租'
-        }, {
-          house_value: '选项7',
-          house_label: '独自租房'
-        }, {
-          house_value: '选项8',
-          house_label: '与父母同住'
-        }, {
-          house_value: '选项9',
-          house_label: '住亲朋家'
-        }, {
-          house_value: '选项10',
-          house_label: '住单位房'
-        }],
-        house_label: '未购房',
-        child: [{
-          child_value: '选项1',
-          child_label: '没有孩子'
-        }, {
-          child_value: '选项2',
-          child_label: '有孩子跟着自己'
-        }, {
-          child_value: '选项3',
-          child_label: '有孩子跟着对方'
-        }, {
-          child_value: '选项4',
-          child_label: '有孩子但已经独立'
-        }],
-        child_label: '没有孩子',
         sex: [{
           sex_value: '选项1',
           sex_label: '男'
@@ -483,7 +398,7 @@
         }],
         shortest_label: '身高不限',
         tallest_label: '身高不限',
-        value: ['选项11', '选项2'],
+        value: ['选项2', '选项4'],
         place: [{
           value: '选项1',
           label: '地区不限'
@@ -1196,14 +1111,11 @@
     },
     created () {
       this.getHottestLabel()
-      this.getDetailSearchData()
-    },
-    components: {
-      Head
+      this.getData()
     },
     methods: {
       getHottestLabel () {//获取热门标签
-        let url = 'http://localhost:8999/wedding/labelHeat/heat_list'
+        let url = '/labelHeat/heat_list'
         axios.get(url).then((res) => {
           // console.log(res)
           this.hottestLabel = res.data
@@ -1213,7 +1125,7 @@
       handleLabelSearch (label) {
         this.searchType = 1
         this.currentLabel = label
-        let url = `http://localhost:8999/wedding/user/label_search/${label}`
+        let url = `/user/label_search/${label}&${this.userId}`
         axios.get(url).then((res) => {
           //console.log(res)
           this.userList = res.data
@@ -1223,7 +1135,7 @@
       },
       getLabelSearchData () {//post请求获取分页显示的pageInfo
         this.searchType = 1
-        let url = `http://localhost:8999/wedding/user/queryLabelSearch/${this.currentPage}&${this.currentLabel}`
+        let url = `/user/queryLabelSearch/${this.currentPage}&${this.currentLabel}&${this.userId}`
         // console.log(`d3+${this.currentPage}+${this.currentLabel}`)
         axios.get(url).then((res) => {
           //console.log(res)
@@ -1231,30 +1143,42 @@
           // console.log(this.pageInfo)
         })
       },
-
-      getDetailSearchData () {//post请求获取分页显示的pageInfo
-        this.searchType = 2
-        let url_1 = `http://localhost:8999/wedding/date_standard/select/${this.userId}`
+      getData () {//post请求获取分页显示的pageInfo
+        let url_1 = `/date_standard/select/${this.userId}`
         axios.get(url_1).then((res) => {
           // console.log(res)
           this.searchForm.address = res.data.address
-          this.
+
           this.searchForm.youngest = res.data.agemin
+          this.youngest_label = res.data.agemin
+
           this.searchForm.oldest = res.data.agemax
+          this.oldest_label = res.data.agemax
           // console.log(url)
         })
-        let url_2 = `http://localhost:8999/wedding/user/get/${this.userId}`
+        let url_2 = `/user/get/${this.userId}`
         axios.get(url_2).then((res) => {
           // console.log(res)
           if(res.data.sex === 0){
             this.searchForm.sex = 1
+            this.sex_label= '女'
           }
           else{
             this.searchForm.sex = 0
+            this.sex_label= '男'
           }
           // console.log(url)
         })
-        let url = `http://localhost:8999/wedding/user/queryDetailSearch/${this.currentPage}`
+        let url = `/user/queryDetailSearch/${this.currentPage}`
+        this.$axios.post(url, this.searchForm).then((res) => {
+          // console.log(this.searchForm)
+          this.pageInfo = res.data
+          console.log(this.pageInfo)
+        })
+      },
+      handleDetailSearch () {
+        this.searchType = 2
+        let url = `/user/queryDetailSearch/${this.currentPage}`
         this.$axios.post(url, this.searchForm).then((res) => {
           // console.log(this.searchForm)
           this.pageInfo = res.data
@@ -1268,7 +1192,7 @@
           this.getLabelSearchData()
           // console.log(`d2+${this.currentPage}`)
         } else if (this.searchType === 2) {
-          this.getDetailSearchData()
+          this.handleDetailSearch()
         }
       },
       handleChange (value) {//地区的级联选择器
@@ -1279,7 +1203,7 @@
         let getFirstAddress = ''
         getFirstAddress = obj.label
         if (getFirstAddress === '地区不限') {
-          this.searchForm.address = '%%'
+          this.searchForm.address = ''
         } else {
           let obj2 = {}
           obj2 = obj.children.find((item) => {
@@ -1288,9 +1212,9 @@
           let getSecondAddress = ''
           getSecondAddress = obj2.label
           if (getSecondAddress === '地区不限') {
-            this.searchForm.address = '%' + getFirstAddress + '%'
+            this.searchForm.address = getFirstAddress
           } else {
-            this.searchForm.address = '%' + getFirstAddress + getSecondAddress + '%'
+            this.searchForm.address = getFirstAddress + getSecondAddress
           }
         }
         // console.log(this.searchForm.address)
@@ -1381,20 +1305,6 @@
           // console.log(parseInt(this.searchForm.lowest))
         }
       },
-      // changeLocationValue_highest (val) {
-      //   //locations是v-for里面的,也是datas里面的值
-      //   let obj = {}
-      //   obj = this.salary.find((item) => {
-      //     return item.salary_value === val
-      //   })
-      //   // console.log(obj)
-      //   if (obj.salary_label === '收入不限') {
-      //     this.searchForm.highest = 1000000
-      //   } else {
-      //     this.searchForm.highest = parseInt(obj.salary_label)
-      //     // console.log(parseInt(this.searchForm.highest))
-      //   }
-      // },
       changeLocationValue_education (val) {
         //locations是v-for里面的,也是datas里面的值
         let obj = {}
@@ -1402,7 +1312,12 @@
           return item.education_value === val
         })
         // console.log(obj)
-        this.searchForm.education = obj.education_label
+        if (obj.education_label === '学历不限') {
+          this.searchForm.education = ''
+        } else {
+          this.searchForm.education = obj.education_label
+          // console.log(parseInt(this.searchForm.lowest))
+        }
       },
       changeLocationValue_profession (val) {
         //locations是v-for里面的,也是datas里面的值
@@ -1411,7 +1326,12 @@
           return item.profession_value === val
         })
         // console.log(obj)
-        this.searchForm.profession = obj.profession_label
+        if (obj.profession_label === '职业不限') {
+          this.searchForm.profession = ''
+        } else {
+          this.searchForm.profession = obj.profession_label
+          // console.log(parseInt(this.searchForm.lowest))
+        }
       },
       changeLocationValue_marriage (val) {
         //locations是v-for里面的,也是datas里面的值
@@ -1425,8 +1345,12 @@
         // console.log(getYoungestAge)
         if (getMarriage === '未婚') {
           this.searchForm.marrige = 0
-        } else {
+        } else if(getMarriage === '离异') {
           this.searchForm.marrige = 1
+        }else if(getMarriage === '丧偶') {
+          this.searchForm.marrige = 2
+        }else{
+          this.searchForm.marrige = 3
         }
       },
       handleCheck (id) {
@@ -1438,7 +1362,7 @@
         if (id === '') {
           this.$message('请输入ID')
         } else {
-          let url = `http://localhost:8999/wedding/user/get/${id}`
+          let url = `/user/get/${id}`
           axios.get(url).then((res) => {
             // console.log(res.data)
             if (res.data === '') {

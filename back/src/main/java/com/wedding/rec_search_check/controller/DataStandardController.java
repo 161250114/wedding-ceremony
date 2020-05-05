@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-@RequestMapping("/data_standard")
+@RequestMapping("/date_standard")
 public class DataStandardController {
 
     @Resource
@@ -33,9 +33,9 @@ public class DataStandardController {
         return dateStandardService.selById(id);
     }
 
-    @RequestMapping("select/{user_id}")
-    public Date_standard select(@PathVariable Integer user_id){
-        return dateStandardService.selByUserId(user_id);
+    @RequestMapping("select/{userid}")
+    public Date_standard select(@PathVariable Integer userid){
+        return dateStandardService.selByUserId(userid);
     }
 
     @RequestMapping("list")

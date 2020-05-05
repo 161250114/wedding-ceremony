@@ -1,7 +1,6 @@
 package com.wedding.mapper;
 
 import com.wedding.model.po.Date_standard;
-
 import java.util.List;
 
 public interface Date_standardMapper {
@@ -15,5 +14,5 @@ public interface Date_standardMapper {
 
     int updateByPrimaryKey(Date_standard record);
 
-    Date_standard selectByUserId(Integer user_id);
+    Date_standard selectByUserId(Integer userid);
 }

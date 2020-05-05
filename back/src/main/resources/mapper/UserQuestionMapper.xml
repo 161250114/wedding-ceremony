@@ -32,7 +32,7 @@
   <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id, userid, questionid, answer
     from user_question
-    where user_id = #{user_id,jdbcType=INTEGER}
+    where userid = #{userid,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
     select id, userid, questionid, answer

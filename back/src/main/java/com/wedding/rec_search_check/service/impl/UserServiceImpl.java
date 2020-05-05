@@ -113,12 +113,20 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public PageInfo<User> selLabel(Integer currPage, String label) {
+    public PageInfo<User> selLabel(Integer currPage, String label, Integer user_id) {
         if(currPage == null) currPage = 1;
         //设置从第几页开始查询2条
         PageHelper.startPage(currPage,8);
         //分页查询
-        PageInfo<User> pageInfo = new PageInfo<>(userMapper.selectByLabel(label));
+        List<User> userListByLabel = userMapper.selectByLabel(label);
+        User currentUser = selById(user_id);
+        for(int i=0;i<userListByLabel.size();i++){
+            if(userListByLabel.get(i).getSex() == currentUser.getSex()){
+                userListByLabel.remove(i);
+                i--;
+            }
+        }
+        PageInfo<User> pageInfo = new PageInfo<>(userListByLabel);
         return pageInfo;
     }
 
