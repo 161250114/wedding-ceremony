@@ -104,10 +104,10 @@
           ></el-cascader>
         </el-form-item>
         <el-form-item label="婚姻状况:">
-          <el-radio v-model="standard.marriage" label="1">未婚</el-radio>
-          <el-radio v-model="standard.marriage" label="2">离婚</el-radio>
-          <el-radio v-model="standard.marriage" label="3">丧偶</el-radio>
-          <el-radio v-model="standard.marriage" label="4">不限</el-radio>
+          <el-radio v-model="standard.marriage" label="0">未婚</el-radio>
+          <el-radio v-model="standard.marriage" label="1">离婚</el-radio>
+          <el-radio v-model="standard.marriage" label="2">丧偶</el-radio>
+          <el-radio v-model="standard.marriage" label="3">不限</el-radio>
         </el-form-item>
       </el-form>
       <el-alert

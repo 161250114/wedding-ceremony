@@ -16,8 +16,10 @@ public class RegisterVO implements Serializable {
     int marriage;
     String salary;
     String profession;
+    String[] tagList;
+    QuestionVO[] questionList;
 
-    public RegisterVO(String username, String password, String phone, String fullName, int sex, String birthday, int height, String introduction, String address, String education, int marriage, String salary, String profession) {
+    public RegisterVO(String username, String password, String phone, String fullName, int sex, String birthday, int height, String introduction, String address, String education, int marriage, String salary, String profession, String[] tagList, QuestionVO[] questionList) {
         this.username = username;
         this.password = password;
         this.phone = phone;
@@ -31,6 +33,8 @@ public class RegisterVO implements Serializable {
         this.marriage = marriage;
         this.salary = salary;
         this.profession = profession;
+        this.tagList = tagList;
+        this.questionList = questionList;
     }
 
     public RegisterVO() {
@@ -138,5 +142,21 @@ public class RegisterVO implements Serializable {
 
     public void setProfession(String profession) {
         this.profession = profession;
+    }
+
+    public String[] getTagList() {
+        return tagList;
+    }
+
+    public void setTagList(String[] tagList) {
+        this.tagList = tagList;
+    }
+
+    public QuestionVO[] getQuestionList() {
+        return questionList;
+    }
+
+    public void setQuestionList(QuestionVO[] questionList) {
+        this.questionList = questionList;
     }
 }

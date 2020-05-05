@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service("testService")
 public interface LRService {
-    public ReturnMessage login(LoginVO loginVO);
+    public LoginVO login(LoginVO loginVO);
 
     public ReturnMessage register(RegisterVO registerVO);
 

@@ -1,8 +1,11 @@
 package com.wedding.mapper;
 
 import com.wedding.model.po.User_limit;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public interface User_limitMapper {
     int deleteByPrimaryKey(Integer id);
 

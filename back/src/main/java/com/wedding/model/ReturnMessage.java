@@ -8,9 +8,9 @@ public class ReturnMessage {
     @JSONField
     private boolean result;
     @JSONField
-    private String message;
+    private Object message;
 
-    public ReturnMessage(boolean result, String message) {
+    public ReturnMessage(boolean result, Object message) {
         this.result = result;
         this.message = message;
     }
@@ -26,7 +26,7 @@ public class ReturnMessage {
         this.result = result;
     }
 
-    public String getMessage() {
+    public Object getMessage() {
         return message;
     }
 

@@ -17,7 +17,7 @@ public class Date_standard {
 
     private String address;
 
-    private Byte marrige;
+    private Byte marrige;//0为未婚，1为离婚，2为丧偶，3为不限
 
     private Integer userid;
 

@@ -5,13 +5,13 @@ public class User_limit {
 
     private Integer userid;
 
-    private Byte limitBrowse;
+    private Byte limitBrowse;//0为所有人可见，1为符合择偶标准可见，2为所有人不可见
 
-    private Byte limitMessage;
+    private Byte limitMessage;//0为接收系统短信，1为不接受系统短信
 
-    private Byte limitFapply;
+    private Byte limitFapply;//0为所有人可申请，1为拒绝申请
 
-    private Byte limitDapply;
+    private Byte limitDapply;//0为所有人可申请，1为拒绝申请
 
     public Integer getId() {
         return id;

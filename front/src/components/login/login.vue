@@ -13,24 +13,20 @@
         &nbsp;
       </el-col>
       <el-col :span="5">
-        <div class="wrap" style="margin-top:50px">
+        <div class="wrap" style="margin-top: 50px;">
           <el-form>
             <el-form-item label="用户名/手机号：">
               <el-input v-model="userinfo.uname_phone"></el-input>
             </el-form-item>
             <el-form-item label="密码：">
               <el-input v-model="userinfo.password" show-password></el-input>
-              <el-button type="text" style="float:right;" size="small"
+              <el-button type="text" style="float: right;" size="small"
                 >忘记密码</el-button
               >
             </el-form-item>
             <el-form-item>
-              <router-link to="/">
-                <el-button type="primary" @click="login">登录</el-button>
-              </router-link>
-              <router-link to="/register"
-                ><el-button>注册</el-button></router-link
-              >
+              <el-button type="primary" @click="login">登录</el-button>
+              <a href="/register"><el-button type="primary">注册</el-button></a>
             </el-form-item>
           </el-form>
         </div>
@@ -45,23 +41,25 @@ export default {
   data() {
     return {
       picUrls: ["../../../static/loginPic1.png"],
-      userinfo:{
-        uname_phone:"",
-        password:""
-      }
+      userinfo: {
+        uname_phone: "",
+        password: "",
+      },
     };
   },
   methods: {
     login() {
-      let app=this
-      app.$emit("login",true);
+      let app = this;
       Axios.post("/login", app.userinfo)
-        .then(function(res) {
-          console.log(res.data)
+        .then(function (res) {
+          console.log(res.data.ok)
+          if(res.data.ok){
+            app.$router.push({path:'/home'});
+          }
         })
-        .catch(function(error) {});
-    }
-  }
+        .catch(function (error) {});
+    },
+  },
 };
 </script>
 
