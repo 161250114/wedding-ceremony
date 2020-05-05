@@ -26,7 +26,7 @@
 
                 <el-tab-pane v-for="(item,index) in hottestLabel" :key="index" :label=item.label :name=item.label>
                     <figure v-for="(user,i) in userList" :key="i" @click="handleCheck(user.id)">
-                        <img src="./girl.png"/>
+                        <img src="./girl3.jpg"/>
                         <h2>{{user.username}}</h2>
                     </figure>
                 </el-tab-pane>
@@ -62,7 +62,7 @@
         name: "Recommend",
         data() {
             return {
-                userId: 111,
+                userId: 0,
                 activeIndex: '2',
                 activeTab: '猜你喜欢',
                 preferList: {},
@@ -88,7 +88,8 @@
             getData() {
               let url_getCurrentUser = '/getCurrentUser'
               axios.get(url_getCurrentUser).then((res) => {
-                console.log('currentUser'+res.data)
+                // console.log(res.data.message)
+                this.userId=res.data.message.userid
                 // this.userId=res.data
                 let url = `/user/preferList/${this.userId}`
                 axios.get(url).then((res) => {
@@ -117,7 +118,7 @@
                   })
                 }
                 else {
-                    var label = event.target.getAttribute('id').substr(4)
+                    let label = event.target.getAttribute('id').substr(4)
                     let url = `/user/label_search/${label}&${this.userId}`
                     axios.get(url).then((res) => {
                         // console.log(res)

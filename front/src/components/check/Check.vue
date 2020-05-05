@@ -44,7 +44,7 @@
             <el-carousel height="120px" type="card" autoplay="false">
               <el-carousel-item v-for="(item,index) in 4" :key="index" style="width: 200px">
                 <!--                <el-carousel-item v-for="(item,index) in album" :key="index" style="width: 200px">-->
-                <img src="../recommend/logo.png"/>
+                <img src="../recommend/girl.png"/>
                 <!--                <img style="width: 100%;height: 120px" v-bind:src="item.address"/>-->
                 <!--                </el-carousel-item>-->
               </el-carousel-item>
@@ -161,8 +161,8 @@
         colors: ['#99A9BF', '#F7BA2A', '#FF9900'],  // 等同于 { 2: '#99A9BF', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' }
         userState: false,
         chatRoomVisible: false,
-        id: '',//查看对象的id
-        userId: 111, //当前用户
+        id: 0,//查看对象的id
+        userId: 0, //当前用户
         records: {},
         age: 0,
         /*form->record how much times that these tags are checked,
@@ -170,8 +170,8 @@
          */
         form: {},
         checkHistoryform: {
-          userId: 111,
-          checkedUserId: 114,
+          userId: 0,
+          checkedUserId: 0,
         },
         selectRequire: {
           leastAge: 25,
@@ -207,14 +207,15 @@
       this.getDateStandard()
       this.getHobby()
       this.getUserLabel()
-      this.addCheckHistory()
     },
     methods: {
       getData () {
         let url_getCurrentUser = '/getCurrentUser'
-        axios.get(url).then((res) => {
-          console.log(res.data)
+        axios.get(url_getCurrentUser).then((res) => {
+          // console.log(res.data.message)
+          this.userId=res.data.message.userid
           // this.userId=res.data
+          this.addCheckHistory()
         })
         let url = `/user/get/${this.id}`
         axios.get(url).then((res) => {
@@ -318,13 +319,18 @@
       //   this.exitRoom()
       // },
       handleChat () {
-        let routeData = this.$router.resolve({
-          path: '/chatRoom',
-          query: {
-            name: 'Sara',
-          }
+        let url = `/user/get/${this.userId}`
+        let username
+        axios.get(url).then((res) => {
+          username = res.data.username
+          let routeData = this.$router.resolve({
+            path: '/chatRoom',
+            query: {
+              name: username,
+            }
+          })
+          window.open(routeData.href, '_blank')
         })
-        window.open(routeData.href, '_blank')
         //open the chatRoom and join the room
         // this.chatRoomVisible = true
         // this.joinRoom()
