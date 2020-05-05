@@ -1,17 +1,29 @@
 package com.wedding.usermanage.vo;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.io.Serializable;
 
 public class LoginVO implements Serializable {
+    int userid;
     String uname_phone;
     String password;
 
-    public LoginVO(String uname_phone, String password) {
+    public LoginVO(int userid, String uname_phone, String password) {
+        this.userid = userid;
         this.uname_phone = uname_phone;
         this.password = password;
     }
 
     public LoginVO() {
+    }
+
+    public int getUserid() {
+        return userid;
+    }
+
+    public void setUserid(int userid) {
+        this.userid = userid;
     }
 
     public String getUname_phone() {

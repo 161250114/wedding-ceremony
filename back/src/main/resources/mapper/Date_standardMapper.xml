@@ -17,14 +17,14 @@
     delete from date_standard
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wedding.model.po.Date_standard">
-    insert into date_standard (id, agemin, agemax, 
-      heightmin, heightmax, salary, 
-      education, address, marrige, 
+  <insert id="insert" parameterType="com.wedding.model.po.Date_standard" keyProperty="id" useGeneratedKeys="true">
+    insert into date_standard (id, agemin, agemax,
+      heightmin, heightmax, salary,
+      education, address, marrige,
       userid)
-    values (#{id,jdbcType=INTEGER}, #{agemin,jdbcType=INTEGER}, #{agemax,jdbcType=INTEGER}, 
-      #{heightmin,jdbcType=INTEGER}, #{heightmax,jdbcType=INTEGER}, #{salary,jdbcType=VARCHAR}, 
-      #{education,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{marrige,jdbcType=TINYINT}, 
+    values (#{id,jdbcType=INTEGER}, #{agemin,jdbcType=INTEGER}, #{agemax,jdbcType=INTEGER},
+      #{heightmin,jdbcType=INTEGER}, #{heightmax,jdbcType=INTEGER}, #{salary,jdbcType=VARCHAR},
+      #{education,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{marrige,jdbcType=TINYINT},
       #{userid,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Date_standard">
@@ -41,7 +41,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, agemin, agemax, heightmin, heightmax, salary, education, address, marrige, 
+    select id, agemin, agemax, heightmin, heightmax, salary, education, address, marrige,
     userid
     from date_standard
     where id = #{id,jdbcType=INTEGER}
@@ -53,7 +53,7 @@
     where userid = #{userid,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, agemin, agemax, heightmin, heightmax, salary, education, address, marrige, 
+    select id, agemin, agemax, heightmin, heightmax, salary, education, address, marrige,
     userid
     from date_standard
   </select>

@@ -1,12 +1,8 @@
 package com.wedding.usermanage.service.impl;
 
-import com.wedding.mapper.AlbumMapper;
-import com.wedding.mapper.Date_standardMapper;
-import com.wedding.mapper.UserMapper;
+import com.wedding.mapper.*;
 import com.wedding.model.ReturnMessage;
-import com.wedding.model.po.Album;
-import com.wedding.model.po.Date_standard;
-import com.wedding.model.po.User;
+import com.wedding.model.po.*;
 import com.wedding.usermanage.service.LRService;
 import com.wedding.usermanage.vo.LoginVO;
 import com.wedding.usermanage.vo.RegisterVO;
@@ -27,52 +23,38 @@ public class LRServiceImpl implements LRService {
     private AlbumMapper albumMapper;
     @Autowired
     private Date_standardMapper date_standardMapper;
+    @Autowired
+    private User_limitMapper user_limitMapper;
+    @Autowired
+    private UserLabelMapper userLabelMapper;
+    @Autowired
+    private UserQuestionMapper userQuestionMapper;
 
     @Override
-    public ReturnMessage login(LoginVO loginVO) {
+    public LoginVO login(LoginVO loginVO) {
         User user=userMapper.selectByPhone(loginVO.getUname_phone());
-        if(user.getPassword().equals(loginVO.getPassword())){
-            return new ReturnMessage(true,"ok");
+        if(user!=null&&user.getPassword().equals(loginVO.getPassword())){
+            return new LoginVO(user.getId(),loginVO.getUname_phone(),"");
         }else{
             user=userMapper.selectByUsername(loginVO.getUname_phone());
-            if(user.getPassword().equals(loginVO.getPassword())){
-                return new ReturnMessage(true,"ok");
+            if(user!=null&&user.getPassword().equals(loginVO.getPassword())){
+                return new LoginVO(user.getId(),loginVO.getUname_phone(),"");
             }
         }
-        return new ReturnMessage(false,"密码不正确");
+        return new LoginVO(0,"","");
     }
 
     @Override
     public ReturnMessage register(RegisterVO registerVO) {
+        //添加相册
         Album album=new Album();
         album.setMaxNumber(5);
         album.setCurrentNumber(0);
         albumMapper.insert(album);
-
-        Date_standard date_standard=new Date_standard();
-        date_standard.setAddress(registerVO.getAddress());
-        int age=getAge(registerVO.getBirthday());
-        if(age<21){
-            date_standard.setAgemax(age+3);
-            date_standard.setAgemin(18);
-        }else if(age>96){
-            date_standard.setAgemax(99);
-            date_standard.setAgemin(age-3);
-        }else{
-            date_standard.setAgemin(age-3);
-            date_standard.setAgemax(age+3);
-        }
-        date_standard.setHeightmin(0);
-        date_standard.setHeightmax(999);
-        date_standard.setEducation("不限");
-        date_standard.setMarrige((byte)4);
-        date_standard.setSalary("不限");
-        date_standardMapper.insert(date_standard);
-
+        //添加用户信息
         User user=new User();
         user.setAddress(registerVO.getAddress());
         user.setAlbumid(album.getId());
-        user.setStandardid(date_standard.getId());
         user.setBalance(0);
         DateFormat format1=new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -93,7 +75,52 @@ public class LRServiceImpl implements LRService {
         user.setTrueness(60);
         user.setUsername(registerVO.getUsername());
         user.setUsertype((byte)0);
+        user.setDateStatus((byte)0);
         userMapper.insert(user);
+
+        User_limit user_limit=new User_limit();
+        user_limit.setLimitBrowse((byte)0);
+        user_limit.setLimitDapply((byte)0);
+        user_limit.setLimitFapply((byte)0);
+        user_limit.setLimitMessage((byte)0);
+        user_limit.setUserid(user.getId());
+        user_limitMapper.insert(user_limit);
+        //添加用户择偶标准
+        Date_standard date_standard=new Date_standard();
+        date_standard.setAddress(registerVO.getAddress());
+        int age=getAge(registerVO.getBirthday());
+        if(age<21){
+            date_standard.setAgemax(age+3);
+            date_standard.setAgemin(18);
+        }else if(age>96){
+            date_standard.setAgemax(99);
+            date_standard.setAgemin(age-3);
+        }else{
+            date_standard.setAgemin(age-3);
+            date_standard.setAgemax(age+3);
+        }
+        date_standard.setHeightmin(0);
+        date_standard.setHeightmax(999);
+        date_standard.setEducation("不限");
+        date_standard.setMarrige((byte)4);
+        date_standard.setSalary("不限");
+        date_standard.setUserid(user.getId());
+        date_standardMapper.insert(date_standard);
+        //添加用户标签信息
+        for(int i=0;i<registerVO.getTagList().length;i++){
+            UserLabel userLabel=new UserLabel();
+            userLabel.setUserId(user.getId());
+            userLabel.setLabel(registerVO.getTagList()[i]);
+            userLabelMapper.insert(userLabel);
+        }
+        //添加用户问题信息
+        for(int i=0;i<registerVO.getQuestionList().length;i++){
+            UserQuestion userQuestion=new UserQuestion();
+            userQuestion.setAnswer(registerVO.getQuestionList()[i].getAnswer());
+            userQuestion.setQuestionid(registerVO.getQuestionList()[i].getQuestionid());
+            userQuestion.setUserid(user.getId());
+            userQuestionMapper.insert(userQuestion);
+        }
         return new ReturnMessage(true,"OK");
     }
 

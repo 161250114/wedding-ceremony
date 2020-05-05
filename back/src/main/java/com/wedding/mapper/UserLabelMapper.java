@@ -1,8 +1,12 @@
 package com.wedding.mapper;
 
 import com.wedding.model.po.UserLabel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public interface UserLabelMapper {
     int deleteByPrimaryKey(Integer id);
 

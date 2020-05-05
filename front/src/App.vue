@@ -3,8 +3,8 @@
     style="display:flex;flex-direction:column;justify-content:space-between;min-height:100%;border:1px solid;position:absolute;width:100%"
   >
     <div id="app">
-      <Myhead v-bind:isLogin="isLogin" @quit="changeLogin"></Myhead>
-      <router-view @login="changeLogin" />
+      <Myhead></Myhead>
+      <router-view/>
     </div>
     <div id="footer">
       <Myfooter></Myfooter>
@@ -30,14 +30,10 @@ export default {
   },
   data() {
     return {
-      isLogin: false
     };
   },
   methods: {
-    changeLogin(isLogin) {
-      this.isLogin = isLogin;
-      console.log(this.isLogin);
-    }
+   
   },
   created() {
     console.log("OK");
@@ -54,6 +50,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  text-align: center;
 }
 
 html,
@@ -63,6 +60,4 @@ body {
   padding: 0;
 }
 
-#footer {
-}
 </style>

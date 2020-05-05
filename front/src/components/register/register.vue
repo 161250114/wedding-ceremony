@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-row style="height:60px">
-      <el-col :span="1">&nbsp;</el-col>
+    <el-row style="height: 60px;">
+      <el-col ::span="1">&nbsp;</el-col>
     </el-row>
     <el-row>
       <el-col :span="3">&nbsp;</el-col>
@@ -14,7 +14,7 @@
         </el-steps>
       </el-col>
     </el-row>
-    <el-row style="height:60px">
+    <el-row style="height: 60px;">
       <el-col :span="1">&nbsp;</el-col>
     </el-row>
     <el-row>
@@ -23,7 +23,10 @@
         <div class="block">
           <el-carousel height="400px">
             <el-carousel-item v-for="item in 4" :key="item">
-              <img :src="picUrls[item - 1]" style="width:100%;height:100%" />
+              <img
+                :src="picUrls[item - 1]"
+                style="width: 100%; height: 100%;"
+              />
             </el-carousel-item>
           </el-carousel>
         </div>
@@ -66,7 +69,7 @@
                   show-password
                   prefix-icon="el-icon-postcard"
                   placeholder="重复密码"
-                  v-model="password2"
+                  v-model="userInfo.password2"
                 ></el-input> </el-form-item
             ></el-col>
           </el-row>
@@ -131,7 +134,7 @@
                     v-model="userInfo.birthday"
                     type="date"
                     placeholder="选择日期"
-                    style="width:100%"
+                    style="width: 100%;"
                     value-format="yyyy-MM-dd"
                   >
                   </el-date-picker>
@@ -150,7 +153,7 @@
             </el-col>
             <el-col :span="1"
               ><el-form-item label-width="0px"
-                ><label style="font-size:20px">CM</label></el-form-item
+                ><label style="font-size: 20px;">CM</label></el-form-item
               >
             </el-col>
           </el-row>
@@ -160,7 +163,7 @@
                 <el-cascader
                   ref="cityCascader"
                   :options="cities"
-                  style="width:100%"
+                  style="width: 100%;"
                   @change="addressChange"
                 ></el-cascader>
               </el-form-item>
@@ -172,7 +175,7 @@
                 <el-select
                   v-model="userInfo.education"
                   placeholder="请选择"
-                  style="width:100%"
+                  style="width: 100%;"
                 >
                   <el-option
                     v-for="item in educationList"
@@ -200,7 +203,7 @@
                 <el-select
                   v-model="userInfo.profession"
                   placeholder="请选择"
-                  style="width:100%"
+                  style="width: 100%;"
                 >
                   <el-option
                     v-for="item in professionList"
@@ -219,7 +222,7 @@
                 <el-select
                   v-model="userInfo.salary"
                   placeholder="请选择"
-                  style="width:100%"
+                  style="width: 100%;"
                 >
                   <el-option
                     v-for="item in salaryList"
@@ -239,19 +242,48 @@
           v-else-if="this.active == 2"
         >
           <el-row>
+            <el-col :span="15">
+              <el-form-item label="标签:">
+                <label v-if="userInfo.tagList.length == 0">尚未选择标签</label>
+                <div v-if="userInfo.tagList.length != 0">
+                  <el-tag v-for="tag in userInfo.tagList" :key="tag">{{
+                    tag
+                  }}</el-tag>
+                </div>
+              </el-form-item>
+              <el-divider></el-divider>
+            </el-col>
+            <el-col :span="4">
+              <el-button @click="tagDialog = true">选择标签</el-button>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="15">
+              <el-form-item label="兴趣爱好:">
+                <label v-if="userInfo.questionList.length==0">尚未选择问题</label>
+                <label v-else>{{questionMessage}}</label>
+              </el-form-item>
+              <el-divider></el-divider>
+            </el-col>
+            <el-col :span="4">
+              <el-button @click="questionDialog = true">添加兴趣爱好</el-button>
+            </el-col>
+          </el-row>
+          <el-row>
             <el-col :span="15"
               ><el-form-item label="自我介绍:">
                 <el-input
                   type="textarea"
                   v-model="userInfo.introduction"
                   :autosize="{ minRows: 10, maxRows: 10 }"
+                  placeholder="请自由发挥吧！"
                 ></el-input>
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
         <div v-else>
-          <el-row style="margin-top:10%">
+          <el-row style="margin-top: 10%;">
             <el-col :span="16">
               <el-alert
                 type="success"
@@ -295,6 +327,116 @@
         </el-row>
       </el-col>
     </el-row>
+    <el-dialog
+      title="性格选择"
+      :visible.sync="tagDialog"
+      width="50%"
+      :before-close="handleClose"
+    >
+      <div>
+        <div>
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span style="float: left;">你的性格：</span>
+              <el-tag
+                v-for="tag in tagChosedList"
+                :key="tag.label"
+                :type="tag.color"
+                closable
+                @close="deleteTag(tag)"
+                >{{ tag.label }}</el-tag
+              >
+              <el-button
+                style="float: right; padding: 3px 0;"
+                type="text"
+                @click="changeTagList"
+                >换一批</el-button
+              >
+            </div>
+            <div class="text item">
+              <el-row>
+                <el-col :span="3">&nbsp;</el-col>
+                <el-col :span="18"
+                  ><el-tag
+                    :type="tag.color"
+                    v-for="tag in tagList"
+                    :key="tag.label"
+                    @click="chooseTag(tag)"
+                    >{{ tag.label }}</el-tag
+                  >
+                </el-col>
+                <el-col :span="3">&nbsp;</el-col>
+              </el-row>
+            </div>
+          </el-card>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button style="margin-top: 12px;" @click="tagDialog = false"
+          >取消</el-button
+        >
+        <el-button style="margin-top: 12px;" @click="saveTagList"
+          >保存</el-button
+        >
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="兴趣爱好选择"
+      :visible.sync="questionDialog"
+      width="50%"
+      :before-close="handleClose"
+    >
+      <div>
+        <div>
+          <el-row>
+            <el-col :span="3">&nbsp;</el-col>
+            <el-col :span="18">
+              <el-form label-width="100px" :inline="true">
+                <div v-for="index in questionNumber" :key="index">
+                  <el-form-item>
+                    <label>问题{{ index }}</label>
+                    <el-select v-model="questionList[index - 1]" placeholder="">
+                      <el-option
+                        v-for="question in questionAllList"
+                        :key="question"
+                        :value="question"
+                        :disabled="questionList.indexOf(question) != -1"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item>
+                    <el-input
+                      placeholder="此处输入答案"
+                      v-model="answerList[index - 1]"
+                    ></el-input>
+                  </el-form-item>
+                </div>
+                <el-button
+                  type="primary"
+                  icon="el-icon-plus"
+                  @click="addQuestion(1)"
+                  circle
+                ></el-button>
+                <el-button
+                  type="primary"
+                  icon="el-icon-minus"
+                  @click="addQuestion(-1)"
+                  circle
+                ></el-button>
+              </el-form>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button style="margin-top: 12px;" @click="questionDialog = false"
+          >取消</el-button
+        >
+        <el-button style="margin-top: 12px;" @click="saveQuestionList"
+          >保存</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -356,8 +498,9 @@ export default {
         return callback(new Error("手机不能为空"));
       }
       setTimeout(() => {
-        if (!Number.isInteger(value)) {
-          callback(new Error("请输入数字值"));
+        var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+        if (!myreg.test(value)) {
+          callback(new Error("请输入正确手机号码"));
         } else if (value.length != 11) {
           callback(new Error("手机号长度错误"));
         } else {
@@ -370,13 +513,7 @@ export default {
         return callback(new Error("验证码不能为空"));
       }
       setTimeout(() => {
-        if (!Number.isInteger(value)) {
-          callback(new Error("请输入数字值"));
-        } else if (value.length != 4) {
-          callback(new Error("验证码长度错误"));
-        } else {
-          callback();
-        }
+        callback();
       }, 1000);
     };
     return {
@@ -385,7 +522,7 @@ export default {
         active: true,
         message: "发送验证码",
         leftSeconds: 0,
-        maxSeconds: 10
+        maxSeconds: 10,
       },
       validateNumber: "",
       validateTimer: null,
@@ -393,7 +530,7 @@ export default {
         "../../../static/registerPic1.png",
         "../../../static/registerPic2.jpeg",
         "../../../static/registerPic3.png",
-        "../../../static/registerPic4.jpeg"
+        "../../../static/registerPic4.jpeg",
       ],
       userInfo: {
         username: "",
@@ -408,9 +545,11 @@ export default {
         education: "",
         marriage: "",
         salary: "",
-        profession: ""
+        profession: "",
+        password2: "",
+        tagList: [],
+        questionList: [],
       },
-      password2: "",
       cities: "",
       educationList: [
         "高中中专及以下",
@@ -418,7 +557,7 @@ export default {
         "本科",
         "双学士",
         "硕士",
-        "博士"
+        "博士",
       ],
       professionList: [
         "销售",
@@ -463,7 +602,7 @@ export default {
         "质控/安防",
         "高级管理",
         "农/林/牧/渔业",
-        "其他职业"
+        "其他职业",
       ],
       salaryList: [
         "2000元以下",
@@ -471,7 +610,7 @@ export default {
         "5000-10000元",
         "10000-20000元",
         "20000-50000元",
-        "50000元以上"
+        "50000元以上",
       ],
       introductionPane: "first",
       rules1: {
@@ -479,21 +618,143 @@ export default {
         password: [{ validator: checkPassword, trigger: "blur" }],
         password2: [{ validator: checkPassword2, trigger: "blur" }],
         phone: [{ validator: checkPhone, trigger: "blur" }],
-        validateNumber: [{ validator: checkValidateNumber, trigger: "blur" }]
-      }
+        validateNumber: [{ validator: checkValidateNumber, trigger: "blur" }],
+      },
+      tagDialog: false,
+      questionDialog: false,
+      tagAllList: [
+        "开朗",
+        "大方",
+        "主动",
+        "外向",
+        "俏皮",
+        "敏捷",
+        "乐观",
+        "调皮",
+        "爽脆",
+        "爽朗",
+        "豪爽",
+        "正直",
+        "直率",
+        "直爽",
+        "干脆",
+        "直言",
+        "爽直",
+        "刚直",
+        "憨直",
+        "率直",
+        "耿直",
+        "公正",
+        "公道",
+        "公平",
+        "公允",
+        "正派",
+        "爽快",
+        "简捷",
+        "开阔",
+        "豁达",
+        "明朗",
+        "率真",
+        "真诚",
+        "热诚",
+        "至诚",
+        "赤诚",
+        "诚挚",
+        "恳切",
+        "纯真",
+        "率直",
+        "坦率",
+        "笃实",
+        "热忱",
+        "热诚",
+        "热心",
+        "好客",
+        "客气",
+        "殷勤",
+        "和气",
+        "和蔼",
+        "和善",
+        "和婉",
+        "和悦",
+        "和易",
+        "亲切",
+        "过谦",
+        "谦卑",
+        "谦恭",
+        "谦和",
+        "谦让",
+        "谦虚",
+        "谦逊",
+        "虚心",
+        "自谦",
+        "强硬",
+        "强悍",
+        "强劲",
+        "坚决",
+        "坚信",
+        "坚定",
+        "坚韧",
+        "坚实",
+        "坚毅",
+        "坚贞",
+        "中坚",
+        "毅力",
+        "骠悍",
+        "勇敢",
+        "勇猛",
+        "刚毅",
+        "骠悍",
+        "决断",
+        "果敢",
+        "果决",
+        "坚毅",
+        "坚强",
+        "坚忍",
+        "决然",
+        "毅然",
+        "定弦",
+        "断然",
+        "泼辣",
+        "断腕",
+        "断行",
+        "决意",
+        "决计",
+        "主意",
+        "作意",
+        "锐意",
+        "发誓",
+        "干脆",
+        "爽快",
+        "果断",
+      ],
+      tagColor: ["", "success", "warning", "danger"],
+      tagList: [],
+      tagChosedList: [],
+      questionAllList: [
+        "1、最喜欢的游戏是",
+        "2、最喜欢的运动是",
+        "3、最喜欢的明星是",
+        "4、最喜欢的食物是",
+        "5、最喜欢的歌曲是",
+        "6、最喜欢的书是",
+      ],
+      questionList: ["", "", "", "", "", ""],
+      questionNumber: 1,
+      answerList: ["", "", "", "", "", ""],
+      questionMessage:""
     };
   },
   methods: {
     changeStep(index) {
       let app = this;
       if (app.active == 0 && index == 1) {
-        this.$refs["ruleForm1"].validate(valid => {
+        this.$refs["ruleForm1"].validate((valid) => {
           if (valid) {
             app.active = app.active + index;
           } else {
             app.$message({
               message: "请正确填写！",
-              type: "warning"
+              type: "warning",
             });
             return false;
           }
@@ -502,18 +763,125 @@ export default {
       if (app.active == 0 && index == -1) {
         app.$message({
           message: "已回到第一步！",
-          type: "warning"
+          type: "warning",
         });
       }
+      if (app.active == 1 && index == 1) {
+        app.active++;
+      }
+    },
+    chooseTag(tag) {
+      let app = this;
+      let hasExisted = false;
+      if (app.tagChosedList.length == 10) {
+        app.$message({
+          message: "标签的数量不能多于10个！",
+          type: "warning",
+        });
+        return;
+      }
+      for (let i = 0; i < app.tagChosedList.length; i++) {
+        if (app.tagChosedList[i].label == tag.label) {
+          app.$message({
+            message: "该标签已存在！请勿重复选择！",
+            type: "warning",
+          });
+          hasExisted = true;
+        }
+      }
+      if (!hasExisted) app.tagChosedList.push(tag);
+    },
+    addQuestion(num) {
+      let app = this;
+      if (app.questionNumber == 6 && num == 1) {
+        app.$message({
+          message: "最多只能设置六个问题哦",
+          type: "warning",
+        });
+        return;
+      }
+      if (app.questionNumber == 1 && num == -1) {
+        app.$message({
+          message: "至少设置一个问题哦",
+          type: "warning",
+        });
+        return;
+      }
+      if (num == -1) {
+        app.questionList.splice(app.questionNumber - 1, 1, "");
+        console.log(app.questionList);
+      }
+      app.questionNumber += num;
+    },
+    deleteTag(tag) {
+      let app = this;
+      for (let i = 0; i < app.tagChosedList.length; i++) {
+        if (app.tagChosedList[i].label == tag.label) {
+          app.tagChosedList.splice(i, 1);
+        }
+      }
+      console.log(app.tagChosedList);
+    },
+    changeTagList() {
+      let app = this;
+      app.tagList = [];
+      while (app.tagList.length < 52) {
+        let tempIndex = Math.floor(Math.random() * app.tagAllList.length);
+        let hasExisted = false;
+        for (let i = 0; i < app.tagList.length; i++) {
+          if (app.tagAllList[tempIndex] == app.tagList[i].label) {
+            hasExisted = true;
+            break;
+          }
+        }
+        if (!hasExisted) {
+          app.tagList.push({
+            label: app.tagAllList[tempIndex],
+            color: app.tagColor[Math.floor(Math.random() * 4)],
+          });
+        }
+      }
+    },
+    saveTagList() {
+      let app = this;
+      app.userInfo.tagList.splice(0, app.userInfo.tagList.length);
+      for (let i = 0; i < app.tagChosedList.length; i++) {
+        app.userInfo.tagList.push(app.tagChosedList[i].label);
+      }
+      app.tagDialog = false;
+    },
+    saveQuestionList() {
+      let app = this;
+      app.userInfo.questionList.splice(0, app.userInfo.questionList.length);
+      for (let i = 0; i < app.questionList.length; i++) {
+        if (app.questionList[i] == "") {
+          break;
+        } else {
+          for (let j = 0; j < app.questionAllList.length; j++) {
+            if (app.questionAllList[j] == app.questionList[i]) {
+              app.userInfo.questionList.push({
+                questionid: j,
+                answer: app.answerList[i],
+              });
+            }
+          }
+        }
+      }
+      app.questionDialog = false;
+      app.questionMessage="当前已选问题"
+      for(let i=0;i<app.userInfo.questionList.length;i++){
+        app.questionMessage+=(app.userInfo.questionList[i].questionid+1)+"  "
+      }
+      console.log(app.userInfo.questionList);
     },
     sendKey() {
       let app = this;
       Axios.post("register/sendValidateNumber", app.userInfo.phone)
-        .then(function(res) {})
-        .catch(function(error) {});
+        .then(function (res) {})
+        .catch(function (error) {});
       app.validateButton.active = false;
       app.validateButton.leftSeconds = app.validateButton.maxSeconds;
-      app.validateTimer = setInterval(function() {
+      app.validateTimer = setInterval(function () {
         app.validateButton.message =
           "已发送(" + app.validateButton.leftSeconds + ")";
         app.validateButton.leftSeconds--;
@@ -539,16 +907,24 @@ export default {
     submit() {
       let app = this;
       Axios.post("register", app.userInfo)
-        .then(function(res) {
+        .then(function (res) {
           console.log(res);
           app.active = 3;
         })
-        .catch(function(error) {});
-    }
+        .catch(function (error) {});
+    },
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          done();
+        })
+        .catch((_) => {});
+    },
   },
   created() {
     this.cities = regionData;
-  }
+    this.changeTagList();
+  },
 };
 </script>
 
