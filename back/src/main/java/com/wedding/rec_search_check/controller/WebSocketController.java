@@ -60,6 +60,7 @@ public class WebSocketController {
     @OnClose
     public void onClose() {
         webSocketSet.remove(this); //从set中删除
+        map.clear();
         System.out.println("有一连接关闭！当前在线人数为" + webSocketSet.size());
     }
 
