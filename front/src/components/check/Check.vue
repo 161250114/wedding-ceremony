@@ -161,7 +161,7 @@
         colors: ['#99A9BF', '#F7BA2A', '#FF9900'],  // 等同于 { 2: '#99A9BF', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' }
         userState: false,
         chatRoomVisible: false,
-        id: '',
+        id: '',//查看对象的id
         userId: 111, //当前用户
         records: {},
         age: 0,
@@ -211,6 +211,11 @@
     },
     methods: {
       getData () {
+        let url_getCurrentUser = '/getCurrentUser'
+        axios.get(url).then((res) => {
+          console.log(res.data)
+          // this.userId=res.data
+        })
         let url = `/user/get/${this.id}`
         axios.get(url).then((res) => {
           this.records = res.data

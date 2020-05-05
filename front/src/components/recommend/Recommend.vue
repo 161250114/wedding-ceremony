@@ -86,12 +86,17 @@
         },
         methods: {
             getData() {
+              let url_getCurrentUser = '/getCurrentUser'
+              axios.get(url_getCurrentUser).then((res) => {
+                console.log('currentUser'+res.data)
+                // this.userId=res.data
                 let url = `/user/preferList/${this.userId}`
                 axios.get(url).then((res) => {
-                    console.log(res)
-                    this.preferList = res.data
-                    console.log(url)
+                  // console.log(res)
+                  this.preferList = res.data
+                  // console.log(url)
                 })
+              })
             },
             getHottestLabel() {
                 let url = '/labelHeat/heat_list'

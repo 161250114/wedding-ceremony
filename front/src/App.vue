@@ -33,7 +33,7 @@ export default {
     };
   },
   methods: {
-   
+
   },
   created() {
     console.log("OK");
@@ -50,7 +50,6 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  text-align: center;
 }
 
 html,
