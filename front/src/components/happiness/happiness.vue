@@ -1,8 +1,16 @@
 <template>
 <div class="hsp">
+  <div style="height: 100px;width: 800px;background-color: white;margin-left: auto;margin-right: auto;">
+    <div style="float: left" @click="myroom">
+      <el-avatar :size="80" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png">
+      </el-avatar>
+    </div>
+      <el-button size="200"style="float:right;top:auto" type="primary" icon="el-icon-edit" @click="write">
+      </el-button>
+  </div>
   <div  v-for="(h,index) in list" class="hp">
     <div>
-      <p style="margin-left:-700px;margin-top: 50px"><el-avatar :size="30" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" ></el-avatar>
+      <p @click="myroom" style="margin-left:-700px;margin-top: 50px"><el-avatar :size="30" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" ></el-avatar>
       卢本伟</p>
     </div>
     <div class="wa">
@@ -24,7 +32,7 @@
     <div class="ica">
       <span style="position: relative;;left:-60px;">
           <el-button v-if="!islike[index]" icon="el-icon-thumb" circle @click="like(index)"></el-button>
-          <el-button v-if="islike[index]" type="danger" icon="el-icon-thumb" circle></el-button>
+          <el-button v-if="islike[index]" type="danger" icon="el-icon-thumb" circle @click="like(index)"></el-button>
           {{list[index]["likes"]}}
       </span>
       <span style="position: relative;left:-30px;">
@@ -80,6 +88,16 @@
         }
       },
       methods:{
+        write(){
+          this.$router.push({
+            path: './sendhappiness',
+          })
+        },
+        myroom(){
+          this.$router.push({
+            path: './happiness',
+          })
+        },
         send(index){
           let word=this.input[index];
           let commentObject=new Object();
@@ -133,14 +151,14 @@
   }
   .hsp{
     width: 100%;
-    height: 500px;
     background:gainsboro;
     text-align: center;
     overflow:auto;
   }
   .hp{
     width: 800px;
-    margin:20px 400px;
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
     background: white;
   }
