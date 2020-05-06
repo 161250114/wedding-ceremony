@@ -6,7 +6,7 @@ import com.wedding.usermanage.vo.RegisterVO;
 import com.wedding.usermanage.vo.UserVO;
 import org.springframework.stereotype.Service;
 
-@Service("testService")
+@Service
 public interface LRService {
     public LoginVO login(LoginVO loginVO);
 

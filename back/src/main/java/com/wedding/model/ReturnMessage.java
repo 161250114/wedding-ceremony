@@ -5,9 +5,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import java.io.Serializable;
 
 public class ReturnMessage {
-    @JSONField
     private boolean result;
-    @JSONField
     private Object message;
 
     public ReturnMessage(boolean result, Object message) {
@@ -18,7 +16,7 @@ public class ReturnMessage {
     public ReturnMessage() {
     }
 
-    public boolean isOK() {
+    public boolean isResult() {
         return result;
     }
 

@@ -102,7 +102,7 @@ public class LRServiceImpl implements LRService {
         date_standard.setHeightmin(0);
         date_standard.setHeightmax(999);
         date_standard.setEducation("不限");
-        date_standard.setMarrige((byte)4);
+        date_standard.setMarrige((byte)3);
         date_standard.setSalary("不限");
         date_standard.setUserid(user.getId());
         date_standardMapper.insert(date_standard);

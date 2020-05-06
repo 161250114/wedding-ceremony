@@ -19,4 +19,7 @@ public interface UserQuestionMapper {
     int updateByPrimaryKey(UserQuestion record);
 
     List<UserQuestion> selectByUserId(Integer user_id);
+
+    int deleteByUserId(Integer userid);
+
 }

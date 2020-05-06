@@ -12,9 +12,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wedding.model.po.UserQuestion" >
-    insert into user_question (id, userid, questionid, 
+    insert into user_question (id, userid, questionid,
       answer)
-    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{questionid,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{questionid,jdbcType=INTEGER},
       #{answer,jdbcType=VARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.UserQuestion" >
@@ -38,4 +38,8 @@
     select id, userid, questionid, answer
     from user_question
   </select>
+  <delete id="deleteByUserId" parameterType="java.lang.Integer" >
+    delete from user_question
+    where userid = #{userid,jdbcType=INTEGER}
+  </delete>
 </mapper>

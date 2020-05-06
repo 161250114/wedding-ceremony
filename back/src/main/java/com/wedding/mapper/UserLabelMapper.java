@@ -21,4 +21,7 @@ public interface UserLabelMapper {
     List<UserLabel> selectByUserId(Integer user_id);
 
     List<UserLabel> selectByLabel(String label);
+
+    int deleteByUserId(Integer user_id);
+
 }

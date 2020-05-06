@@ -39,4 +39,8 @@
     select id, user_id, label
     from user_label
   </select>
+  <delete id="deleteByUserId" parameterType="java.lang.Integer">
+    delete from user_label
+    where user_id = #{user_id,jdbcType=INTEGER}
+  </delete>
 </mapper>

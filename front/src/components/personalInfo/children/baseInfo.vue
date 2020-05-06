@@ -12,22 +12,25 @@
     <div v-if="activeIndex == '1'" class="info_div">
       <el-form label-position="left" label-width="100px">
         <el-form-item label="姓名:">
-          <el-input v-model="userInfo.fullName" :disabled="editMode"></el-input>
+          <el-input
+            v-model="newUserInfo.fullname"
+            :disabled="editMode"
+          ></el-input>
         </el-form-item>
         <el-form-item label="性别:">
-          <el-radio v-model="userInfo.sex" label="1" :disabled="editMode"
+          <el-radio v-model="newUserInfo.sex" :label="1" :disabled="editMode"
             >男</el-radio
           >
-          <el-radio v-model="userInfo.sex" label="2" :disabled="editMode"
+          <el-radio v-model="newUserInfo.sex" :label="2" :disabled="editMode"
             >女</el-radio
           >
         </el-form-item>
         <el-form-item label="生日:">
           <div class="block">
             <el-date-picker
-              v-model="userInfo.birthday"
+              v-model="newUserInfo.birthday"
               type="date"
-              style="width:100%"
+              style="width: 100%;"
               value-format="yyyy-MM-dd"
               :disabled="editMode"
             >
@@ -35,12 +38,15 @@
           </div>
         </el-form-item>
         <el-form-item label="身高（cm）:">
-          <el-input v-model="userInfo.height" :disabled="editMode"></el-input>
+          <el-input
+            v-model="newUserInfo.height"
+            :disabled="editMode"
+          ></el-input>
         </el-form-item>
       </el-form>
       <div>
         <el-alert
-          title="固定资料仅能修改一次！！慎重！！！"
+          title="固定资料一经注册就无法修改！！！"
           type="warning"
           :closable="false"
           show-icon
@@ -48,12 +54,12 @@
         </el-alert>
       </div>
       <p></p>
-      <el-button
+      <!-- <el-button
         type="danger"
         @click="changeMode(false)"
         v-if="editMode == true"
         ><i class="el-icon-warning"></i>强制修改</el-button
-      >
+      > -->
       <div v-if="editMode == false">
         <div>
           <el-button type="primary">保存</el-button>
@@ -67,29 +73,29 @@
           <el-input
             prefix-icon="el-icon-user"
             placeholder="不超过15个字符"
-            v-model="userInfo.username"
+            v-model="newUserInfo.username"
           ></el-input>
         </el-form-item>
         <el-form-item label="手机号:">
           <el-input
             prefix-icon="el-icon-phone"
-            v-model="userInfo.phone"
+            v-model="newUserInfo.phone"
           ></el-input>
         </el-form-item>
         <el-form-item label="住址:">
           <el-cascader
             ref="cityCascader"
             :options="cities"
-            style="width:100%"
+            style="width: 100%;"
             @change="addressChange"
             v-model="addressCode"
           ></el-cascader>
         </el-form-item>
         <el-form-item label="学历:">
           <el-select
-            v-model="userInfo.education"
+            v-model="newUserInfo.education"
             placeholder="请选择"
-            style="width:100%"
+            style="width: 100%;"
           >
             <el-option
               v-for="item in educationList"
@@ -101,15 +107,15 @@
           </el-select>
         </el-form-item>
         <el-form-item label="婚姻状况:">
-          <el-radio v-model="userInfo.marriage" label="1">未婚</el-radio>
-          <el-radio v-model="userInfo.marriage" label="2">离婚</el-radio>
-          <el-radio v-model="userInfo.marriage" label="3">丧偶</el-radio>
+          <el-radio v-model="newUserInfo.marriage" :label="0">未婚</el-radio>
+          <el-radio v-model="newUserInfo.marriage" :label="1">离婚</el-radio>
+          <el-radio v-model="newUserInfo.marriage" :label="2">丧偶</el-radio>
         </el-form-item>
         <el-form-item label="职业:">
           <el-select
-            v-model="userInfo.profession"
+            v-model="newUserInfo.profession"
             placeholder="请选择"
-            style="width:100%"
+            style="width: 100%;"
           >
             <el-option
               v-for="item in professionList"
@@ -122,9 +128,9 @@
         </el-form-item>
         <el-form-item label="月薪:">
           <el-select
-            v-model="userInfo.salary"
+            v-model="newUserInfo.salary"
             placeholder="请选择"
-            style="width:100%"
+            style="width: 100%;"
           >
             <el-option
               v-for="item in salaryList"
@@ -136,30 +142,45 @@
           </el-select>
         </el-form-item>
       </el-form>
-      <el-button type="primary">保存</el-button>
-      <el-button type="primary">重置</el-button>
+      <el-button type="primary" @click="changeBaseInfo">保存</el-button>
+      <el-button type="primary" @click="redo">重置</el-button>
     </div>
   </div>
 </template>
 
 <script>
 import { regionData } from "element-china-area-data";
+import Axios from "axios";
+
 export default {
   data() {
     return {
       activeIndex: "1",
       userInfo: {
-        fullName: "沈*",
-        sex: "1",
+        fullname: "沈*",
+        sex: 1,
         birthday: "1998-06-30",
         username: "pikaqiu",
         phone: "13218051808",
         height: "172",
         address: "江苏省/宿迁市/泗阳县",
         education: "本科",
-        marriage: "1",
+        marriage: 1,
         profession: "计算机/互联网/通信",
-        salary: "5000-10000元"
+        salary: "5000-10000元",
+      },
+      newUserInfo: {
+        fullname: "沈*",
+        sex: 1,
+        birthday: "1998-06-30",
+        username: "pikaqiu",
+        phone: "13218051808",
+        height: "172",
+        address: "江苏省/宿迁市/泗阳县",
+        education: "本科",
+        marriage: 1,
+        profession: "计算机/互联网/通信",
+        salary: "5000-10000元",
       },
       educationList: [
         "高中中专及以下",
@@ -167,7 +188,7 @@ export default {
         "本科",
         "双学士",
         "硕士",
-        "博士"
+        "博士",
       ],
       salaryList: [
         "2000元以下",
@@ -175,7 +196,7 @@ export default {
         "5000-10000元",
         "10000-20000元",
         "20000-50000元",
-        "50000元以上"
+        "50000元以上",
       ],
       professionList: [
         "销售",
@@ -220,12 +241,12 @@ export default {
         "质控/安防",
         "高级管理",
         "农/林/牧/渔业",
-        "其他职业"
+        "其他职业",
       ],
       addressCode: [],
       cities: "",
       editMode: true,
-      index: 0
+      index: 0,
     };
   },
   methods: {
@@ -248,12 +269,39 @@ export default {
         }
       }
       console.log(app.userInfo.address);
-    }
+    },
+    redo() {
+      let app = this;
+      app.newUserInfo = JSON.parse(JSON.stringify(app.userInfo));
+    },
+    changeBaseInfo() {
+      let app = this;
+      Axios.post("/userInfo/changeBaseInfo", app.newUserInfo)
+        .then(function (res) {
+          if (res.data.result) {
+            app.$message({
+              message: "修改成功！",
+              type: "success",
+            });
+            window.location.href = "/personalInfo/baseInfo";
+          }
+        })
+        .catch(function (error) {});
+    },
   },
   created() {
     let app = this;
     app.cities = regionData;
     let temp = app.cities;
+    Axios.get("/userInfo/getBaseInfo")
+      .then(function (res) {
+        if (res.data.result) {
+          console.log(res.data.message);
+          app.userInfo = JSON.parse(JSON.stringify(res.data.message));
+          app.newUserInfo = JSON.parse(JSON.stringify(res.data.message));
+        }
+      })
+      .catch(function (error) {});
     let cityArray = app.userInfo.address.split("/");
     for (let i = 0; i < cityArray.length; i++) {
       for (let j = 0; j < temp.length; j++) {
@@ -265,7 +313,7 @@ export default {
       }
     }
     app.$emit("getIndex", "/personalInfo/baseInfo");
-  }
+  },
 };
 </script>
 

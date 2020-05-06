@@ -42,11 +42,20 @@
                 <router-link to="/personalInfo">
                   <el-dropdown-item>个人中心</el-dropdown-item></router-link
                 >
-                <el-dropdown-item>功能2</el-dropdown-item>
-                <el-dropdown-item>功能3</el-dropdown-item>
-                <el-dropdown-item>功能4</el-dropdown-item>
-                <el-dropdown-item divided @click="quit"
-                  >退出登录</el-dropdown-item
+                <router-link to="/ApplyWedding">
+                  <el-dropdown-item>申请婚喜宴</el-dropdown-item>
+                </router-link>
+                <router-link to="/Wedding">
+                  <el-dropdown-item>查看婚喜宴</el-dropdown-item>
+                </router-link>
+                <router-link to="/Happiness">
+                  <el-dropdown-item>查看好友动态</el-dropdown-item>
+                </router-link>
+                <router-link to="/consult">
+                  <el-dropdown-item>在线咨询</el-dropdown-item>
+                </router-link>
+                <el-dropdown-item divided
+                  ><label @click="quit()">退出登录</label></el-dropdown-item
                 >
               </el-dropdown-menu>
             </el-dropdown>
@@ -64,35 +73,37 @@ export default {
   props: {
     index: {
       type: String,
-    }
+    },
   },
   data() {
     return {
       username: "",
-      isLogin:false
+      isLogin: false,
     };
+  },
+  methods: {
+    quit() {
+      let app = this;
+      console.log("ok");
+      Axios.get("/quitLogin").then(function (res) {
+        console.log(res);
+        if (res.data.result) {
+          app.isLogin = false;
+        }
+      });
+    },
   },
   created() {
     let app = this;
     Axios.get("/getCurrentUser")
       .then(function (res) {
-        console.log("head",res)
-        if (res.data.ok) {
+        console.log("head", res);
+        if (res.data.result) {
           app.username = res.data.message.uname_phone;
-          app.isLogin=true;
+          app.isLogin = true;
         }
       })
       .catch(function (error) {});
-  },
-  methods: {
-    quit() {
-      let app = this;
-      Axios.get("/quitLogin").then(function(res){
-        if(res.data.ok){
-          app.isLogin=false;
-        }
-      })
-    },
   },
 };
 </script>
