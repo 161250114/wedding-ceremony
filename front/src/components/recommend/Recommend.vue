@@ -112,7 +112,7 @@
                 if (event.target.getAttribute('id') === "tab-猜你喜欢") {
                   let url = `/user/preferList/${this.userId}`
                   axios.get(url).then((res) => {
-                    // console.log(res)
+                    console.log(res)
                     this.preferList = res.data
                     // console.log(url)
                   })

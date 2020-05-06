@@ -191,14 +191,6 @@
           exercise: '未填写',
           game: '未填写'
         },
-        // lifeStyle: {
-        //   smoke: '不吸烟',
-        //   drink: '不喝酒',
-        //   exercise: '偶尔锻炼',
-        //   eating: '都可以',
-        //   time: '不规律',
-        //   religion: '无宗教信仰'
-        // }
       }
     },
     created () {
@@ -217,6 +209,7 @@
           // this.userId=res.data
           this.addCheckHistory()
         })
+
         let url = `/user/get/${this.id}`
         axios.get(url).then((res) => {
           this.records = res.data
@@ -313,11 +306,6 @@
       handleChange (val) {
         console.log(val)
       },
-      // eslint-disable-next-line no-unused-vars
-      // handleClose (done) {
-      //   this.chatRoomVisible = false
-      //   this.exitRoom()
-      // },
       handleChat () {
         let url = `/user/get/${this.userId}`
         let username
@@ -331,54 +319,7 @@
           })
           window.open(routeData.href, '_blank')
         })
-        //open the chatRoom and join the room
-        // this.chatRoomVisible = true
-        // this.joinRoom()
       },
-      //methods for chatRoom
-      // async joinRoom () {
-      //   // let username
-      //   // let url = `/user/get/${this.userId}`
-      //   // axios.get(url).then((res) => {
-      //   //   username = res.data.username
-      //   // })
-      //   // console.log(this.records.username)
-      //   this.ws = new WebSocket(`ws://localhost:8080/chatRoom/${this.records.username}`)  // 后端的启动端口
-      //   this.ws.onopen = this.webscoketonopen
-      //   this.ws.onmessage = this.webscoketonmessage
-      //   //正常关闭触发
-      //   this.ws.onclose = function () {
-      //     console.log('连接关闭')
-      //   }
-      // },
-      // webscoketonopen () {
-      //   console.log('与服务器成功建立连接')
-      // },
-      // webscoketonmessage (value) {
-      //   // console.log(value)
-      //   this.content += (value.data + '\r\n')
-      // },
-      // exitRoom () {
-      //   this.closeWebSocket()
-      // },
-      // sendMsg () {
-      //   if (!this.ws) {
-      //     alert('你已经掉线，请重新加入')
-      //     return
-      //   }
-      //   if (this.ws.readyState === 1) {
-      //     this.ws.send(this.message)
-      //     this.message = ''
-      //   } else {
-      //     alert('发送失败')
-      //   }
-      // },
-      // closeWebSocket () {
-      //   if (this.ws) {
-      //     this.ws.close()
-      //     this.ws = null
-      //   }
-      // }
     }
   }
 </script>

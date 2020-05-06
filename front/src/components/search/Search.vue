@@ -53,7 +53,6 @@
               </el-option>
             </el-select>
 
-            <!--            <el-cascader size="large" :options="options" v-model="selectedOptions" @change="handleChange"></el-cascader>-->
             <el-cascader ref="areaCascader" v-model="addressValue" clearable placeholder="所在地区" :options="area"
                          :props="{ expandTrigger: 'hover' }" @change="handleChange"
                          style="margin-left: 15px; width: 200px">
@@ -153,13 +152,13 @@
 
 <script>
   import axios from 'axios'
-  import {regionDataPlus} from 'element-china-area-data'
+  import {regionDataPlus, TextToCode} from 'element-china-area-data'
 
   export default {
     name: 'Search',
     data () {
       return {
-        addressValue: ['110000','110100','110105'],
+        addressValue: [],
         userId: 0,
         searchType: 2,
         searchForm: {
@@ -531,10 +530,38 @@
           // console.log(res.data.message)
           this.userId = res.data.message.userid
 
+          //根据择偶要求设置默认搜索界面的结果，并显示在选择框上
           let url_1 = `/date_standard/select/${this.userId}`
           axios.get(url_1).then((res) => {
             // console.log(res)
-            this.searchForm.address = res.data.address
+            let areas = res.data.address.split('/')
+            console.log(areas)
+            if(areas.length===3){//xx省/xx市/xx区
+              this.searchForm.address = areas[0] + '/' + areas[1] + '/' + areas[2]
+              let province=TextToCode[areas[0]].code
+              let city=TextToCode[areas[0]][areas[1]].code
+              let area=TextToCode[areas[0]][areas[1]][areas[2]].code
+              this.addressValue=[province,city,area]
+            }
+            else if(areas.length===2){//xx省/xx市/全部
+              this.searchForm.address = areas[0] + '/' + areas[1]
+              let province=TextToCode[areas[0]].code
+              // console.log(province)
+              let city=TextToCode[areas[0]][areas[1]].code
+              let area=''
+              this.addressValue=[province,city,area]
+              console.log(this.addressValue)
+            }
+            else if(areas.length===0){//不限
+              this.searchForm.address = ''
+              this.addressValue=[]
+            }
+            else if(areas.length===1){//xx省/全部
+              this.searchForm.address = areas[0]
+              let province=TextToCode[areas[0]].code+''
+              let city=''
+              this.addressValue=[province,city]
+            }
 
             this.searchForm.youngest = res.data.agemin
             this.youngest_label = res.data.agemin
@@ -542,24 +569,24 @@
             this.searchForm.oldest = res.data.agemax
             this.oldest_label = res.data.agemax
             // console.log(url)
-          })
-          let url_2 = `/user/get/${this.userId}`
-          axios.get(url_2).then((res) => {
-            // console.log(res)
-            if (res.data.sex === 0) {
-              this.searchForm.sex = 1
-              this.sex_label = '女'
-            } else {
-              this.searchForm.sex = 0
-              this.sex_label = '男'
-            }
-            // console.log(url)
-          })
-          let url = `/user/queryDetailSearch/${this.currentPage}`
-          this.$axios.post(url, this.searchForm).then((res) => {
-            // console.log(this.searchForm)
-            this.pageInfo = res.data
-            console.log(this.pageInfo)
+            let url_2 = `/user/get/${this.userId}`
+            axios.get(url_2).then((res) => {
+              // console.log(res)
+              if (res.data.sex === 0) {
+                this.searchForm.sex = 1
+                this.sex_label = '女'
+              } else {
+                this.searchForm.sex = 0
+                this.sex_label = '男'
+              }
+              // console.log(url)
+              let url = `/user/queryDetailSearch/${this.currentPage}`
+              this.$axios.post(url, this.searchForm).then((res) => {
+                // console.log(this.searchForm)
+                this.pageInfo = res.data
+                console.log(this.pageInfo)
+              })
+            })
           })
         })
       },
@@ -599,7 +626,6 @@
         this.searchForm.address = address
       },
       changeLocationValue_sex (val) {
-        //locations是v-for里面的,也是datas里面的值
         let obj = {}
         obj = this.sex.find((item) => {
           return item.sex_value === val
@@ -615,7 +641,6 @@
         }
       },
       changeLocationValue_youngest (val) {
-        //locations是v-for里面的,也是datas里面的值
         let obj = {}
         obj = this.age.find((item) => {
           return item.age_value === val
@@ -629,7 +654,6 @@
         }
       },
       changeLocationValue_oldest (val) {
-        //locations是v-for里面的,也是datas里面的值
         let obj = {}
         obj = this.age.find((item) => {
           return item.age_value === val
@@ -643,7 +667,6 @@
         }
       },
       changeLocationValue_shortest (val) {
-        //locations是v-for里面的,也是datas里面的值
         let obj = {}
         obj = this.height.find((item) => {
           return item.height_value === val
@@ -657,7 +680,6 @@
         }
       },
       changeLocationValue_tallest (val) {
-        //locations是v-for里面的,也是datas里面的值
         let obj = {}
         obj = this.height.find((item) => {
           return item.height_value === val
@@ -671,7 +693,6 @@
         }
       },
       changeLocationValue_salary (val) {
-        //locations是v-for里面的,也是datas里面的值
         let obj = {}
         obj = this.salary.find((item) => {
           return item.salary_value === val
@@ -685,7 +706,6 @@
         }
       },
       changeLocationValue_education (val) {
-        //locations是v-for里面的,也是datas里面的值
         let obj = {}
         obj = this.education.find((item) => {
           return item.education_value === val
@@ -699,7 +719,6 @@
         }
       },
       changeLocationValue_profession (val) {
-        //locations是v-for里面的,也是datas里面的值
         let obj = {}
         obj = this.profession.find((item) => {
           return item.profession_value === val
@@ -713,7 +732,6 @@
         }
       },
       changeLocationValue_marriage (val) {
-        //locations是v-for里面的,也是datas里面的值
         let obj = {}
         obj = this.marrige.find((item) => {
           return item.marrige_value === val
