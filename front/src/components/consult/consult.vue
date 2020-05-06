@@ -19,6 +19,8 @@
       name: "consult",
       data(){
           return {
+            toid:-1,
+            id:-1,
             input:"",
             isMy:true,
             list:[],
