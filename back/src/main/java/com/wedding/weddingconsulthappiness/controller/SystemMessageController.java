@@ -37,6 +37,21 @@ public class SystemMessageController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/read",method = RequestMethod.POST)
+    public int read(@RequestBody String str){
+        int from=Integer.parseInt(str.split("_")[0]);
+        int to=Integer.parseInt(str.split("_")[1]);
+        List<System_message>list=ts.selectAll();
+        for(System_message s:list){
+            if(s.getSenderId()==from&&s.getReceiverId()==to){
+                s.setState(1);
+                ts.updateByPrimaryKey(s);
+            }
+        }
+        return 1;
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/getAll",method = RequestMethod.GET)
     public List<System_message> getAll(){
         return ts.selectAll();
