@@ -158,14 +158,14 @@
           id: 1,
           sex: 1,
           youngest: 22,
-          oldest: 36,
-          address: '北京市/市辖区/朝阳区',
+          oldest: 35,
+          address: '',
           shortest: 0,
           tallest: 300,
-          salary: '10000-20000元',
+          salary: '',
           education: '',
           profession: '',
-          marrige: 0
+          marrige: 3
         },
         currentPage: 1,
         pageInfo: {},
@@ -340,7 +340,7 @@
           marrige_value: '选项4',
           marrige_label: '丧偶'
         }],
-        marrige_label: '未婚',
+        marrige_label: '不限',
         sex: [{
           sex_value: '选项1',
           sex_label: '男'
@@ -479,7 +479,7 @@
           salary_value: '选项7',
           salary_label: '50000元以上'
         }],
-        income_label: '10000-20000元',
+        income_label: '收入不限',
       }
     },
     created () {
@@ -497,14 +497,24 @@
         })
       },
       handleLabelSearch (label) {
-        this.searchType = 1
-        this.currentLabel = label
-        let url = `/user/label_search/${label}&${this.userId}`
-        axios.get(url).then((res) => {
-          //console.log(res)
-          this.userList = res.data
-          // console.log(this.userList)
-          this.getLabelSearchData()
+        let url_getCurrentUser = '/getCurrentUser'
+        axios.get(url_getCurrentUser).then((res) => {
+          // console.log(res.data)
+          if (res.data.message === null) {//没登录的用户，无法查看
+            this.$alert('请您登陆后查看', '信息提醒', {
+              confirmButtonText: '确定'
+            })
+          } else {
+            this.searchType = 1
+            this.currentLabel = label
+            let url = `/user/label_search/${label}&${this.userId}`
+            axios.get(url).then((res) => {
+              //console.log(res)
+              this.userList = res.data
+              // console.log(this.userList)
+              this.getLabelSearchData()
+            })
+          }
         })
       },
       getLabelSearchData () {//post请求获取分页显示的pageInfo
@@ -520,11 +530,15 @@
       getData () {//post请求获取分页显示的pageInfo
         let url_getCurrentUser = '/getCurrentUser'
         axios.get(url_getCurrentUser).then((res) => {
-          // console.log(res.data.message)
-          if(res.data){//没登录的用户，游客所能看到的默认界面
-
-          }
-          else {//获取到当前登录用户
+          // console.log(res.data)
+          if (res.data.message === null) {//没登录的用户，游客所能看到的默认界面
+            let url = `/user/queryDetailSearch/${this.currentPage}`
+            this.$axios.post(url, this.searchForm).then((res) => {
+              // console.log(this.searchForm)
+              this.pageInfo = res.data
+              console.log(this.pageInfo)
+            })
+          } else {//获取到当前登录用户
             this.userId = res.data.message.userid
             //根据择偶要求设置默认搜索界面的结果，并显示在选择框上
             let url_1 = `/date_standard/select/${this.userId}`
@@ -585,12 +599,22 @@
         })
       },
       handleDetailSearch () {
-        this.searchType = 2
-        let url = `/user/queryDetailSearch/${this.currentPage}`
-        this.$axios.post(url, this.searchForm).then((res) => {
-          // console.log(this.searchForm)
-          this.pageInfo = res.data
-          console.log(this.pageInfo)
+        let url_getCurrentUser = '/getCurrentUser'
+        axios.get(url_getCurrentUser).then((res) => {
+          // console.log(res.data)
+          if (res.data.message === null) {//没登录的用户，无法查看
+            this.$alert('请您登陆后查看', '信息提醒', {
+              confirmButtonText: '确定'
+            })
+          } else {
+            this.searchType = 2
+            let url = `/user/queryDetailSearch/${this.currentPage}`
+            this.$axios.post(url, this.searchForm).then((res) => {
+              // console.log(this.searchForm)
+              this.pageInfo = res.data
+              console.log(this.pageInfo)
+            })
+          }
         })
       },
       handleCurrentChange (val) {
@@ -745,26 +769,48 @@
         }
       },
       handleCheck (id) {
-        this.$router.push({
-          path: `/check/${id}`
+        let url_getCurrentUser = '/getCurrentUser'
+        axios.get(url_getCurrentUser).then((res) => {
+          // console.log(res.data)
+          if (res.data.message === null) {//没登录的用户，无法查看
+            this.$alert('请您登陆后查看', '信息提醒', {
+              confirmButtonText: '确定'
+            })
+          } else {
+            this.$router.push({
+              path: `/check/${id}`
+            })
+          }
         })
       },
       handleIDSearch (id) {
-        if (id === '') {
-          this.$message('请输入ID')
-        } else {
-          let url = `/user/get/${id}`
-          axios.get(url).then((res) => {
-            // console.log(res.data)
-            if (res.data === '') {
-              this.$message('该用户不存在')
-            } else {
-              this.$router.push({
-                path: `/check/${id}`
+        let url_getCurrentUser = '/getCurrentUser'
+        axios.get(url_getCurrentUser).then((res) => {
+          // console.log(res.data)
+          if (res.data.message === null) {//没登录的用户，无法查看
+            this.$alert('请您登陆后查看', '信息提醒', {
+              confirmButtonText: '确定'
+            })
+          }
+          else {
+            if (id === '') {
+              this.$message('请输入ID')
+            }
+            else {
+              let url = `/user/get/${id}`
+              axios.get(url).then((res) => {
+                // console.log(res.data)
+                if (res.data === '') {
+                  this.$message('该用户不存在')
+                } else {
+                  this.$router.push({
+                    path: `/check/${id}`
+                  })
+                }
               })
             }
-          })
-        }
+          }
+        })
       }
     }
   }

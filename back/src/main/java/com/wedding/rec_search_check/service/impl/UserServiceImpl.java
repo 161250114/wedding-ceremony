@@ -10,6 +10,10 @@ import com.wedding.rec_search_check.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -138,10 +142,51 @@ public class UserServiceImpl implements UserService {
     @Override
     public PageInfo<User> selDetail(Integer currPage, Search search) {
         if(currPage == null) currPage = 1;
-        //设置从第几页开始查询2条
+        //设置从第几页开始查询
         PageHelper.startPage(currPage,8);
         //分页查询
-        PageInfo<User> pageInfo = new PageInfo<>(userMapper.selectByDetail(search));
+
+        //获取当前年份
+        Calendar cal=Calendar.getInstance();
+        int year=cal.get(Calendar.YEAR);
+
+        List<User> selectedListByDetail = new ArrayList<>();
+        if(search.getMarrige()==3){//婚姻状况不限
+            search.setMarrige(0);
+            List<User> selectedListByDetail_1 = userMapper.selectByDetail(search);
+            if(selectedListByDetail_1!= null) {
+                selectedListByDetail.addAll(selectedListByDetail_1);
+            }
+            search.setMarrige(1);
+            List<User> selectedListByDetail_2 = userMapper.selectByDetail(search);
+            if(selectedListByDetail_2!= null) {
+                selectedListByDetail.addAll(selectedListByDetail_2);
+            }
+            search.setMarrige(2);
+            List<User> selectedListByDetail_3 = userMapper.selectByDetail(search);
+            if(selectedListByDetail_3!= null) {
+                selectedListByDetail.addAll(selectedListByDetail_3);
+            }
+            System.out.println(selectedListByDetail.size());
+        }
+        else {
+            selectedListByDetail = userMapper.selectByDetail(search);
+        }
+
+        for(int i=0;i<selectedListByDetail.size();i++){//年龄在范围之内
+            //获取用户出生年份
+            Date birthday= selectedListByDetail.get(i).getBirthday();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss aa");
+            String birth_year=sdf.format(birthday).substring(0,4);
+            //得到年龄
+            int age = year-Integer.parseInt(birth_year);
+
+            if(age<search.getYoungest()||age>search.getOldest()){
+                selectedListByDetail.remove(i);
+                i--;
+            }
+        }
+        PageInfo<User> pageInfo = new PageInfo<>(selectedListByDetail);
         return pageInfo;
     }
 }
