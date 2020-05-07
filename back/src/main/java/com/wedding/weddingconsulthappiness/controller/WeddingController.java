@@ -28,9 +28,17 @@ public class WeddingController {
         return ws.insert(w);
     }
     @ResponseBody
-    @RequestMapping(value="/get",method = RequestMethod.GET)
-    public Wedding get(){
-        return ws.selectByPrimaryKey(0);
+    @RequestMapping(value="/get",method = RequestMethod.POST)
+    public List<Wedding> get(@RequestBody Integer id){
+        List list=ws.selectAll();
+        List result=new ArrayList();
+        for(int i=0;i<list.size();i++){
+            Wedding w= (Wedding) list.get(i);
+            if(w.getApplicantId()==id){
+                result.add(new WeddingVO((Wedding)list.get(i)));
+            }
+        }
+        return result;
     }
     @ResponseBody
     @RequestMapping(value="/getAll",method = RequestMethod.GET)
@@ -44,8 +52,24 @@ public class WeddingController {
     }
     @ResponseBody
     @RequestMapping(value="/update",method = RequestMethod.POST)
-    public int update(@RequestBody Wedding w, HttpServletRequest request){
-        return ws.updateByPrimaryKey(w);
+    public int update(@RequestBody WeddingVO w, HttpServletRequest request){
+        List list=ws.selectAll();
+        List result=new ArrayList();
+        Wedding we=new Wedding();
+        for(int i=0;i<list.size();i++){
+            Wedding W= (Wedding) list.get(i);
+            if(W.getId()==w.getId()){
+                we=W;
+            }
+        }
+        if(w.getState().equals("取消")){
+            we.setState(2);
+        }
+        else{
+            we.setState(1);
+        }
+
+        return ws.updateByPrimaryKey(we);
     }
 
 }

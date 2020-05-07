@@ -55,8 +55,19 @@
             state:0
           },
           hplist:[],
-          id:0
+          id:0,
+          senderId:0
         }
+      },
+      created(){
+        let app=this
+        axios.get("/getCurrentUser")
+          .then(function(res) {
+            app.senderId=res.data.message.userid
+          })
+          .catch(function (err) {
+            console.log(err);
+          })
       },
       methods:{
         handleRemove(file,filelist) {
@@ -118,6 +129,7 @@
             .then(function(res){
               console.log(res)
               app.id=parseInt(res.data)
+              app.happiness.senderId=app.senderId
               for(let i in app.photolist){
                 let hp=new Object();
                 hp.id=0

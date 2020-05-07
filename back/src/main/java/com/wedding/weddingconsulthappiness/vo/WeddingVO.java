@@ -9,7 +9,14 @@ public class WeddingVO {
     int id;
     int applicant_id;
     String name;
-
+    String phone;
+    String email;
+    int total;
+    String start;
+    String end;
+    String location;
+    String detail;
+    String state;
     public WeddingVO(Wedding w){
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         this.id=w.getId();
@@ -138,13 +145,5 @@ public class WeddingVO {
         this.state = state;
     }
 
-    String phone;
-    String email;
 
-    int total;
-    String start;
-    String end;
-    String location;
-    String detail;
-    String state;
 }
