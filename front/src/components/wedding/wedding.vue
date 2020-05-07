@@ -78,74 +78,8 @@
           id:-1,
           isMana:false,
           input:"",
-          storage:[{
-            id:"100001",
-            name:"卢本伟",
-            phone:"",
-            email:"",
-            total:100,
-            start:"",
-            end:"",
-            location:"777777",
-            detail:"2155",
-            state:0
-          }, {
-            id:"100002",
-            name:"五五开",
-            phone:"",
-            email:"",
-            total:120,
-            start:"",
-            end:"",
-            location:"35325",
-            detail:"2532",
-            state:1
-          }, {
-            id:"100003",
-            name:"pdd",
-            phone:"",
-            email:"",
-            total:200,
-            start:"",
-            end:"",
-            location:"2314",
-            detail:"144345315",
-            state:0
-          }],
-          tableData: [{
-            id:"100001",
-            name:"卢本伟",
-            phone:"",
-            email:"",
-            total:100,
-            start:"",
-            end:"",
-            location:"777777",
-            detail:"2155",
-            state:0
-          }, {
-            id:"100002",
-            name:"五五开",
-            phone:"",
-            email:"",
-            total:120,
-            start:"",
-            end:"",
-            location:"35325",
-            detail:"2532",
-            state:1
-          }, {
-            id:"100003",
-            name:"pdd",
-            phone:"",
-            email:"",
-            total:200,
-            start:"",
-            end:"",
-            location:"2314",
-            detail:"144345315",
-            state:0
-          }]
+          storage:[],
+          tableData: []
         }
       },
       created(){
