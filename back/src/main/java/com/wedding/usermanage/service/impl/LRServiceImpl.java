@@ -55,7 +55,7 @@ public class LRServiceImpl implements LRService {
         User user=new User();
         user.setAddress(registerVO.getAddress());
         user.setAlbumid(album.getId());
-        user.setBalance(0);
+        user.setBalance(0.0);
         DateFormat format1=new SimpleDateFormat("yyyy-MM-dd");
         try {
             user.setBirthday(format1.parse(registerVO.getBirthday()));

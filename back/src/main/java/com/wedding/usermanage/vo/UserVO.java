@@ -34,13 +34,38 @@ public class UserVO implements Serializable {
 
     private String salary;
 
-    private Integer balance;
+    private double balance;
 
     private Integer trueness;
 
     private String profession;
 
     private Integer albumid;
+
+    public UserVO() {
+    }
+
+    public UserVO(Integer id, String username, String password, String phone, Byte usertype, String fullname, Integer age, Byte sex, Date birthday, Integer height, String introduction, String address, String education, Byte marrige, String salary, double balance, Integer trueness, String profession, Integer albumid) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.phone = phone;
+        this.usertype = usertype;
+        this.fullname = fullname;
+        this.age = age;
+        this.sex = sex;
+        this.birthday = birthday;
+        this.height = height;
+        this.introduction = introduction;
+        this.address = address;
+        this.education = education;
+        this.marrige = marrige;
+        this.salary = salary;
+        this.balance = balance;
+        this.trueness = trueness;
+        this.profession = profession;
+        this.albumid = albumid;
+    }
 
     public Integer getId() {
         return id;
@@ -162,11 +187,11 @@ public class UserVO implements Serializable {
         this.salary = salary == null ? null : salary.trim();
     }
 
-    public Integer getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(Integer balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 

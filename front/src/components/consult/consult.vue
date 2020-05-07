@@ -41,6 +41,24 @@
           })
         this.load();
       },
+      destroyed: function () {
+        let app=this;
+        if(app.id==null){
+          return;
+        }
+        else{
+          let from=app.toid;
+          let to=app.id;
+          let str=from+"_"+to;
+          axios.post('/systemmessage/read',str)
+            .then(function(res){
+              
+            })
+            .catch(function(err){
+              console.log(err);
+            });
+        }
+      },
       mounted: function () {
         if(this.timer){
           clearInterval(this.timer);

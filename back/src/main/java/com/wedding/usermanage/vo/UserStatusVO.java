@@ -7,9 +7,9 @@ public class UserStatusVO implements Serializable {
     String username;
     int usertype;
     int dateStatus;
-    int balance;
+    double balance;
 
-    public UserStatusVO(int userid, String username, int usertype, int dateStatus, int balance) {
+    public UserStatusVO(int userid, String username, int usertype, int dateStatus, double balance) {
         this.userid = userid;
         this.username = username;
         this.usertype = usertype;
@@ -52,11 +52,11 @@ public class UserStatusVO implements Serializable {
         this.dateStatus = dateStatus;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 }
