@@ -31,7 +31,7 @@ public class User {
 
     private String salary;
 
-    private Integer balance;
+    private Double balance;
 
     private Integer trueness;
 
@@ -155,11 +155,11 @@ public class User {
         this.salary = salary == null ? null : salary.trim();
     }
 
-    public Integer getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(Integer balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 

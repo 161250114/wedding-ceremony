@@ -16,7 +16,7 @@
     <result column="education" jdbcType="VARCHAR" property="education" />
     <result column="marrige" jdbcType="TINYINT" property="marrige" />
     <result column="salary" jdbcType="VARCHAR" property="salary" />
-    <result column="balance" jdbcType="INTEGER" property="balance" />
+    <result column="balance" jdbcType="DOUBLE" property="balance" />
     <result column="trueness" jdbcType="INTEGER" property="trueness" />
     <result column="profession" jdbcType="VARCHAR" property="profession" />
     <result column="albumid" jdbcType="INTEGER" property="albumid" />
@@ -40,7 +40,7 @@
       #{phone,jdbcType=VARCHAR}, #{usertype,jdbcType=TINYINT}, #{fullname,jdbcType=VARCHAR},
       #{sex,jdbcType=TINYINT}, #{birthday,jdbcType=DATE}, #{height,jdbcType=INTEGER},
       #{introduction,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR},
-      #{marrige,jdbcType=TINYINT}, #{salary,jdbcType=VARCHAR}, #{balance,jdbcType=INTEGER},
+      #{marrige,jdbcType=TINYINT}, #{salary,jdbcType=VARCHAR}, #{balance,jdbcType=DOUBLE},
       #{trueness,jdbcType=INTEGER}, #{profession,jdbcType=VARCHAR}, #{albumid,jdbcType=INTEGER},
       #{vipEnddate,jdbcType=DATE}, #{dateStatus,jdbcType=TINYINT}
       )
@@ -60,7 +60,7 @@
       education = #{education,jdbcType=VARCHAR},
       marrige = #{marrige,jdbcType=TINYINT},
       salary = #{salary,jdbcType=VARCHAR},
-      balance = #{balance,jdbcType=INTEGER},
+      balance = #{balance,jdbcType=DOUBLE},
       trueness = #{trueness,jdbcType=INTEGER},
       profession = #{profession,jdbcType=VARCHAR},
       albumid = #{albumid,jdbcType=INTEGER},

@@ -1,9 +1,5 @@
 package com.wedding.model;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
-import java.io.Serializable;
-
 public class ReturnMessage {
     private boolean result;
     private Object message;

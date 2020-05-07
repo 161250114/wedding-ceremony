@@ -35,4 +35,9 @@
     select id, userid2, userid1, start_date, end_date
     from date_record
   </select>
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, userid2, userid1, start_date, end_date
+    from date_record
+    where userid = #{userid,jdbcType=INTEGER}
+  </select>
 </mapper>

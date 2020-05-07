@@ -1,8 +1,11 @@
 package com.wedding.mapper;
 
 import com.wedding.model.po.Bill;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public interface BillMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -13,4 +16,7 @@ public interface BillMapper {
     List<Bill> selectAll();
 
     int updateByPrimaryKey(Bill record);
+
+    List<Bill> selectByUserId(Integer userid);
+
 }

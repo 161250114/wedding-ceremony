@@ -31,6 +31,16 @@
     from user_relation
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByUserId1" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, userid1, userid2, remark, type
+    from user_relation
+    where userid1 = #{userid1,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUserId1and2" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, userid1, userid2, remark, type
+    from user_relation
+    where userid1 = #{userid1,jdbcType=INTEGER} and userid2 = #{userid2,jdbcType=INTEGER}
+  </select>
   <select id="selectAll" resultMap="BaseResultMap" >
     select id, userid1, userid2, remark, type
     from user_relation
