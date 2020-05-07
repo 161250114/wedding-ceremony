@@ -67,112 +67,21 @@
     data() {
       return {
         input:"",
-        storage:[{
-          id:"100001",
-          name:"卢本伟",
-          phone:"",
-          email:"",
-          total:100,
-          start:"",
-          end:"",
-          location:"777777",
-          detail:"2155",
-          state:0
-        }, {
-          id:"100002",
-          name:"五五开",
-          phone:"",
-          email:"",
-          total:120,
-          start:"",
-          end:"",
-          location:"35325",
-          detail:"2532",
-          state:1
-        }, {
-          id:"100003",
-          name:"pdd",
-          phone:"",
-          email:"",
-          total:200,
-          start:"",
-          end:"",
-          location:"2314",
-          detail:"144345315",
-          state:0
-        }],
-        tableData: [{
-          id:"100001",
-          name:"卢本伟",
-          phone:"",
-          email:"",
-          total:100,
-          start:"",
-          end:"",
-          location:"777777",
-          detail:"2155",
-          state:0
-        }, {
-          id:"100002",
-          name:"五五开",
-          phone:"",
-          email:"",
-          total:120,
-          start:"",
-          end:"",
-          location:"35325",
-          detail:"2532",
-          state:1
-        }, {
-          id:"100003",
-          name:"pdd",
-          phone:"",
-          email:"",
-          total:200,
-          start:"",
-          end:"",
-          location:"2314",
-          detail:"144345315",
-          state:0
-        }],
-        tableData: [{
-          id:"100001",
-          name:"卢本伟",
-          phone:"",
-          email:"",
-          total:100,
-          start:"",
-          end:"",
-          location:"777777",
-          detail:"2155",
-          state:0
-        }, {
-          id:"100002",
-          name:"五五开",
-          phone:"",
-          email:"",
-          total:120,
-          start:"",
-          end:"",
-          location:"35325",
-          detail:"2532",
-          state:1
-        }, {
-          id:"100003",
-          name:"pdd",
-          phone:"",
-          email:"",
-          total:200,
-          start:"",
-          end:"",
-          location:"2314",
-          detail:"144345315",
-          state:0
-        }]
+        id:-1,
+        storage:[],
+        tableData: [],
       }
     },
     created(){
-      this.load();
+      let app=this
+      axios.get("/getCurrentUser")
+        .then(function(res) {
+          app.id=res.data.message.userid
+          app.load();
+        })
+        .catch(function (err) {
+          console.log(err);
+        })
     },
     methods: {
       showAll(){
@@ -183,8 +92,10 @@
       },
       load(){
         let app=this
-        axios.get('/wedding/getAll')
+        let id=app.id
+        axios.post('/wedding/get',id)
           .then(function(res){
+            console.log(res.data)
             app.tableData=res.data
             app.storage=JSON.parse(JSON.stringify(res.data))
           })

@@ -12,7 +12,7 @@
         width="180">
       </el-table-column>
       <el-table-column
-        prop="name"
+        prop="username"
         label="用户名"
         width="180">
       </el-table-column>
@@ -33,27 +33,29 @@
 </template>
 
 <script>
+  import axios from 'axios'
     export default {
       name: "consultlist",
       data() {
         return {
           input: "",
-          tableData: [{
-            id: "100001",
-            name: "卢本伟",
-            state: 0
-          }, {
-            id: "100002",
-            name: "五五开",
-            state: 1
-          }, {
-            id: "100003",
-            name: "pdd",
-            state: 0
-          }]
+          tableData:[]
         }
       },
+      created(){
+        this.load()
+      },
       methods:{
+        load(){
+          let app=this
+          axios.get("/systemmessage/getState")
+            .then(function(res) {
+              app.tableData=res.data
+            })
+            .catch(function (err) {
+              console.log(err);
+            })
+        },
         search(input){
           let app=this
           let table=this.tableData

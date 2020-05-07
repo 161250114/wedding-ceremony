@@ -24,8 +24,8 @@ public class WeddingRecordController {
         return wrs.insert(wr);
     }
     @ResponseBody
-    @RequestMapping(value="/get",method = RequestMethod.GET)
-    public Wedding_record get(){
+    @RequestMapping(value="/get",method = RequestMethod.POST)
+    public Wedding_record get(@RequestBody Integer id) {
         return wrs.selectByPrimaryKey(0);
     }
     @ResponseBody

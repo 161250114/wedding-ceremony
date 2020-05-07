@@ -2,12 +2,14 @@ package com.wedding.weddingconsulthappiness.controller;
 
 import com.wedding.model.po.System_message;
 import com.wedding.weddingconsulthappiness.service.SystemMessageService;
+import com.wedding.weddingconsulthappiness.vo.MessageState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -39,7 +41,28 @@ public class SystemMessageController {
     public List<System_message> getAll(){
         return ts.selectAll();
     }
-
+    @ResponseBody
+    @RequestMapping(value = "/getState",method = RequestMethod.GET)
+    public List<MessageState> getState(){
+        List<System_message>list=ts.selectAll();
+        HashMap<Integer,MessageState>map=new HashMap<>();
+        for(System_message s:list){
+            int id=s.getSenderId();
+            if(!map.containsKey(id)){
+                MessageState m=new MessageState(id,"","无新消息");
+                map.put(id,m);
+            }
+            if(s.getState()==0){
+                MessageState m=new MessageState(id,"","有新消息");
+                map.put(id,m);
+            }
+        }
+        List<MessageState>result=new ArrayList<MessageState>();
+        for(Integer key:map.keySet()){
+            result.add(map.get(key));
+        }
+        return result;
+    }
     @ResponseBody
     @RequestMapping(value = "/update",method = RequestMethod.GET)
     public int update(){
