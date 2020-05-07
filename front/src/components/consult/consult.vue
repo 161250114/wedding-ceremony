@@ -3,7 +3,7 @@
     <div class="title" style="text-align: center"><p style="font-size: 20px">正在与管理员聊天</p></div>
     <div class="talk_con">
       <div class="talk_show" id="words">
-        <div  v-for="mess in list"  :class="{'atalk':mess.senderId==1,'btalk':mess.receiverId==1}"><span>{{mess.content}}</span></div>
+        <div  v-for="mess in list"  :class="{'atalk':mess.senderId==id,'btalk':mess.receiverId==id}"><span>{{mess.content}}</span></div>
       </div>
       <div class="talk_input">
         <el-input v-model="input" placeholder="请输入内容" class="talk_word"></el-input>
@@ -27,7 +27,19 @@
       }
       },
       created(){
-        this.load(this.$route.toid);
+        let app=this
+        let toid=this.$route.toid
+        if(toid===undefined){
+          this.toid=0
+        }
+        axios.get("/getCurrentUser")
+          .then(function(res) {
+            app.id=res.data.message.userid
+          })
+          .catch(function (err) {
+            console.log(err);
+          })
+        this.load();
       },
       mounted: function () {
         if(this.timer){
@@ -40,9 +52,10 @@
         }
       },
       methods:{
-        load(toid){
+        load(){
           let app=this
-          axios.get('/systemmessage/getAll')
+          let number=app.toid+app.id;
+          axios.post('/systemmessage/get',number)
             .then(function(res){
               app.list=res.data
             })
@@ -54,8 +67,8 @@
           let app=this;
           var data = {};
           data["id"] = 0;
-          data["senderId"]=1;
-          data["receiverId"]=0;
+          data["senderId"]=app.id;
+          data["receiverId"]=app.toid;
           data["content"]=app.input;
           data["state"]=0;
           axios.post("/systemmessage/add",data)

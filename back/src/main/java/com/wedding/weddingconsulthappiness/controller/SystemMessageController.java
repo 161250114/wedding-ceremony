@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -21,9 +22,16 @@ public class SystemMessageController {
         return ts.addSystemMessage(sm);
     }
     @ResponseBody
-    @RequestMapping(value = "/get",method = RequestMethod.GET)
-    public System_message getsm(){
-        return ts.selectByPrimaryKey(0);
+    @RequestMapping(value = "/get",method = RequestMethod.POST)
+    public List<System_message> getsm(@RequestBody Integer number){
+        List<System_message>list=ts.selectAll();
+        ArrayList<System_message>result=new ArrayList<>();
+        for(System_message sm:list){
+            if(sm.getSenderId()+sm.getReceiverId()==number){
+                result.add(sm);
+            }
+        }
+        return result;
     }
 
     @ResponseBody
