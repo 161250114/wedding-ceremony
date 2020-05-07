@@ -4,11 +4,11 @@
       <el-form label-position="left" label-width="80px">
         <el-form-item label="年龄：">
           <el-select
-            v-model="standard.ageMin"
+            v-model="newStandard.ageMin"
             placeholder="请选择"
             class="select"
           >
-            <el-option key="不限" label="不限" value="不限"></el-option>
+            <el-option key="不限" label="不限" :value="0"></el-option>
             <el-option
               v-for="count in 82"
               :key="count + 17"
@@ -19,11 +19,11 @@
           </el-select>
           <span>至</span>
           <el-select
-            v-model="standard.ageMax"
+            v-model="newStandard.ageMax"
             placeholder="请选择"
             class="select"
           >
-            <el-option key="不限" label="不限" value="不限"></el-option>
+            <el-option key="不限" label="不限" :value="999"></el-option>
             <el-option
               v-for="count in 82"
               :key="count + 17"
@@ -35,11 +35,11 @@
         </el-form-item>
         <el-form-item label="身高：">
           <el-select
-            v-model="standard.heightMin"
+            v-model="newStandard.heightMin"
             placeholder="请选择"
             class="select"
           >
-            <el-option key="不限" label="不限" value="不限"></el-option>
+            <el-option key="不限" label="不限" :value="0"></el-option>
             <el-option
               v-for="count in 82"
               :key="count + 128"
@@ -50,11 +50,11 @@
           </el-select>
           <span>至</span>
           <el-select
-            v-model="standard.heightMax"
+            v-model="newStandard.heightMax"
             placeholder="请选择"
             class="select"
           >
-            <el-option key="不限" label="不限" value="不限"></el-option>
+            <el-option key="不限" label="不限" :value="999"></el-option>
             <el-option
               v-for="count in 82"
               :key="count + 128"
@@ -66,7 +66,7 @@
         </el-form-item>
         <el-form-item label="月收入：">
           <el-select
-            v-model="standard.salary"
+            v-model="newStandard.salary"
             placeholder="请选择"
             class="single_select"
           >
@@ -81,7 +81,7 @@
         </el-form-item>
         <el-form-item label="学历:">
           <el-select
-            v-model="standard.education"
+            v-model="newStandard.education"
             placeholder="请选择"
             class="single_select"
           >
@@ -99,15 +99,15 @@
             ref="cityCascader"
             :options="cities"
             @change="addressChange"
-            v-model="addressCode"
+            v-model="newAddressCode"
             class="single_select"
           ></el-cascader>
         </el-form-item>
         <el-form-item label="婚姻状况:">
-          <el-radio v-model="standard.marriage" label="0">未婚</el-radio>
-          <el-radio v-model="standard.marriage" label="1">离婚</el-radio>
-          <el-radio v-model="standard.marriage" label="2">丧偶</el-radio>
-          <el-radio v-model="standard.marriage" label="3">不限</el-radio>
+          <el-radio v-model="newStandard.marriage" :label="0">未婚</el-radio>
+          <el-radio v-model="newStandard.marriage" :label="1">离婚</el-radio>
+          <el-radio v-model="newStandard.marriage" :label="2">丧偶</el-radio>
+          <el-radio v-model="newStandard.marriage" :label="3">不限</el-radio>
         </el-form-item>
       </el-form>
       <el-alert
@@ -117,29 +117,41 @@
       >
       </el-alert>
       <p></p>
-      <el-button type="primary">保存</el-button>
-      <el-button type="primary">重置</el-button>
+      <el-button type="primary" @click="changeStandard">保存</el-button>
+      <el-button type="primary" @click="redo">重置</el-button>
     </div>
   </div>
 </template>
 
 <script>
 import { regionData } from "element-china-area-data";
+import Axios from "axios";
 export default {
   data() {
     return {
       standard: {
-        ageMin: "19",
-        ageMax: "25",
-        heightMin: "不限",
-        heightMax: "不限",
+        ageMin: 0,
+        ageMax: 999,
+        heightMin: 0,
+        heightMax: 999,
         salary: "不限",
         education: "不限",
         address: "江苏省/宿迁市/泗阳县",
-        marriage: "4"
+        marriage: 3,
+      },
+      newStandard: {
+        ageMin: 0,
+        ageMax: 999,
+        heightMin: 0,
+        heightMax: 999,
+        salary: "不限",
+        education: "不限",
+        address: "江苏省/宿迁市/泗阳县",
+        marriage: 3,
       },
       cities: [],
       addressCode: [],
+      newAddressCode: [],
       educationList: [
         "不限",
         "高中中专及以下",
@@ -147,7 +159,7 @@ export default {
         "本科",
         "双学士",
         "硕士",
-        "博士"
+        "博士",
       ],
       salaryList: [
         "不限",
@@ -156,52 +168,80 @@ export default {
         "5000-10000元",
         "10000-20000元",
         "20000-50000元",
-        "50000元以上"
-      ]
+        "50000元以上",
+      ],
     };
   },
   methods: {
     addressChange() {
       let app = this;
-      app.standard.address = "";
+      app.newStandard.address = "";
       let temp = app.$refs.cityCascader.getCheckedNodes()[0].pathLabels;
       for (let i = 0; i < temp.length; i++) {
-        app.standard.address = app.standard.address + temp[i];
+        app.newStandard.address = app.newStandard.address + temp[i];
         if (i != temp.length - 1) {
-          app.standard.address += "/";
+          app.newStandard.address += "/";
         }
       }
-      console.log(app.standard.address);
-    }
+      console.log(app.newStandard.address);
+    },
+    redo() {
+      let app = this;
+      app.newStandard = JSON.parse(JSON.stringify(app.standard));
+      app.newAddressCode = JSON.parse(JSON.stringify(app.addressCode));
+    },
+    changeStandard() {
+      let app = this;
+      Axios.post("/userInfo/changeStandard", app.newStandard)
+        .then(function (res) {
+          if (res.data.result) {
+            app.$message({
+              message: "修改成功！",
+              type: "success",
+            });
+          }
+        })
+        .catch(function (error) {});
+    },
   },
   created() {
     let app = this;
-    app.cities = JSON.parse(JSON.stringify(regionData));
-    let tempAddress = { label: "不限", value: "不限" };
-    app.cities.splice(0, 0, tempAddress);
-    for (let i = 0; i < app.cities.length; i++) {
-      if (app.cities[i].children != null) {
-        app.cities[i].children.splice(0, 0, tempAddress);
-        for (let j = 0; j < app.cities[i].children.length; j++) {
-          if (app.cities[i].children[j].children != null) {
-            app.cities[i].children[j].children.splice(0, 0, tempAddress);
+    Axios.get("/userInfo/getStandard")
+      .then(function (res) {
+        if (res.data.result) {
+          console.log(res.data.message);
+          app.standard = JSON.parse(JSON.stringify(res.data.message));
+          app.newStandard = JSON.parse(JSON.stringify(res.data.message));
+          app.cities = JSON.parse(JSON.stringify(regionData));
+          let tempAddress = { label: "不限", value: "不限" };
+          app.cities.splice(0, 0, tempAddress);
+          for (let i = 0; i < app.cities.length; i++) {
+            if (app.cities[i].children != null) {
+              app.cities[i].children.splice(0, 0, tempAddress);
+              for (let j = 0; j < app.cities[i].children.length; j++) {
+                if (app.cities[i].children[j].children != null) {
+                  app.cities[i].children[j].children.splice(0, 0, tempAddress);
+                }
+              }
+            }
           }
+          let temp = app.cities;
+          let cityArray = app.standard.address.split("/");
+          for (let i = 0; i < cityArray.length; i++) {
+            for (let j = 0; j < temp.length; j++) {
+              if (cityArray[i] == temp[j].label) {
+                app.addressCode.push(temp[j].value);
+                temp = temp[j].children;
+                break;
+              }
+            }
+          }
+          app.newAddressCode = JSON.parse(JSON.stringify(app.addressCode));
         }
-      }
-    }
-    let temp = app.cities;
-    let cityArray = app.standard.address.split("/");
-    for (let i = 0; i < cityArray.length; i++) {
-      for (let j = 0; j < temp.length; j++) {
-        if (cityArray[i] == temp[j].label) {
-          app.addressCode.push(temp[j].value);
-          temp = temp[j].children;
-          break;
-        }
-      }
-    }
+      })
+      .catch(function (error) {});
     app.$emit("getIndex", "/personalInfo/dateStandard");
-  }
+  },
 };
 </script>
 

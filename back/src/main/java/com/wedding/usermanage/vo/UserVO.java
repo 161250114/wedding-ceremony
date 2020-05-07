@@ -14,10 +14,6 @@ public class UserVO implements Serializable {
 
     private Byte usertype;
 
-    private Byte limitBrowse;
-
-    private Byte limitMessage;
-
     private String fullname;
 
     private Integer age;
@@ -84,22 +80,6 @@ public class UserVO implements Serializable {
 
     public void setUsertype(Byte usertype) {
         this.usertype = usertype;
-    }
-
-    public Byte getLimitBrowse() {
-        return limitBrowse;
-    }
-
-    public void setLimitBrowse(Byte limitBrowse) {
-        this.limitBrowse = limitBrowse;
-    }
-
-    public Byte getLimitMessage() {
-        return limitMessage;
-    }
-
-    public void setLimitMessage(Byte limitMessage) {
-        this.limitMessage = limitMessage;
     }
 
     public String getFullname() {

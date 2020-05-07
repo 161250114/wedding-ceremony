@@ -6,13 +6,13 @@
     <el-row>
       <el-col :span="3">&nbsp;</el-col>
       <el-col :span="18">
-        <el-container style="height: 750px; border: 1px solid #eee">
-          <el-aside width="250px" style="background-color: rgb(238, 241, 246)">
+        <el-container style="height: 750px; border: 1px solid #eee;">
+          <el-aside width="250px" style="background-color: rgb(238, 241, 246);">
             <div>
               <el-avatar
                 :size="100"
                 src="../../../static/photo1.jpg"
-                style="margin-top:10px"
+                style="margin-top: 10px;"
               ></el-avatar>
               <p>
                 <b>{{ userinfo.username }}&nbsp;</b
@@ -27,11 +27,11 @@
                 >
                   <img
                     :src="
-                      dateStatus === 0
+                      userinfo.dateStatus === 0
                         ? '../../../static/single.png'
                         : '../../../static/couple.png'
                     "
-                    style="height:22px;vertical-align:text-top;"
+                    style="height: 22px; vertical-align: text-top;"
                   />
                 </el-tooltip>
               </p>
@@ -121,16 +121,10 @@
           </el-aside>
 
           <el-container>
-            <el-header style="text-align: right; font-size: 12px">
-              <el-dropdown>
-                <i class="el-icon-setting" style="margin-right: 15px"></i>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>查看</el-dropdown-item>
-                  <el-dropdown-item>新增</el-dropdown-item>
-                  <el-dropdown-item>删除</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-              <span>王小虎</span>
+            <el-header style="text-align: right; font-size: 12px;">
+              <span
+                ><b>{{ userinfo.username }}</b></span
+              >
             </el-header>
 
             <el-main>
@@ -144,16 +138,17 @@
 </template>
 
 <script>
+import Axios from "axios";
 export default {
   data() {
     return {
       currentIndex: "/personalInfo/baseInfo",
       userinfo: {
-        username: "pikaqiu",
+        username: "hahaha",
         usertype: 0,
-        balance: 50
+        balance: 50,
+        dateStatus: 0,
       },
-      dateStatus: 0
     };
   },
   methods: {
@@ -165,8 +160,19 @@ export default {
     getCurrentIndex(newIndex) {
       let app = this;
       app.currentIndex = newIndex;
-    }
-  }
+    },
+  },
+  created() {
+    let app = this;
+    Axios.get("/userInfo/getStatusInfo")
+      .then(function (res) {
+        console.log(res)
+        if (res.data.result) {
+          app.userinfo = res.data.message;
+        }
+      })
+      .catch(function (error) {});
+  },
 };
 </script>
 

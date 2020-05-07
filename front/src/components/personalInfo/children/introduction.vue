@@ -1,45 +1,62 @@
 <template>
   <div class="info_div">
     <el-form label-width="100px">
+      <el-row>
+        <el-col :span="18">
+          <el-form-item label="标签:">
+            <div>
+              <el-tag v-for="tag in newUserInfo.tagList" :key="tag">{{
+                tag
+              }}</el-tag>
+              <el-divider></el-divider>
+            </div>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-button @click="tagDialog = true">选择标签</el-button>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="18">
+          <el-form-item label="兴趣爱好:">
+            <label>{{ questionMessage }}</label>
+            <el-divider></el-divider>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-button @click="questionDialog = true">添加兴趣爱好</el-button>
+        </el-col>
+      </el-row>
       <el-form-item label="自我介绍：">
         <el-input
           type="textarea"
-          v-model="introduction"
+          v-model="newUserInfo.introduction"
           :autosize="{ minRows: 10, maxRows: 10 }"
         ></el-input>
       </el-form-item>
     </el-form>
     <el-alert
-      title="如果不知道写些什么，可以点击下方”使用模板“哦~~"
+      title="设置最合适的标签，有助于更快的找到心仪的另一半哦~~~"
       type="success"
       :closable="false"
     >
     </el-alert>
     <p></p>
     <div>
-      <el-button type="primary">保存</el-button>
-      <el-button type="primary">重置</el-button>
-      <el-button type="warning" @click="dialogVisible = true"
-        >使用模板</el-button
-      >
+      <el-button type="primary" @click="changeIntroduction">保存</el-button>
+      <el-button type="primary" @click="redo">重置</el-button>
     </div>
     <el-dialog
-      title="模板创作"
-      :visible.sync="dialogVisible"
+      title="性格选择"
+      :visible.sync="tagDialog"
       width="50%"
       :before-close="handleClose"
     >
       <div>
-        <el-steps :active="active" finish-status="success">
-          <el-step title="性格"></el-step>
-          <el-step title="兴趣爱好"></el-step>
-          <el-step title="对TA想说"></el-step>
-          <el-step title="成品展示"></el-step>
-        </el-steps>
-        <div v-if="active == 0">
+        <div>
           <el-card class="box-card">
             <div slot="header" class="clearfix">
-              <span style="float:left">你的性格：</span>
+              <span style="float: left;">你的性格：</span>
               <el-tag
                 v-for="tag in tagChosedList"
                 :key="tag.label"
@@ -49,7 +66,7 @@
                 >{{ tag.label }}</el-tag
               >
               <el-button
-                style="float: right; padding: 3px 0"
+                style="float: right; padding: 3px 0;"
                 type="text"
                 @click="changeTagList"
                 >换一批</el-button
@@ -72,8 +89,24 @@
             </div>
           </el-card>
         </div>
-        <div v-if="active == 1">
-          <p></p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button style="margin-top: 12px;" @click="tagDialog = false"
+          >取消</el-button
+        >
+        <el-button style="margin-top: 12px;" @click="saveTagList"
+          >保存</el-button
+        >
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="兴趣爱好选择"
+      :visible.sync="questionDialog"
+      width="50%"
+      :before-close="handleClose"
+    >
+      <div>
+        <div>
           <el-row>
             <el-col :span="3">&nbsp;</el-col>
             <el-col :span="18">
@@ -113,55 +146,12 @@
             </el-col>
           </el-row>
         </div>
-        <div v-if="active == 2">
-          <el-row>
-            <el-col :span="3">&nbsp;</el-col>
-            <el-col :span="18">
-              <el-form>
-                <el-form-item>
-                  <el-input
-                    type="textarea"
-                    v-model="someWords"
-                    :autosize="{ minRows: 10, maxRows: 10 }"
-                    placeholder="在这里写下对TA想说的话吧！！"
-                  ></el-input>
-                </el-form-item> </el-form
-            ></el-col>
-          </el-row>
-        </div>
-        <div v-if="active == 3">
-          <el-row>
-            <el-col :span="3">&nbsp;</el-col>
-            <el-col :span="18">
-              <el-form label-width="80px">
-                <el-form-item label="成品：">
-                  <el-input
-                    type="textarea"
-                    v-model="newIntroduction"
-                    :autosize="{ minRows: 10, maxRows: 10 }"
-                  ></el-input>
-                </el-form-item> </el-form
-            ></el-col>
-          </el-row>
-        </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button style="margin-top: 12px;" @click="changeStep(-1)"
-          >上一步</el-button
+        <el-button style="margin-top: 12px;" @click="questionDialog = false"
+          >取消</el-button
         >
-        <el-button
-          style="margin-top: 12px;"
-          @click="changeStep(1)"
-          v-show="this.active == 0 || this.active == 1"
-          >下一步</el-button
-        >
-        <el-button
-          style="margin-top: 12px;"
-          v-show="active == 2"
-          @click="changeStep(1)"
-          >完成</el-button
-        >
-        <el-button style="margin-top: 12px;" v-show="active == 3" @click="save"
+        <el-button style="margin-top: 12px;" @click="saveQuestionList"
           >保存</el-button
         >
       </span>
@@ -170,12 +160,23 @@
 </template>
 
 <script>
+import Axios from "axios";
+
 export default {
   data() {
     return {
-      introduction: "我是一只皮皮！",
-      dialogVisible: false,
-      active: 0,
+      userInfo: {
+        tagList: ["牛逼", "啊", "马飞"],
+        questionList: [],
+        introduction: "我是一只皮皮！",
+      },
+      newUserInfo: {
+        tagList: ["牛逼", "啊", "马飞"],
+        questionList: [],
+        introduction: "我是一只皮皮！",
+      },
+      tagDialog: false,
+      questionDialog: false,
       tagAllList: [
         "开朗",
         "大方",
@@ -279,53 +280,32 @@ export default {
         "发誓",
         "干脆",
         "爽快",
-        "果断"
+        "果断",
       ],
       tagColor: ["", "success", "warning", "danger"],
       tagList: [],
       tagChosedList: [],
       questionAllList: [
-        "最喜欢的游戏是",
-        "最喜欢的运动是",
-        "最喜欢的明星是",
-        "最喜欢的食物是",
-        "最喜欢的歌曲是",
-        "最喜欢的书是"
+        "1、最喜欢的游戏是",
+        "2、最喜欢的运动是",
+        "3、最喜欢的明星是",
+        "4、最喜欢的食物是",
+        "5、最喜欢的歌曲是",
+        "6、最喜欢的书是",
       ],
-      questionList: ["", "", "", "", ""],
+      questionList: ["", "", "", "", "", ""],
       questionNumber: 1,
-      answerList: ["", "", "", "", ""],
-      someWords: "",
-      newIntroduction: ""
+      answerList: ["", "", "", "", "", ""],
+      questionMessage: "",
     };
   },
   methods: {
     handleClose(done) {
       this.$confirm("确认关闭？")
-        .then(_ => {
+        .then((_) => {
           done();
         })
-        .catch(_ => {});
-    },
-    changeStep(index) {
-      let app = this;
-      if (app.active == 0 && index == -1) {
-        app.$message({
-          message: "已回到第一步！",
-          type: "warning"
-        });
-        return;
-      }
-      if (app.active == 0 && index == 1 && !app.step1_examine()) {
-        return;
-      }
-      if (app.active == 1 && index == 1 && !app.step2_examine()) {
-        return;
-      }
-      if (app.active == 2 && index == 1) {
-        app.getNewIntroduction();
-      }
-      app.active = app.active + index;
+        .catch((_) => {});
     },
     changeTagList() {
       let app = this;
@@ -342,7 +322,7 @@ export default {
         if (!hasExisted) {
           app.tagList.push({
             label: app.tagAllList[tempIndex],
-            color: app.tagColor[Math.floor(Math.random() * 4)]
+            color: app.tagColor[Math.floor(Math.random() * 4)],
           });
         }
       }
@@ -353,7 +333,7 @@ export default {
       if (app.tagChosedList.length == 10) {
         app.$message({
           message: "标签的数量不能多于10个！",
-          type: "warning"
+          type: "warning",
         });
         return;
       }
@@ -361,7 +341,7 @@ export default {
         if (app.tagChosedList[i].label == tag.label) {
           app.$message({
             message: "该标签已存在！请勿重复选择！",
-            type: "warning"
+            type: "warning",
           });
           hasExisted = true;
         }
@@ -379,17 +359,17 @@ export default {
     },
     addQuestion(num) {
       let app = this;
-      if (app.questionNumber == 5 && num == 1) {
+      if (app.questionNumber == 6 && num == 1) {
         app.$message({
-          message: "最多只能设置五个问题哦",
-          type: "warning"
+          message: "最多只能设置六个问题哦",
+          type: "warning",
         });
         return;
       }
       if (app.questionNumber == 1 && num == -1) {
         app.$message({
           message: "至少设置一个问题哦",
-          type: "warning"
+          type: "warning",
         });
         return;
       }
@@ -399,70 +379,85 @@ export default {
       }
       app.questionNumber += num;
     },
-    step1_examine() {
+    saveTagList() {
       let app = this;
-      if (app.tagChosedList.length < 3) {
-        app.$message({
-          message: "请至少选择3个标签",
-          type: "warning"
-        });
-        return false;
-      }
-      return true;
-    },
-    step2_examine() {
-      let app = this;
-      for (let i = 0; i < app.questionNumber; i++) {
-        if (app.questionList[i] == "") {
-          app.$message({
-            message: "问题" + (i + 1).toString() + "尚未选择！",
-            type: "warning"
-          });
-          return false;
-        }
-        if (app.answerList[i] == "") {
-          app.$message({
-            message: "问题" + (i + 1).toString() + "尚未填写答案！",
-            type: "warning"
-          });
-          return false;
-        }
-      }
-      return true;
-    },
-    getNewIntroduction() {
-      let app = this;
-      app.newIntroduction = "";
-      app.newIntroduction += "我是一个";
+      app.newUserInfo.tagList.splice(0, app.newUserInfo.tagList.length);
       for (let i = 0; i < app.tagChosedList.length; i++) {
-        app.newIntroduction += app.tagChosedList[i].label;
-        if (i != app.tagChosedList.length - 1) {
-          app.newIntroduction += ",";
+        app.newUserInfo.tagList.push(app.tagChosedList[i].label);
+      }
+      app.tagDialog = false;
+    },
+    saveQuestionList() {
+      let app = this;
+      app.newUserInfo.questionList.splice(
+        0,
+        app.newUserInfo.questionList.length
+      );
+      for (let i = 0; i < app.questionList.length; i++) {
+        if (app.questionList[i] == "") {
+          break;
+        } else {
+          for (let j = 0; j < app.questionAllList.length; j++) {
+            if (app.questionAllList[j] == app.questionList[i]) {
+              app.newUserInfo.questionList.push({
+                questionid: j,
+                answer: app.answerList[i],
+              });
+            }
+          }
         }
       }
-      app.newIntroduction += "的人。\r\n\r\n";
-      for (let i = 0; i < app.questionNumber; i++) {
-        app.newIntroduction +=
-          "我" + app.questionList[i] + " " + app.answerList[i] + "。\r\n";
+      app.questionDialog = false;
+      app.questionMessage = "当前已选问题";
+      for (let i = 0; i < app.newUserInfo.questionList.length; i++) {
+        app.questionMessage +=
+          app.newUserInfo.questionList[i].questionid + 1 + "  ";
       }
-      app.newIntroduction += "\r\n";
-      app.newIntroduction += "我想对未来的TA说：\r\n" + app.someWords;
+      console.log(app.questionMessage);
     },
-    save() {
+    redo() {
       let app = this;
-      app.introduction = app.newIntroduction;
-      app.dialogVisible = false;
-      app.$message({
-        message: "保存成功",
-        type: "success"
-      });
+      Axios.get("/userInfo/getIntroduction")
+        .then(function (res) {
+          console.log(res);
+          if (res.data.result) {
+            app.newUserInfo = JSON.parse(JSON.stringify(res.data.message));
+            app.userInfo = JSON.parse(JSON.stringify(res.data.message));
+            app.questionNumber = res.data.message.questionList.length;
+            for(let i=0;i<app.userInfo.tagList.length;i++){
+              app.tagChosedList.push({label:app.userInfo.tagList[i],color:""})
+            }
+            for (let i = 0; i < res.data.message.questionList.length; i++) {
+              app.questionList[i] =
+                app.questionAllList[app.newUserInfo.questionList[i].questionid];
+              app.answerList[i] = app.newUserInfo.questionList[i].answer;
+            }
+            console.log(app.questionList, app.answerList);
+            app.saveQuestionList();
+          }
+        })
+        .catch(function (error) {});
+    },
+    changeIntroduction(){
+      let app=this
+      Axios.post("/userInfo/changeIntroduction", app.newUserInfo)
+        .then(function (res) {
+          if (res.data.result) {
+            app.$message({
+              message: "修改成功！",
+              type: "success",
+            });
+          }
+        })
+        .catch(function (error) {});
     }
   },
   created() {
     let app = this;
     app.changeTagList();
+    app.redo();
     app.$emit("getIndex", "/personalInfo/introduction");
-  }
+  },
 };
 </script>
 

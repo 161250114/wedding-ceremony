@@ -52,9 +52,9 @@ export default {
       let app = this;
       Axios.post("/login", app.userinfo)
         .then(function (res) {
-          console.log(res.data.ok)
-          if(res.data.ok){
-            app.$router.push({path:'/home'});
+          console.log(res.data.result)
+          if(res.data.result){
+            window.location.href='/home'
           }
         })
         .catch(function (error) {});

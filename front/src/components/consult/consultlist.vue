@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="width: 100%;height: 100px"><el-input style="width: 200px;margin:20px"v-model="input" placeholder="按姓名或编号查询"></el-input><el-button type="primary" @click="search(input)">搜索</el-button></div>
+    <div style="width: 100%;height: 100px;text-align: center"><el-input style="width: 200px;margin:20px"v-model="input" placeholder="按姓名或编号查询"></el-input><el-button type="primary" @click="search(input)">搜索</el-button></div>
     <el-table
       :data="tableData"
       height="400"
@@ -12,7 +12,7 @@
         width="180">
       </el-table-column>
       <el-table-column
-        prop="name"
+        prop="username"
         label="用户名"
         width="180">
       </el-table-column>
@@ -33,27 +33,29 @@
 </template>
 
 <script>
+  import axios from 'axios'
     export default {
       name: "consultlist",
       data() {
         return {
           input: "",
-          tableData: [{
-            id: "100001",
-            name: "卢本伟",
-            state: 0
-          }, {
-            id: "100002",
-            name: "五五开",
-            state: 1
-          }, {
-            id: "100003",
-            name: "pdd",
-            state: 0
-          }]
+          tableData:[]
         }
       },
+      created(){
+        this.load()
+      },
       methods:{
+        load(){
+          let app=this
+          axios.get("/systemmessage/getState")
+            .then(function(res) {
+              app.tableData=res.data
+            })
+            .catch(function (err) {
+              console.log(err);
+            })
+        },
         search(input){
           let app=this
           let table=this.tableData

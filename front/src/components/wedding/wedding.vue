@@ -61,8 +61,8 @@
         label="操作"
         width="100">
         <template slot-scope="scope">
-          <el-button v-if="getState(scope.row)=='申请中'" @click="pass(scope.row)" type="text" size="small">通过</el-button>
-          <el-button v-if="getState(scope.row)=='申请中'" @click="pass(scope.row)" type="text" size="small">取消</el-button>
+          <el-button v-if="getState(scope.row)=='申请中'&&isMana" @click="pass(scope.row)" type="text" size="small">通过</el-button>
+          <el-button v-if="getState(scope.row)=='申请中'" @click="cancel(scope.row)" type="text" size="small">取消</el-button>
         </template>
       </el-table-column>
   </el-table>
@@ -75,75 +75,11 @@
       name: "wedding",
       data() {
         return {
+          id:-1,
+          isMana:false,
           input:"",
-          storage:[{
-            id:"100001",
-            name:"卢本伟",
-            phone:"",
-            email:"",
-            total:100,
-            start:"",
-            end:"",
-            location:"777777",
-            detail:"2155",
-            state:0
-          }, {
-            id:"100002",
-            name:"五五开",
-            phone:"",
-            email:"",
-            total:120,
-            start:"",
-            end:"",
-            location:"35325",
-            detail:"2532",
-            state:1
-          }, {
-            id:"100003",
-            name:"pdd",
-            phone:"",
-            email:"",
-            total:200,
-            start:"",
-            end:"",
-            location:"2314",
-            detail:"144345315",
-            state:0
-          }],
-          tableData: [{
-            id:"100001",
-            name:"卢本伟",
-            phone:"",
-            email:"",
-            total:100,
-            start:"",
-            end:"",
-            location:"777777",
-            detail:"2155",
-            state:0
-          }, {
-            id:"100002",
-            name:"五五开",
-            phone:"",
-            email:"",
-            total:120,
-            start:"",
-            end:"",
-            location:"35325",
-            detail:"2532",
-            state:1
-          }, {
-            id:"100003",
-            name:"pdd",
-            phone:"",
-            email:"",
-            total:200,
-            start:"",
-            end:"",
-            location:"2314",
-            detail:"144345315",
-            state:0
-          }]
+          storage:[],
+          tableData: []
         }
       },
       created(){
@@ -157,14 +93,22 @@
         console.log(row.id)
         },
         load(){
-          let app=this
-          axios.get('/wedding/getAll')
-            .then(function(res){
-              app.tableData=res.data
-              app.storage=JSON.parse(JSON.stringify(res.data))
-            })
-            .catch(function(err){
-              console.log(err);
+          let app = this
+          axios.get("/getCurrentUser")
+            .then(function(res) {
+              let message = res.data.message
+              let id = message.userid;
+              axios.post('/wedding/get',id)
+                .then(function (res) {
+                  app.tableData = res.data
+                  app.storage = JSON.parse(JSON.stringify(res.data))
+                  if(id==0){
+                    app.isMana=true
+                  }
+                })
+                .catch(function (err) {
+                  console.log(err);
+                });
             });
         },
         getState(row){
@@ -189,6 +133,14 @@
           this.$alert(info, '位置信息', {
             confirmButtonText: '确定',
           });
+        },
+        find(id){
+          let app=this;
+          for(let i=0;i<app.storage.length;i++){
+            if(app.storage[i].id==id){
+              return app.storage[i];
+            }
+          }
         },
         checkDet(row){
           let app=this
@@ -226,7 +178,6 @@
           row.state="通过"
           let data=JSON.parse(JSON.stringify(row))
           data.state=1
-          data.applicantId=1
           axios.post("/wedding/update",data)
             .then(successResponse => {
               let record=new Object();
@@ -255,15 +206,15 @@
         },
         cancel(row){
           row.state="取消"
-          let data=JSON.parse(JSON.stringify(row))
-          data.state=2
-          data.applicantId=1
+          let data=JSON.parse(JSON.stringify(this.find(row.id)))
+          console.log(data)
+          data.state="取消"
           axios.post("/wedding/update",data)
             .then(successResponse => {
               let record=new Object();
               record["id"]=0;
               record["weddingId"]=row.id;
-              record["approverId"]=1;
+              record["approverId"]=data.applicant_id
               record["time"]=new Date();
               record["result"]=2;
               axios.post("/weddingrecord/add",record)
@@ -283,7 +234,9 @@
                 confirmButtonText: '确定',
               });
             }); //失败后的操作
+
         }
+
     }
 
     }

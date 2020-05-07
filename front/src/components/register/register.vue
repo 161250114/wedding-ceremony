@@ -191,9 +191,9 @@
           <el-row>
             <el-col :span="15"
               ><el-form-item label="婚姻状况:">
-                <el-radio v-model="userInfo.marriage" label="1">未婚</el-radio>
-                <el-radio v-model="userInfo.marriage" label="2">离婚</el-radio>
-                <el-radio v-model="userInfo.marriage" label="3">丧偶</el-radio>
+                <el-radio v-model="userInfo.marriage" label="0">未婚</el-radio>
+                <el-radio v-model="userInfo.marriage" label="1">离婚</el-radio>
+                <el-radio v-model="userInfo.marriage" label="2">丧偶</el-radio>
               </el-form-item>
             </el-col>
           </el-row>

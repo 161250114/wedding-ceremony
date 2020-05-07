@@ -5,6 +5,7 @@ import com.wedding.model.po.Wedding_record;
 import com.wedding.weddingconsulthappiness.service.WeddingRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,18 +19,13 @@ public class WeddingRecordController {
     @Autowired
     WeddingRecordService wrs;
     @ResponseBody
-    @RequestMapping(value="/add",method= RequestMethod.GET)
-    public int add(){
-        Wedding_record wr=new Wedding_record();
-        wr.setApproverId(4);
-        wr.setTime(new Date());
-        wr.setResult(1);
-        wr.setWeddingId(0);
+    @RequestMapping(value="/add",method= RequestMethod.POST)
+    public int add(@RequestBody Wedding_record wr){
         return wrs.insert(wr);
     }
     @ResponseBody
-    @RequestMapping(value="/get",method = RequestMethod.GET)
-    public Wedding_record get(){
+    @RequestMapping(value="/get",method = RequestMethod.POST)
+    public Wedding_record get(@RequestBody Integer id) {
         return wrs.selectByPrimaryKey(0);
     }
     @ResponseBody

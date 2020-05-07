@@ -1,6 +1,7 @@
 package com.wedding.mapper;
 
 import com.wedding.model.po.UserLabel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,4 +21,7 @@ public interface UserLabelMapper {
     List<UserLabel> selectByUserId(Integer user_id);
 
     List<UserLabel> selectByLabel(String label);
+
+    int deleteByUserId(Integer user_id);
+
 }
