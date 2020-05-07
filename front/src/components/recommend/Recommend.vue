@@ -42,7 +42,7 @@
 
         <div style="margin-top: 50px">
             <el-card shadow="false" style="width: 1600px;margin: 0 auto; border: none">
-                <p style="text-align: center">关于我们|联系我们|加入我们|合作伙伴| 意见反馈|安全中心|网站地图 | 帮助中心|精英会员|个人信息保护政策</p>
+                <p style="text-align: center">关于我们|联系我们|加入我们|合作伙伴|意见反馈|安全中心|网站地图|帮助中心|精英会员|个人信息保护政策</p>
                 <p style="text-align: center">品牌：10年专业婚恋服务 专业：庞大的资深红娘队伍</p>
                 <p style="text-align: center">客服热线：4001-520-520（周一至周日：9:00-21:00）客服信箱：1234567890@jingying.com</p>
                 <p style="text-align: center">违法和不良信息举报 4001-520-520 举报信箱：1234567891@jingying.com</p>
