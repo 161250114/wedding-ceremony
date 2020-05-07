@@ -53,13 +53,13 @@
               </el-option>
             </el-select>
 
-            <el-cascader ref="address" v-model="value" clearable placeholder="所在地区" :options="place"
+            <el-cascader ref="areaCascader" v-model="addressValue" clearable placeholder="所在地区" :options="area"
                          :props="{ expandTrigger: 'hover' }" @change="handleChange"
-                         style="margin-left: 15px; width: 160px">
+                         style="margin-left: 15px; width: 200px">
             </el-cascader>
 
             <el-select v-model="shortest_label" clearable placeholder="选择身高范围"
-                       style="margin-left: 15px; margin-right:3px; width: 200px"
+                       style="margin-left: 15px; margin-right:3px; width: 180px"
                        @change="changeLocationValue_shortest">
               <el-option v-for="item in height" :key="item.height_value"
                          :label="item.height_label" :value="item.height_value">
@@ -67,7 +67,7 @@
             </el-select>
             <strong>至</strong>
             <el-select v-model="tallest_label" clearable placeholder="选择身高范围"
-                       style="margin-left: 3px; width: 200px" @change="changeLocationValue_tallest">
+                       style="margin-left: 3px; width: 180px" @change="changeLocationValue_tallest">
               <el-option v-for="item in height" :key="item.height_value"
                          :label="item.height_label" :value="item.height_value">
               </el-option>
@@ -103,13 +103,13 @@
                          :label="item.salary_label" :value="item.salary_value">
               </el-option>
             </el-select>
-<!--            <strong>至</strong>-->
-<!--            <el-select v-model="highest_label" clearable placeholder="选择月收入范围"-->
-<!--                       style="margin-left: 3px; width: 145px" @change="changeLocationValue_highest">-->
-<!--              <el-option v-for="item in salary" :key="item.salary_value"-->
-<!--                         :label="item.salary_label" :value="item.salary_value">-->
-<!--              </el-option>-->
-<!--            </el-select>-->
+            <!--            <strong>至</strong>-->
+            <!--            <el-select v-model="highest_label" clearable placeholder="选择月收入范围"-->
+            <!--                       style="margin-left: 3px; width: 145px" @change="changeLocationValue_highest">-->
+            <!--              <el-option v-for="item in salary" :key="item.salary_value"-->
+            <!--                         :label="item.salary_label" :value="item.salary_value">-->
+            <!--              </el-option>-->
+            <!--            </el-select>-->
           </li>
         </ul>
 
@@ -152,22 +152,24 @@
 
 <script>
   import axios from 'axios'
+  import {regionDataPlus, TextToCode} from 'element-china-area-data'
 
   export default {
     name: 'Search',
     data () {
       return {
-        userId: 111,
+        addressValue: [],
+        userId: 0,
         searchType: 2,
         searchForm: {
           id: 1,
           sex: 1,
           youngest: 22,
           oldest: 36,
-          address: '北京朝阳',
+          address: '北京市/市辖区/朝阳区',
           shortest: 0,
           tallest: 300,
-          salary: '10000 ~ 20000元',
+          salary: '10000-20000元',
           education: '',
           profession: '',
           marrige: 0
@@ -180,10 +182,11 @@
         records: {},
         hottestLabel: {},
         userList: {},
+        area: '',
         education: [{
           education_value: '选项1',
           education_label: '学历不限'
-        },{
+        }, {
           education_value: '选项2',
           education_label: '高中中专及以下'
         }, {
@@ -206,72 +209,135 @@
         profession: [{
           profession_value: '选项1',
           profession_label: '职业不限'
-        },{
+        }, {
           profession_value: '选项2',
-          profession_label: '计算机/互联网/IT'
-        }, {
-          profession_value: '选项3',
-          profession_label: '电子/半导体/仪表仪器'
-        }, {
-          profession_value: '选项4',
-          profession_label: '通信技术'
-        }, {
-          profession_value: '选项5',
           profession_label: '销售'
         }, {
+          profession_value: '选项3',
+          profession_label: '客服'
+        }, {
+          profession_value: '选项4',
+          profession_label: '人事/行政/后勤'
+        }, {
+          profession_value: '选项5',
+          profession_label: '餐饮'
+        }, {
           profession_value: '选项6',
-          profession_label: '教育'
+          profession_label: '旅游'
         }, {
           profession_value: '选项7',
-          profession_label: '公关/商务'
+          profession_label: '酒店'
         }, {
           profession_value: '选项8',
-          profession_label: '采购/贸易'
+          profession_label: '超市/百货/零售'
         }, {
           profession_value: '选项9',
-          profession_label: '客户服务/技术支持'
+          profession_label: '美容/美发'
         }, {
           profession_value: '选项10',
-          profession_label: '人力资源/行政/后勤'
+          profession_label: '运动健身'
         }, {
           profession_value: '选项11',
-          profession_label: '高级管理'
+          profession_label: '普工/技工'
         }, {
           profession_value: '选项12',
-          profession_label: '生产/加工/制造'
+          profession_label: '生产管理/研发'
         }, {
           profession_value: '选项13',
-          profession_label: '质控/安检'
+          profession_label: '建筑'
         }, {
           profession_value: '选项14',
-          profession_label: '工程机械'
+          profession_label: '物业管理'
         }, {
           profession_value: '选项15',
-          profession_label: '技工'
+          profession_label: '房产中介'
         }, {
           profession_value: '选项16',
-          profession_label: '财会/审计/统计'
+          profession_label: '家政保洁/安保'
         }, {
           profession_value: '选项17',
-          profession_label: '金融/证券/投资/保险'
+          profession_label: '司机/交通服务'
         }, {
           profession_value: '选项18',
-          profession_label: '公务员/国家干部'
+          profession_label: '贸易/采购'
         }, {
           profession_value: '选项19',
-          profession_label: '自由职业者'
+          profession_label: '物流/仓储'
         }, {
           profession_value: '选项20',
-          profession_label: '在校学生'
+          profession_label: '淘宝职位'
         }, {
           profession_value: '选项21',
-          profession_label: '其他'
+          profession_label: '美术/设计/创意'
+        }, {
+          profession_value: '选项22',
+          profession_label: '市场/媒介/公关'
+        }, {
+          profession_value: '选项23',
+          profession_label: '广告/会展/咨询'
+        }, {
+          profession_value: '选项24',
+          profession_label: '影视/娱乐/休闲'
+        }, {
+          profession_value: '选项25',
+          profession_label: '教育培训'
+        }, {
+          profession_value: '选项26',
+          profession_label: '财务/审计/统计'
+        }, {
+          profession_value: '选项27',
+          profession_label: '法律'
+        }, {
+          profession_value: '选项28',
+          profession_label: '翻译'
+        }, {
+          profession_value: '选项29',
+          profession_label: '编辑/出版/印刷'
+        }, {
+          profession_value: '选项30',
+          profession_label: '计算机/互联网/通信'
+        }, {
+          profession_value: '选项31',
+          profession_label: '电子/电气'
+        }, {
+          profession_value: '选项32',
+          profession_label: '机械/仪器仪表'
+        }, {
+          profession_value: '选项33',
+          profession_label: '金融/银行/证券/投资'
+        }, {
+          profession_value: '选项34',
+          profession_label: '保险'
+        }, {
+          profession_value: '选项35',
+          profession_label: '医院/医疗/护理'
+        }, {
+          profession_value: '选项36',
+          profession_label: '制药/生物工程'
+        }, {
+          profession_value: '选项37',
+          profession_label: '服装/纺织/食品'
+        }, {
+          profession_value: '选项38',
+          profession_label: '环保/能源'
+        }, {
+          profession_value: '选项39',
+          profession_label: '质控/安防'
+        }, {
+          profession_value: '选项40',
+          profession_label: '高级管理'
+        }, {
+          profession_value: '选项41',
+          profession_label: '农/林/牧/渔业'
+        }, {
+          profession_value: '选项42',
+          profession_label: '其他职业'
         }],
         profession_label: '职业不限',
         marrige: [{
           marrige_value: '选项1',
           marrige_label: '不限'
-        },{
+        }, {
           marrige_value: '选项2',
           marrige_label: '未婚'
         }, {
@@ -398,692 +464,6 @@
         }],
         shortest_label: '身高不限',
         tallest_label: '身高不限',
-        value: ['选项2', '选项4'],
-        place: [{
-          value: '选项1',
-          label: '地区不限'
-        }, {
-          value: '选项2',
-          label: '北京',
-          children: [{
-            value: '选项1',
-            label: '地区不限',
-          }, {
-            value: '选项2',
-            label: '东城',
-          }, {
-            value: '选项3',
-            label: '西城',
-          }, {
-            value: '选项4',
-            label: '朝阳',
-          }, {
-            value: '选项5',
-            label: '丰台',
-          }, {
-            value: '选项6',
-            label: '石景山',
-          }, {
-            value: '选项7',
-            label: '海淀',
-          }, {
-            value: '选项8',
-            label: '门头沟',
-          }, {
-            value: '选项9',
-            label: '房山',
-          }, {
-            value: '选项10',
-            label: '通州',
-          }, {
-            value: '选项11',
-            label: '顺义',
-          }, {
-            value: '选项12',
-            label: '昌平',
-          }, {
-            value: '选项13',
-            label: '大兴',
-          }, {
-            value: '选项14',
-            label: '平谷',
-          }, {
-            value: '选项15',
-            label: '怀柔',
-          }, {
-            value: '选项16',
-            label: '密云',
-          }, {
-            value: '选项17',
-            label: '延庆',
-          }]
-        }, {
-          value: '选项3',
-          label: '天津',
-          children: [{
-            value: '选项1',
-            label: '地区不限',
-          }, {
-            value: '选项2',
-            label: '和平',
-          }, {
-            value: '选项3',
-            label: '河东',
-          }, {
-            value: '选项4',
-            label: '河西',
-          }, {
-            value: '选项5',
-            label: '南开',
-          }, {
-            value: '选项6',
-            label: '河北',
-          }, {
-            value: '选项7',
-            label: '红桥',
-          }, {
-            value: '选项8',
-            label: '滨海新区',
-          }, {
-            value: '选项9',
-            label: '东丽',
-          }, {
-            value: '选项10',
-            label: '西青',
-          }, {
-            value: '选项11',
-            label: '津南',
-          }, {
-            value: '选项12',
-            label: '北辰',
-          }, {
-            value: '选项13',
-            label: '宁河',
-          }, {
-            value: '选项14',
-            label: '武清',
-          }, {
-            value: '选项15',
-            label: '静海',
-          }, {
-            value: '选项16',
-            label: '宝坻',
-          }, {
-            value: '选项17',
-            label: '蓟州',
-          }]
-        }, {
-          value: '选项4',
-          label: '河北',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }, {
-            value: '选项2',
-            label: '石家庄'
-          }, {
-            value: '选项3',
-            label: '唐山'
-          }, {
-            value: '选项4',
-            label: '秦皇岛'
-          }, {
-            value: '选项5',
-            label: '邯郸'
-          }, {
-            value: '选项6',
-            label: '邢台'
-          }, {
-            value: '选项7',
-            label: '保定'
-          }, {
-            value: '选项8',
-            label: '张家口'
-          }, {
-            value: '选项9',
-            label: '承德'
-          }, {
-            value: '选项10',
-            label: '沧州'
-          }, {
-            value: '选项11',
-            label: '廊坊'
-          }, {
-            value: '选项12',
-            label: '衡水'
-          }]
-        }, {
-          value: '选项5',
-          label: '山西',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }, {
-            value: '选项2',
-            label: '太原'
-          }, {
-            value: '选项2',
-            label: '大同'
-          }, {
-            value: '选项2',
-            label: '阳泉'
-          }, {
-            value: '选项2',
-            label: '长治'
-          }, {
-            value: '选项2',
-            label: '晋城'
-          }, {
-            value: '选项2',
-            label: '朔州'
-          }, {
-            value: '选项2',
-            label: '晋中'
-          }, {
-            value: '选项2',
-            label: '运城'
-          }, {
-            value: '选项2',
-            label: '忻州'
-          }, {
-            value: '选项2',
-            label: '临汾'
-          }, {
-            value: '选项2',
-            label: '吕梁'
-          }]
-        }, {
-          value: '选项6',
-          label: '内蒙古',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }, {
-            value: '选项2',
-            label: '赤峰'
-          }, {
-            value: '选项3',
-            label: '包头'
-          }, {
-            value: '选项4',
-            label: '通辽'
-          }, {
-            value: '选项5',
-            label: '呼和浩特'
-          }, {
-            value: '选项6',
-            label: '鄂尔多斯'
-          }, {
-            value: '选项7',
-            label: '乌海'
-          }, {
-            value: '选项8',
-            label: '呼伦贝尔'
-          }, {
-            value: '选项9',
-            label: '兴安盟'
-          }, {
-            value: '选项10',
-            label: '巴彦淖尔盟'
-          }, {
-            value: '选项11',
-            label: '乌兰察布盟'
-          }, {
-            value: '选项12',
-            label: '锡林郭勒盟'
-          }, {
-            value: '选项13',
-            label: '阿拉善盟'
-          }]
-        }, {
-          value: '选项7',
-          label: '辽宁',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }, {
-            value: '选项2',
-            label: '大连'
-          }, {
-            value: '选项3',
-            label: '沈阳'
-          }, {
-            value: '选项4',
-            label: '丹东'
-          }, {
-            value: '选项5',
-            label: '辽阳'
-          }, {
-            value: '选项6',
-            label: '葫芦岛'
-          }, {
-            value: '选项7',
-            label: '锦州'
-          }, {
-            value: '选项8',
-            label: '朝阳'
-          }, {
-            value: '选项9',
-            label: '营口'
-          }, {
-            value: '选项10',
-            label: '鞍山'
-          }, {
-            value: '选项11',
-            label: '抚顺'
-          }, {
-            value: '选项12',
-            label: '阜新'
-          }, {
-            value: '选项13',
-            label: '盘锦'
-          }, {
-            value: '选项14',
-            label: '本溪'
-          }, {
-            value: '选项15',
-            label: '铁岭'
-          }]
-        }, {
-          value: '选项8',
-          label: '吉林',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }, {
-            value: '选项2',
-            label: '吉林'
-          }, {
-            value: '选项3',
-            label: '长春'
-          }, {
-            value: '选项4',
-            label: '白山'
-          }, {
-            value: '选项5',
-            label: '延边州'
-          }, {
-            value: '选项6',
-            label: '白城'
-          }, {
-            value: '选项7',
-            label: '松原'
-          }, {
-            value: '选项8',
-            label: '辽源'
-          }, {
-            value: '选项9',
-            label: '通化'
-          }, {
-            value: '选项10',
-            label: '四平'
-          }]
-        }, {
-          value: '选项9',
-          label: '黑龙江',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }, {
-            value: '选项2',
-            label: '齐齐哈尔'
-          }, {
-            value: '选项3',
-            label: '哈尔滨'
-          }, {
-            value: '选项4',
-            label: '大庆'
-          }, {
-            value: '选项5',
-            label: '佳木斯'
-          }, {
-            value: '选项6',
-            label: '双鸭山'
-          }, {
-            value: '选项7',
-            label: '牡丹江'
-          }, {
-            value: '选项8',
-            label: '鸡西'
-          }, {
-            value: '选项9',
-            label: '黑河'
-          }, {
-            value: '选项10',
-            label: '绥化'
-          }, {
-            value: '选项11',
-            label: '鹤岗'
-          }, {
-            value: '选项12',
-            label: '伊春'
-          }, {
-            value: '选项13',
-            label: '大兴安岭地区'
-          }, {
-            value: '选项14',
-            label: '七台河'
-          }]
-        }, {
-          value: '选项10',
-          label: '上海',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }, {
-            value: '选项2',
-            label: '松江'
-          }, {
-            value: '选项3',
-            label: '宝山'
-          }, {
-            value: '选项4',
-            label: '金山'
-          }, {
-            value: '选项5',
-            label: '嘉定'
-          }, {
-            value: '选项6',
-            label: '南汇'
-          }, {
-            value: '选项7',
-            label: '青浦'
-          }, {
-            value: '选项8',
-            label: '浦东'
-          }, {
-            value: '选项9',
-            label: '奉贤'
-          }, {
-            value: '选项10',
-            label: '徐汇'
-          }, {
-            value: '选项11',
-            label: '静安'
-          }, {
-            value: '选项12',
-            label: '闵行'
-          }, {
-            value: '选项13',
-            label: '黄浦'
-          }, {
-            value: '选项14',
-            label: '杨浦'
-          }, {
-            value: '选项15',
-            label: '虹口'
-          }, {
-            value: '选项16',
-            label: '普陀'
-          }, {
-            value: '选项17',
-            label: '闸北'
-          }, {
-            value: '选项18',
-            label: '长宁'
-          }, {
-            value: '选项19',
-            label: '崇明'
-          }, {
-            value: '选项20',
-            label: '卢湾'
-          }]
-        }, {
-          value: '选项11',
-          label: '江苏',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }, {
-            value: '选项2',
-            label: '苏州'
-          }, {
-            value: '选项3',
-            label: '徐州'
-          }, {
-            value: '选项4',
-            label: '盐城'
-          }, {
-            value: '选项5',
-            label: '无锡'
-          }, {
-            value: '选项6',
-            label: '南京'
-          }, {
-            value: '选项7',
-            label: '南通'
-          }, {
-            value: '选项8',
-            label: '连云港'
-          }, {
-            value: '选项9',
-            label: '常州'
-          }, {
-            value: '选项10',
-            label: '镇江'
-          }, {
-            value: '选项11',
-            label: '扬州'
-          }, {
-            value: '选项12',
-            label: '淮安'
-          }, {
-            value: '选项13',
-            label: '泰州'
-          }, {
-            value: '选项14',
-            label: '宿迁'
-          }]
-        }, {
-          value: '选项12',
-          label: '浙江',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }, {
-            value: '选项2',
-            label: '温州'
-          }, {
-            value: '选项3',
-            label: '宁波'
-          }, {
-            value: '选项4',
-            label: '杭州'
-          }, {
-            value: '选项5',
-            label: '台州'
-          }, {
-            value: '选项6',
-            label: '嘉兴'
-          }, {
-            value: '选项7',
-            label: '金华'
-          }, {
-            value: '选项8',
-            label: '湖州'
-          }, {
-            value: '选项9',
-            label: '绍兴'
-          }, {
-            value: '选项10',
-            label: '舟山'
-          }, {
-            value: '选项11',
-            label: '丽水'
-          }, {
-            value: '选项12',
-            label: '衢州'
-          }]
-        }, {
-          value: '选项13',
-          label: '安徽',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项14',
-          label: '福建',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项15',
-          label: '江西',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项16',
-          label: '山东',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项17',
-          label: '湖北',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项18',
-          label: '湖南',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项19',
-          label: '广东',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项20',
-          label: '广西',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项21',
-          label: '海南',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项22',
-          label: '重庆',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项23',
-          label: '四川',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项24',
-          label: '贵州',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项25',
-          label: '云南',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项26',
-          label: '西藏',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项27',
-          label: '陕西',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项28',
-          label: '甘肃',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项29',
-          label: '青海',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项30',
-          label: '宁夏',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项31',
-          label: '新疆',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项32',
-          label: '河南',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项33',
-          label: '台湾',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项34',
-          label: '香港',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项35',
-          label: '澳门',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }, {
-          value: '选项36',
-          label: '国外',
-          children: [{
-            value: '选项1',
-            label: '地区不限'
-          }]
-        }
-        ],
         salary: [{
           salary_value: '选项1',
           salary_label: '收入不限'
@@ -1092,24 +472,25 @@
           salary_label: '2000元以下'
         }, {
           salary_value: '选项3',
-          salary_label: '2000 ~ 5000元'
+          salary_label: '2000-5000元'
         }, {
           salary_value: '选项4',
-          salary_label: '5000 ~ 10000元'
+          salary_label: '5000-10000元'
         }, {
           salary_value: '选项5',
-          salary_label: '10000 ~ 20000元'
+          salary_label: '10000-20000元'
         }, {
           salary_value: '选项6',
-          salary_label: '20000 ~ 50000元'
+          salary_label: '20000-50000元'
         }, {
           salary_value: '选项7',
           salary_label: '50000元以上'
         }],
-        income_label: '10000 ~ 20000元',
+        income_label: '10000-20000元',
       }
     },
     created () {
+      this.area = regionDataPlus
       this.getHottestLabel()
       this.getData()
     },
@@ -1144,36 +525,69 @@
         })
       },
       getData () {//post请求获取分页显示的pageInfo
-        let url_1 = `/date_standard/select/${this.userId}`
-        axios.get(url_1).then((res) => {
-          // console.log(res)
-          this.searchForm.address = res.data.address
+        let url_getCurrentUser = '/getCurrentUser'
+        axios.get(url_getCurrentUser).then((res) => {
+          // console.log(res.data.message)
+          this.userId = res.data.message.userid
 
-          this.searchForm.youngest = res.data.agemin
-          this.youngest_label = res.data.agemin
+          //根据择偶要求设置默认搜索界面的结果，并显示在选择框上
+          let url_1 = `/date_standard/select/${this.userId}`
+          axios.get(url_1).then((res) => {
+            // console.log(res)
+            let areas = res.data.address.split('/')
+            console.log(areas)
+            if(areas.length===3){//xx省/xx市/xx区
+              this.searchForm.address = areas[0] + '/' + areas[1] + '/' + areas[2]
+              let province=TextToCode[areas[0]].code
+              let city=TextToCode[areas[0]][areas[1]].code
+              let area=TextToCode[areas[0]][areas[1]][areas[2]].code
+              this.addressValue=[province,city,area]
+            }
+            else if(areas.length===2){//xx省/xx市/全部
+              this.searchForm.address = areas[0] + '/' + areas[1]
+              let province=TextToCode[areas[0]].code
+              // console.log(province)
+              let city=TextToCode[areas[0]][areas[1]].code
+              let area=''
+              this.addressValue=[province,city,area]
+              console.log(this.addressValue)
+            }
+            else if(areas.length===0){//不限
+              this.searchForm.address = ''
+              this.addressValue=[]
+            }
+            else if(areas.length===1){//xx省/全部
+              this.searchForm.address = areas[0]
+              let province=TextToCode[areas[0]].code+''
+              let city=''
+              this.addressValue=[province,city]
+            }
 
-          this.searchForm.oldest = res.data.agemax
-          this.oldest_label = res.data.agemax
-          // console.log(url)
-        })
-        let url_2 = `/user/get/${this.userId}`
-        axios.get(url_2).then((res) => {
-          // console.log(res)
-          if(res.data.sex === 0){
-            this.searchForm.sex = 1
-            this.sex_label= '女'
-          }
-          else{
-            this.searchForm.sex = 0
-            this.sex_label= '男'
-          }
-          // console.log(url)
-        })
-        let url = `/user/queryDetailSearch/${this.currentPage}`
-        this.$axios.post(url, this.searchForm).then((res) => {
-          // console.log(this.searchForm)
-          this.pageInfo = res.data
-          console.log(this.pageInfo)
+            this.searchForm.youngest = res.data.agemin
+            this.youngest_label = res.data.agemin
+
+            this.searchForm.oldest = res.data.agemax
+            this.oldest_label = res.data.agemax
+            // console.log(url)
+            let url_2 = `/user/get/${this.userId}`
+            axios.get(url_2).then((res) => {
+              // console.log(res)
+              if (res.data.sex === 0) {
+                this.searchForm.sex = 1
+                this.sex_label = '女'
+              } else {
+                this.searchForm.sex = 0
+                this.sex_label = '男'
+              }
+              // console.log(url)
+              let url = `/user/queryDetailSearch/${this.currentPage}`
+              this.$axios.post(url, this.searchForm).then((res) => {
+                // console.log(this.searchForm)
+                this.pageInfo = res.data
+                console.log(this.pageInfo)
+              })
+            })
+          })
         })
       },
       handleDetailSearch () {
@@ -1195,32 +609,23 @@
           this.handleDetailSearch()
         }
       },
-      handleChange (value) {//地区的级联选择器
-        let obj = {}
-        obj = this.place.find((item) => {
-          return item.value === value[0]
-        })
-        let getFirstAddress = ''
-        getFirstAddress = obj.label
-        if (getFirstAddress === '地区不限') {
-          this.searchForm.address = ''
+      handleChange () {//地区的级联选择器
+        let address = ''
+        let temp = this.$refs.areaCascader.getCheckedNodes()[0].pathLabels
+        console.log(this.$refs.areaCascader.getCheckedNodes())
+        if (temp[0] === '全部') {
+          address = ''
+        } else if (temp[1] === '全部') {
+          address = temp[0] + ''
+        } else if (temp[2] === '全部') {
+          address = temp[0] + '/' + temp[1] + ''
         } else {
-          let obj2 = {}
-          obj2 = obj.children.find((item) => {
-            return item.value === value[1]
-          })
-          let getSecondAddress = ''
-          getSecondAddress = obj2.label
-          if (getSecondAddress === '地区不限') {
-            this.searchForm.address = getFirstAddress
-          } else {
-            this.searchForm.address = getFirstAddress + getSecondAddress
-          }
+          address = temp[0] + '/' + temp[1] + '/' + temp[2]
         }
-        // console.log(this.searchForm.address)
+        // console.log(address)
+        this.searchForm.address = address
       },
       changeLocationValue_sex (val) {
-        //locations是v-for里面的,也是datas里面的值
         let obj = {}
         obj = this.sex.find((item) => {
           return item.sex_value === val
@@ -1236,7 +641,6 @@
         }
       },
       changeLocationValue_youngest (val) {
-        //locations是v-for里面的,也是datas里面的值
         let obj = {}
         obj = this.age.find((item) => {
           return item.age_value === val
@@ -1250,7 +654,6 @@
         }
       },
       changeLocationValue_oldest (val) {
-        //locations是v-for里面的,也是datas里面的值
         let obj = {}
         obj = this.age.find((item) => {
           return item.age_value === val
@@ -1264,7 +667,6 @@
         }
       },
       changeLocationValue_shortest (val) {
-        //locations是v-for里面的,也是datas里面的值
         let obj = {}
         obj = this.height.find((item) => {
           return item.height_value === val
@@ -1278,7 +680,6 @@
         }
       },
       changeLocationValue_tallest (val) {
-        //locations是v-for里面的,也是datas里面的值
         let obj = {}
         obj = this.height.find((item) => {
           return item.height_value === val
@@ -1292,7 +693,6 @@
         }
       },
       changeLocationValue_salary (val) {
-        //locations是v-for里面的,也是datas里面的值
         let obj = {}
         obj = this.salary.find((item) => {
           return item.salary_value === val
@@ -1306,7 +706,6 @@
         }
       },
       changeLocationValue_education (val) {
-        //locations是v-for里面的,也是datas里面的值
         let obj = {}
         obj = this.education.find((item) => {
           return item.education_value === val
@@ -1320,7 +719,6 @@
         }
       },
       changeLocationValue_profession (val) {
-        //locations是v-for里面的,也是datas里面的值
         let obj = {}
         obj = this.profession.find((item) => {
           return item.profession_value === val
@@ -1334,7 +732,6 @@
         }
       },
       changeLocationValue_marriage (val) {
-        //locations是v-for里面的,也是datas里面的值
         let obj = {}
         obj = this.marrige.find((item) => {
           return item.marrige_value === val
@@ -1345,11 +742,11 @@
         // console.log(getYoungestAge)
         if (getMarriage === '未婚') {
           this.searchForm.marrige = 0
-        } else if(getMarriage === '离异') {
+        } else if (getMarriage === '离异') {
           this.searchForm.marrige = 1
-        }else if(getMarriage === '丧偶') {
+        } else if (getMarriage === '丧偶') {
           this.searchForm.marrige = 2
-        }else{
+        } else {
           this.searchForm.marrige = 3
         }
       },

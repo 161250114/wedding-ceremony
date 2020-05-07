@@ -44,7 +44,7 @@
             <el-carousel height="120px" type="card" autoplay="false">
               <el-carousel-item v-for="(item,index) in 4" :key="index" style="width: 200px">
                 <!--                <el-carousel-item v-for="(item,index) in album" :key="index" style="width: 200px">-->
-                <img src="../recommend/logo.png"/>
+                <img src="../recommend/girl.png"/>
                 <!--                <img style="width: 100%;height: 120px" v-bind:src="item.address"/>-->
                 <!--                </el-carousel-item>-->
               </el-carousel-item>
@@ -161,8 +161,8 @@
         colors: ['#99A9BF', '#F7BA2A', '#FF9900'],  // 等同于 { 2: '#99A9BF', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' }
         userState: false,
         chatRoomVisible: false,
-        id: '',
-        userId: 111, //当前用户
+        id: 0,//查看对象的id
+        userId: 0, //当前用户
         records: {},
         age: 0,
         /*form->record how much times that these tags are checked,
@@ -170,8 +170,8 @@
          */
         form: {},
         checkHistoryform: {
-          userId: 111,
-          checkedUserId: 114,
+          userId: 0,
+          checkedUserId: 0,
         },
         selectRequire: {
           leastAge: 25,
@@ -191,14 +191,6 @@
           exercise: '未填写',
           game: '未填写'
         },
-        // lifeStyle: {
-        //   smoke: '不吸烟',
-        //   drink: '不喝酒',
-        //   exercise: '偶尔锻炼',
-        //   eating: '都可以',
-        //   time: '不规律',
-        //   religion: '无宗教信仰'
-        // }
       }
     },
     created () {
@@ -207,10 +199,17 @@
       this.getDateStandard()
       this.getHobby()
       this.getUserLabel()
-      this.addCheckHistory()
     },
     methods: {
       getData () {
+        let url_getCurrentUser = '/getCurrentUser'
+        axios.get(url_getCurrentUser).then((res) => {
+          // console.log(res.data.message)
+          this.userId=res.data.message.userid
+          // this.userId=res.data
+          this.addCheckHistory()
+        })
+
         let url = `/user/get/${this.id}`
         axios.get(url).then((res) => {
           this.records = res.data
@@ -307,67 +306,20 @@
       handleChange (val) {
         console.log(val)
       },
-      // eslint-disable-next-line no-unused-vars
-      // handleClose (done) {
-      //   this.chatRoomVisible = false
-      //   this.exitRoom()
-      // },
       handleChat () {
-        let routeData = this.$router.resolve({
-          path: '/chatRoom',
-          query: {
-            name: 'Sara',
-          }
+        let url = `/user/get/${this.userId}`
+        let username
+        axios.get(url).then((res) => {
+          username = res.data.username
+          let routeData = this.$router.resolve({
+            path: '/chatRoom',
+            query: {
+              name: username,
+            }
+          })
+          window.open(routeData.href, '_blank')
         })
-        window.open(routeData.href, '_blank')
-        //open the chatRoom and join the room
-        // this.chatRoomVisible = true
-        // this.joinRoom()
       },
-      //methods for chatRoom
-      // async joinRoom () {
-      //   // let username
-      //   // let url = `/user/get/${this.userId}`
-      //   // axios.get(url).then((res) => {
-      //   //   username = res.data.username
-      //   // })
-      //   // console.log(this.records.username)
-      //   this.ws = new WebSocket(`ws://localhost:8080/chatRoom/${this.records.username}`)  // 后端的启动端口
-      //   this.ws.onopen = this.webscoketonopen
-      //   this.ws.onmessage = this.webscoketonmessage
-      //   //正常关闭触发
-      //   this.ws.onclose = function () {
-      //     console.log('连接关闭')
-      //   }
-      // },
-      // webscoketonopen () {
-      //   console.log('与服务器成功建立连接')
-      // },
-      // webscoketonmessage (value) {
-      //   // console.log(value)
-      //   this.content += (value.data + '\r\n')
-      // },
-      // exitRoom () {
-      //   this.closeWebSocket()
-      // },
-      // sendMsg () {
-      //   if (!this.ws) {
-      //     alert('你已经掉线，请重新加入')
-      //     return
-      //   }
-      //   if (this.ws.readyState === 1) {
-      //     this.ws.send(this.message)
-      //     this.message = ''
-      //   } else {
-      //     alert('发送失败')
-      //   }
-      // },
-      // closeWebSocket () {
-      //   if (this.ws) {
-      //     this.ws.close()
-      //     this.ws = null
-      //   }
-      // }
     }
   }
 </script>

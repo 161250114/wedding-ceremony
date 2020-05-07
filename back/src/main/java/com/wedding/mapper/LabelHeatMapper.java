@@ -1,8 +1,11 @@
 package com.wedding.mapper;
 
 import com.wedding.model.po.LabelHeat;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public interface LabelHeatMapper {
     int deleteByPrimaryKey(Integer id);
 
