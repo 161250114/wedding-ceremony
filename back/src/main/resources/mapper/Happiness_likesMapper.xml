@@ -21,7 +21,7 @@
     update happiness_likes
     set happiness_id = #{happinessId,jdbcType=INTEGER},
       like_id = #{likeId,jdbcType=INTEGER},
-      state = ##{state,jdbcType=INTEGER}
+      state = #{state,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
