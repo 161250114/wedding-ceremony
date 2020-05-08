@@ -52,7 +52,7 @@
           let str=from+"_"+to;
           axios.post('/systemmessage/read',str)
             .then(function(res){
-              
+
             })
             .catch(function(err){
               console.log(err);
@@ -90,7 +90,9 @@
           data["content"]=app.input;
           data["state"]=0;
           axios.post("/systemmessage/add",data)
-            .then(successResponse => {})
+            .then(successResponse => {
+              app.input=""
+            })
             .catch(failResponse => {
               this.$alert("操作失败，请重试", '提示', {
                 confirmButtonText: '确定',

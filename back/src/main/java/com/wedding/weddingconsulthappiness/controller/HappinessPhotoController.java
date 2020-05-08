@@ -40,9 +40,8 @@ public class HappinessPhotoController {
             h.setId(index);
             h.setHappinessId(hp.getHappinessId());
             h.setPhoto(hp.getPhoto().getBytes());
-            if(hps.insert(h)==0){
-                return 0;
-            }
+            index++;
+            hps.insert(h);
         }
         return 1;
     }

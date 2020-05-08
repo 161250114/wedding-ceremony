@@ -17,14 +17,13 @@
       <div style="width: 760px;
       text-align: left;
       overflow: hidden;
-      text-overflow: ellipsis;">虽然阿根廷累计确诊数在南美洲并不靠前，但在全球经济衰退的背景下，国际资本大幅流出，阿根廷金融市场及比索汇率雪上加霜，外汇储备持续缩水，多种风险相互叠加最终将阿根廷再次推向破产边缘。</div>
-
+      text-overflow: ellipsis;">{{list[index].content}}</div>
     </div>
     <div class="pa">
       <el-row>
-        <el-col :span="8" v-for="(o, index) in 4" :key="o" :offset=0>
-          <el-card :body-style="{ padding: '0px' }">
-            <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
+        <el-col :span="8":offset=0  v-for="photo in photolist[index]">
+          <el-card :body-style="{ padding: '0px' }" >
+            <img :src="photo" style="width: 250px;height: 250px" class="image">
           </el-card>
         </el-col>
       </el-row>
@@ -33,15 +32,15 @@
       <span style="position: relative;;left:-60px;">
           <el-button v-if="!islike[index]" icon="el-icon-thumb" circle @click="like(index)"></el-button>
           <el-button v-if="islike[index]" type="danger" icon="el-icon-thumb" circle @click="like(index)"></el-button>
-          {{list[index]["likes"]}}
+          {{likes[index]}}
       </span>
-      <span style="position: relative;left:-30px;">
+      <span style="position: relative;left:-30px;" v-if="list[index].senderId==id">
           <el-button icon="el-icon-delete"circle @click="del(index)"></el-button>
       </span>
     </div>
     <div class="ca">
       <div  v-for="comm in commentlist[index]"><p style="margin-left:-700px;margin-top: 50px"><el-avatar :size="30" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" ></el-avatar>
-        {{comm["comment"]}}</p></div>
+        {{comm.content}}</p></div>
     </div>
     <div class="ia">
       <el-input v-model="input[index]" placeholder="评论" class="send_comment"></el-input>
@@ -52,42 +51,84 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import qs from 'qs'
     export default {
       name: "happiness",
       data(){
           return{
-            list:[
-              {
-                id:0,
-                senderId:1,
-                content:"11391313",
-                likes:3,
-                date:new Date(),
-                state:0,
-              }, {
-                id:1,
-                senderId:1,
-                content:"11391313",
-                likes:3,
-                date:new Date(),
-                state:0,
-              },
-            ],
-            islike:[true,false],
+            id:-1,
+            list:[],
+            friendlist:[10,3],
+            happinesslist:[],
+            islike:[],
+            likes:[],
             input:[],
-            photolist:[{}],
-            commentlist:[[{comment:"123"},{comment:"456"}],[]],
+            photolist:[],
+            commentlist:[],
           }
       },
       computed:{
 
       },
-      created:{
-        load(){
-
-        }
+      created(){
+        this.load();
       },
       methods:{
+        load(){
+          let app=this
+          axios.get("/getCurrentUser")
+            .then(function(res) {
+              app.id=res.data.message.userid
+              let ids=app.friendlist
+              axios.post('/happiness/get',ids)
+                .then(function(res){
+                  app.list=res.data;
+                  for(let i=0;i<app.list.length;i++){
+                    app.happinesslist.push(app.list[i].id)
+                  }
+                  axios.post('/happiness/getPhotoList',app.happinesslist)
+                    .then(function(res){
+                      app.photolist=res.data
+                    })
+                    .catch(function(err){
+                      console.log(err);
+                    });
+                  axios.post('/happiness/getCommentList',app.happinesslist)
+                    .then(function(res){
+                      app.commentlist=res.data
+                      console.log(res.data)
+                    })
+                    .catch(function(err){
+                      console.log(err);
+                    });
+                  axios.post('/happiness/getLikes',app.happinesslist)
+                    .then(function(res){
+                      app.likes=res.data
+                      console.log(app.likes)
+                    })
+                    .catch(function(err){
+                      console.log(err);
+                    });
+                  axios.post('/happiness/getMyLikes',app.happinesslist)
+                    .then(function(res){
+                      app.islike=res.data
+                    })
+                    .catch(function(err){
+                      console.log(err);
+                    });
+                })
+                .catch(function (err) {
+                  console.log(err);
+                })
+                })
+                .catch(function(err){
+                  console.log(err);
+                });
+
+
+
+        },
         write(){
           this.$router.push({
             path: './sendhappiness',
@@ -103,26 +144,54 @@
           let commentObject=new Object();
           commentObject["comment"]=word;
           this.commentlist[index].push(commentObject)
-          console.log(this.commentlist)
+          let comment=new Object();
+          comment.id=0;
+          comment.senderId=this.id;
+          comment.happinessId=this.list[index].id;
+          comment.content=word
+          comment.state=0;
+          axios.post('/comment/add',comment)
+            .then(function(res) {
+
+            })
+            .catch(function (err) {
+              console.log(err);
+            })
         },
         like(index){
-          let happinessId=this.list[index]["happinessId"];
-          let newItem = JSON.parse(JSON.stringify(this.list[index]));
+          let happinessId=this.happinesslist[index]
+          axios.post('/happiness/updatel',happinessId)
+            .then(function(res) {
+
+            })
+            .catch(function (err) {
+              console.log(err);
+            })
+          let num=this.likes[index];
           if(this.islike[index]){
-            newItem["likes"]=newItem["likes"]-1;
+            num--;
           }
           else{
-            newItem["likes"]=newItem["likes"]+1;
+            num++
           }
-          this.list.splice(index,1,newItem)
+          this.likes.splice(index,1,num)
           this.islike.splice(index,1,!this.islike[index])
         },
         del(index){
-          let happinessId=this.list[index]["happinessId"]
+          let happinessId=this.happinesslist[index]
           this.list.splice(index,1)
           this.islike.splice(index,1)
+          this.photolist.splice(index,1)
+          this.likes.splice(index,1)
+          this.happinesslist.splice(index,1)
           this.commentlist.splice(index,1)
+          axios.post('/happiness/del',happinessId)
+            .then(function(res) {
 
+            })
+            .catch(function (err) {
+              console.log(err);
+            })
         }
       }
     }
