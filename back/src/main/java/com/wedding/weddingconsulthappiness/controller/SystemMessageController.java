@@ -89,6 +89,19 @@ public class SystemMessageController {
         sm.setState(1);
         return ts.updateByPrimaryKey(sm);
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/getMyState",method = RequestMethod.GET)
+    public int getMyState(@RequestBody int id){
+        List<System_message>list=ts.selectAll();
+        for(System_message s:list){
+            if(s.getReceiverId()==id&&s.getState()==0){
+                return 0;
+            }
+        }
+        return 1;
+    }
+
     @ResponseBody
     @RequestMapping(value = "/delete",method = RequestMethod.GET)
     public int deletesm(){

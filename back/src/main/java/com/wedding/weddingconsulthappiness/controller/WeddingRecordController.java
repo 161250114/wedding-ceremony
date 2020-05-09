@@ -21,6 +21,7 @@ public class WeddingRecordController {
     @ResponseBody
     @RequestMapping(value="/add",method= RequestMethod.POST)
     public int add(@RequestBody Wedding_record wr){
+        wr.setId(wrs.selectAll().size());
         return wrs.insert(wr);
     }
     @ResponseBody
