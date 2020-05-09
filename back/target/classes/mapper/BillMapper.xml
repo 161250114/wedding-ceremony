@@ -41,4 +41,9 @@
     select id, type, money, remark, time, userid, balance
     from bill
   </select>
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, type, money, remark, time, userid, balance
+    from bill
+    where userid = #{userid,jdbcType=INTEGER}
+  </select>
 </mapper>

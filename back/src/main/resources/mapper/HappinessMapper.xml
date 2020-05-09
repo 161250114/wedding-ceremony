@@ -38,5 +38,6 @@
   <select id="selectAll" resultMap="BaseResultMap" >
     select id, sender_id, time, content, likes, state
     from happiness
+    order by id desc
   </select>
 </mapper>
