@@ -114,20 +114,14 @@
     <div style="margin-top: 20px">
       <el-card class="searchResult">
         <figure v-for="(item,index) in pageInfo.list" :key="index" @click="handleCheck(item.id)">
-          <img src="../recommend/sample.jpg"/>
+          <img :src="pageInfoAddress[index]"/>
           <h2>{{item.username}}</h2>
         </figure>
       </el-card>
     </div>
     <div style="margin-top: 20px">
-      <el-pagination
-        background
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-size="pageInfo.pageSize"
-        layout="prev, pager, next"
-        :total="pageInfo.total"
-        style="text-align: center">
+      <el-pagination background @current-change="handleCurrentChange" :current-page="currentPage" :page-size="pageInfo.pageSize"
+                     layout="prev, pager, next" :total="pageInfo.total" style="text-align: center">
       </el-pagination>
     </div>
 
@@ -167,8 +161,9 @@
           profession: '',
           marrige: 3
         },
-        currentPage: 1,
+        currentPage: 0,
         pageInfo: {},
+        pageInfoAddress: [],
         currentLabel: '',
         idInputSearch: '',
         activeIndex: '3',
@@ -518,6 +513,7 @@
         })
       },
       getLabelSearchData () {//post请求获取分页显示的pageInfo
+        this.pageInfoAddress = []
         this.searchType = 1
         let url = `/user/queryLabelSearch/${this.currentPage}&${this.currentLabel}&${this.userId}`
         // console.log(`d3+${this.currentPage}+${this.currentLabel}`)
@@ -525,9 +521,20 @@
           //console.log(res)
           this.pageInfo = res.data
           // console.log(this.pageInfo)
+          for(let item in this.pageInfo.list) {
+            console.log(this.pageInfo.list[item])
+            let url_album = `/album/select/${this.pageInfo.list[item].albumid}`
+            axios.get(url_album).then((res) => {
+              let photoAddress = res.data[0].address
+              // console.log('album')
+              this.pageInfoAddress.push(photoAddress)
+            })
+          }
+          // console.log(this.pageInfo)
         })
       },
       getData () {//post请求获取分页显示的pageInfo
+        this.pageInfoAddress = []
         let url_getCurrentUser = '/getCurrentUser'
         axios.get(url_getCurrentUser).then((res) => {
           // console.log(res.data)
@@ -536,9 +543,19 @@
             this.$axios.post(url, this.searchForm).then((res) => {
               // console.log(this.searchForm)
               this.pageInfo = res.data
+              for(let item in this.pageInfo.list) {
+                console.log(this.pageInfo.list[item])
+                let url_album = `/album/select/${this.pageInfo.list[item].albumid}`
+                axios.get(url_album).then((res) => {
+                  let photoAddress = res.data[0].address
+                  // console.log('album')
+                  this.pageInfoAddress.push(photoAddress)
+                })
+              }
               console.log(this.pageInfo)
             })
-          } else {//获取到当前登录用户
+          }
+          else {//获取到当前登录用户
             this.userId = res.data.message.userid
             //根据择偶要求设置默认搜索界面的结果，并显示在选择框上
             let url_1 = `/date_standard/select/${this.userId}`
@@ -591,6 +608,15 @@
                 this.$axios.post(url, this.searchForm).then((res) => {
                   // console.log(this.searchForm)
                   this.pageInfo = res.data
+                  for(let item in this.pageInfo.list) {
+                    console.log(this.pageInfo.list[item])
+                    let url_album = `/album/select/${this.pageInfo.list[item].albumid}`
+                    axios.get(url_album).then((res) => {
+                      let photoAddress = res.data[0].address
+                      // console.log('album')
+                      this.pageInfoAddress.push(photoAddress)
+                    })
+                  }
                   console.log(this.pageInfo)
                 })
               })
@@ -599,6 +625,7 @@
         })
       },
       handleDetailSearch () {
+        this.pageInfoAddress = []
         let url_getCurrentUser = '/getCurrentUser'
         axios.get(url_getCurrentUser).then((res) => {
           // console.log(res.data)
@@ -612,6 +639,15 @@
             this.$axios.post(url, this.searchForm).then((res) => {
               // console.log(this.searchForm)
               this.pageInfo = res.data
+              for(let item in this.pageInfo.list) {
+                console.log(this.pageInfo.list[item])
+                let url_album = `/album/select/${this.pageInfo.list[item].albumid}`
+                axios.get(url_album).then((res) => {
+                  let photoAddress = res.data[0].address
+                  // console.log('album')
+                  this.pageInfoAddress.push(photoAddress)
+                })
+              }
               console.log(this.pageInfo)
             })
           }

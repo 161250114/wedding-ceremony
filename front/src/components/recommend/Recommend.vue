@@ -10,8 +10,7 @@
     <div class="recommend">
       <el-carousel height="300px" class="el-carousel">
         <el-carousel-item v-for="(item,index) in carouselList" :key="index">
-          <img style="width: 100%;height: 300px;min-width: 1250px;"
-               v-bind:src="item.img_url"/>
+          <img style="width: 100%;height: 300px;min-width: 1250px;" v-bind:src="item.img_url"/>
         </el-carousel-item>
       </el-carousel>
 
@@ -19,14 +18,14 @@
         <el-tab-pane label="猜你喜欢" name="猜你喜欢">
           <span slot="label"><i class="el-icon-magic-stick"></i> 猜你喜欢</span>
           <figure v-for="(item,index) in preferList" :key="index" @click="handleCheck(item.id)">
-            <img src="./girl2.jpg"/>
+            <img :src="preferListAddress[index]"/>
             <h2>{{item.username}}</h2>
           </figure>
         </el-tab-pane>
 
         <el-tab-pane v-for="(item,index) in hottestLabel" :key="index" :label=item.label :name=item.label>
           <figure v-for="(user,i) in userList" :key="i" @click="handleCheck(user.id)">
-            <img src="./girl3.jpg"/>
+            <img :src="userListAddress[i]"/>
             <h2>{{user.username}}</h2>
           </figure>
         </el-tab-pane>
@@ -66,8 +65,10 @@
         activeIndex: '2',
         activeTab: '猜你喜欢',
         preferList: {},
+        preferListAddress: [],
         hottestLabel: {},
         userList: {},
+        userListAddress: [],
         carouselList: [{
           img_name: 'paris',
           img_url: head_img1
@@ -86,6 +87,7 @@
     },
     methods: {
       getData () {
+        this.preferListAddress = []
         let url_getCurrentUser = '/getCurrentUser'
         axios.get(url_getCurrentUser).then((res) => {
           // console.log(res.data.message)
@@ -94,15 +96,34 @@
             axios.get(url).then((res) => {
               // console.log(res)
               this.preferList = res.data
+              for(let item in this.preferList) {
+                let url_album = `/album/select/${this.preferList[item].albumid}`
+                console.log(this.preferList[item].albumid)
+                axios.get(url_album).then((res) => {
+                  let photoAddress = res.data[0].address
+                  // console.log('album')
+                  this.preferListAddress.push(photoAddress)
+                })
+              }
               // console.log(url)
             })
-          } else {
+          }
+          else {
             this.userId = res.data.message.userid
             // this.userId=res.data
             let url = `/user/preferList/${this.userId}`
             axios.get(url).then((res) => {
               // console.log(res)
               this.preferList = res.data
+              for(let item in this.preferList) {
+                let url_album = `/album/select/${this.preferList[item].albumid}`
+                // console.log(this.preferList[item].albumid)
+                axios.get(url_album).then((res) => {
+                  let photoAddress = res.data[0].address
+                  // console.log('album')
+                  this.preferListAddress.push(photoAddress)
+                })
+              }
               // console.log(url)
             })
           }
@@ -117,28 +138,43 @@
         })
       },
       handleClick (tab, event) {
+        this.userListAddress = []
         let url_getCurrentUser = '/getCurrentUser'
         axios.get(url_getCurrentUser).then((res) => {
           // console.log(res.data)
           if (res.data.message === null) {//没登录的用户，无法查看
             this.$alert('请您登陆后查看', '信息提醒', {
-              confirmButtonText: '确定'
+              confirmButtonText: '确定',
+              callback: action => {
+                this.$router.go(0);
+              }
             })
-          } else {
+          }
+          else {//已经登录状态下
             // console.log(event.target.getAttribute('id'))
             if (event.target.getAttribute('id') === 'tab-猜你喜欢') {
-              let url = `/user/preferList/${this.userId}`
-              axios.get(url).then((res) => {
-                console.log(res)
-                this.preferList = res.data
-                // console.log(url)
-              })
-            } else {
-              let label = event.target.getAttribute('id').substr(4)
+              //猜你喜欢标签，在登录状态下，加载页面的时候已经有数据，直接沿用
+              // console.log("111")
+              // console.log(this.preferListAddress)
+            }
+            else {
+              let label = event.target.getAttribute('id')
+              if(label !==null){
+                label=label.substr(4)
+              }
               let url = `/user/label_search/${label}&${this.userId}`
               axios.get(url).then((res) => {
                 // console.log(res)
                 this.userList = res.data
+                for(let item in this.userList) {
+                  console.log(this.userList[item])
+                  let url_album = `/album/select/${this.userList[item].albumid}`
+                  axios.get(url_album).then((res) => {
+                    let photoAddress = res.data[0].address
+                    // console.log('album')
+                    this.userListAddress.push(photoAddress)
+                  })
+                }
                 // console.log(url)
               })
             }

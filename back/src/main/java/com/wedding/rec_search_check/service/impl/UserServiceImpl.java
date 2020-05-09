@@ -106,6 +106,7 @@ public class UserServiceImpl implements UserService {
         if(currPage == null) currPage = 1;
         //设置从第几页开始查询2条
         PageHelper.startPage(currPage,8);
+        System.out.println("111");
         //分页查询
         PageInfo<User> pageInfo = new PageInfo<>(userMapper.selectAll());
         return pageInfo;

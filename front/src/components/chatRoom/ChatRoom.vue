@@ -31,10 +31,10 @@
             <el-button type="primary" @click="sendMessage()">发送</el-button>
           </el-row>
           <div class="message">
-            <div v-for="(value,key,index) in messageList" :key="index">
-              <el-tag v-if="value.name==name" type="success" style="float:right">我：{{value.msg}}</el-tag>
+            <div v-for="(value,index) in messageList" :key="index">
+              <el-tag v-if="value.name===name" type="success" style="float:right">我：{{value.msg}}</el-tag>
               <br />
-              <el-tag v-if="value.name!=name" style="float:left">{{value.name}}：{{value.msg}}</el-tag>
+              <el-tag v-if="value.name!==name" style="float:left">{{value.name}}：{{value.msg}}</el-tag>
               <br />
             </div>
           </div>
@@ -56,10 +56,11 @@
       };
     },
     created () {
-      this.name = this.$route.query.name
+      this.name=this.$route.query.name
+      this.connectWebSocket()
     },
     methods: {
-      connectWebSocket() {
+      connectWebSocket: function() {
         console.log("建立连接");
         if (this.name === "") {
           this.$alert("请输入自己的昵称", "提示", {
@@ -76,9 +77,13 @@
             alert("不支持建立socket连接");
           }
           //连接发生错误的回调方法
-          this.websocket.onerror = function() {};
+          this.websocket.onerror = function() {
+
+          };
           //连接成功建立的回调方法
-          this.websocket.onopen = function(event) {};
+          this.websocket.onopen = function(event) {
+
+          };
           //接收到消息的回调方法
           let that = this;
           this.websocket.onmessage = function(event) {
@@ -96,19 +101,17 @@
             }
           };
           //连接关闭的回调方法
-          this.websocket.onclose = function() {};
+          this.websocket.onclose = function() {}
           //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
           window.onbeforeunload = function() {
+            this.websocket.onclose = function() {}
             this.websocket.close();
           };
         }
       },
       // 发送消息
-      sendMessage () {
-        let socketMsg = {
-          msg: this.messageValue,
-          toUser: this.aisle
-        };
+      sendMessage: function() {
+        let socketMsg = { msg: this.messageValue, toUser: this.aisle };
         if (this.aisle === "") {
           //群聊.
           socketMsg.type = 0;
@@ -122,6 +125,7 @@
         this.$notify({
           title: "当前在线人数：" + people,
           message: "您的频道号：" + aisle,
+          duration: 0
         });
       }
     }
