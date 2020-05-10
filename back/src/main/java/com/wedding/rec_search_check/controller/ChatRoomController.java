@@ -24,12 +24,12 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 @ServerEndpoint(value = "/websocket/{nickname}")
 @Component
-public class WebSocketController {
+public class ChatRoomController {
     private String nickname;
     private Session session;
 
     //用来存放每个客户端对应的MyWebSocket对象。
-    private static CopyOnWriteArraySet<WebSocketController> webSocketSet = new CopyOnWriteArraySet<WebSocketController>();
+    private static CopyOnWriteArraySet<ChatRoomController> webSocketSet = new CopyOnWriteArraySet<ChatRoomController>();
     //与某个客户端的连接会话，需要通过它来给客户端发送数据
     //用来记录sessionId和该session进行绑定
     private static Map<String, Session> map = new HashMap<>();
@@ -125,7 +125,7 @@ public class WebSocketController {
      * 群发自定义消息
      */
     public void broadcast(String message) {
-        for (WebSocketController item : webSocketSet) {
+        for (ChatRoomController item : webSocketSet) {
             item.session.getAsyncRemote().sendText(message);//异步发送消息.
         }
     }

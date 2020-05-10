@@ -15,11 +15,18 @@ public interface ChatHistoryService {
     public ChatHistory selById(Integer id);
 
     /**
-     * 根据用户id加载记录
+     * 根据聊天发起者id加载记录
      * @param user_id
      * @return
      */
     public List<ChatHistory> selByUserId(Integer user_id);
+
+    /**
+     * 根据聊天的对象id加载记录
+     * @param chatted_user_id
+     * @return
+     */
+    public List<ChatHistory> selByChattedUserId(Integer chatted_user_id);
 
     /**
      * 查所有记录

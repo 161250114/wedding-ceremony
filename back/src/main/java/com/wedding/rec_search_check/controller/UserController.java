@@ -175,63 +175,12 @@ public class UserController {
 
     @RequestMapping("label_search/{label}&{user_id}")
     public List<User> labelSearch(@PathVariable String label, @PathVariable Integer user_id){
-        User currentUser = userService.selById(user_id);
-        List<User> userListByLabel = userService.selByLabel(label);
-        for(int i=0;i<userListByLabel.size();i++){
-            if(userListByLabel.get(i).getSex()== currentUser.getSex()){
-                userListByLabel.remove(i);
-                i--;
-            }
-        }
-        return userListByLabel;
+        return userService.selByLabel(label, user_id);
     }
 
     @RequestMapping("detail_search")
     public List<User> detailSearch(@RequestBody Search search){
-        //获取当前年份
-        Calendar cal=Calendar.getInstance();
-        int year=cal.get(Calendar.YEAR);
-
-        List<User> selectedListByDetail = new ArrayList<>();
-        if(search.getMarrige()==3){//婚姻状况不限
-            search.setMarrige(0);
-            List<User> selectedListByDetail_1 = userService.selByDetail(search);
-            if(selectedListByDetail_1!= null) {
-                selectedListByDetail.addAll(selectedListByDetail_1);
-                System.out.println("1");
-            }
-            search.setMarrige(1);
-            List<User> selectedListByDetail_2 = userService.selByDetail(search);
-            if(selectedListByDetail_2!= null) {
-                selectedListByDetail.addAll(selectedListByDetail_2);
-                System.out.println("2");
-            }
-            search.setMarrige(2);
-            List<User> selectedListByDetail_3 = userService.selByDetail(search);
-            if(selectedListByDetail_3!= null) {
-                selectedListByDetail.addAll(selectedListByDetail_3);
-                System.out.println("3");
-            }
-            System.out.println(selectedListByDetail.size());
-        }
-        else {
-            selectedListByDetail = userService.selByDetail(search);
-        }
-
-        for(int i=0;i<selectedListByDetail.size();i++){//年龄在范围之内
-            //获取用户出生年份
-            Date birthday= selectedListByDetail.get(i).getBirthday();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss aa");
-            String birth_year=sdf.format(birthday).substring(0,4);
-            //得到年龄
-            int age = year-Integer.parseInt(birth_year);
-
-            if(age<search.getYoungest()||age>search.getOldest()){
-                selectedListByDetail.remove(i);
-                i--;
-            }
-        }
-        return selectedListByDetail;
+        return userService.selByDetail(search);
     }
 
     @RequestMapping("query/{page}")

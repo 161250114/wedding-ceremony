@@ -47,8 +47,16 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public List<User> selByLabel(String label) {
-        return userMapper.selectByLabel(label);
+    public List<User> selByLabel(String label, Integer user_id) {
+        User currentUser = userMapper.selectByPrimaryKey(user_id);
+        List<User> userListByLabel = userMapper.selectByLabel(label);
+        for(int i=0;i<userListByLabel.size();i++){
+            if(userListByLabel.get(i).getSex().equals(currentUser.getSex())){
+                userListByLabel.remove(i);
+                i--;
+            }
+        }
+        return userListByLabel;
     }
 
     /**
@@ -57,7 +65,51 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public List<User> selByDetail(Search search) {
-        return userMapper.selectByDetail(search);
+        //获取当前年份
+        Calendar cal=Calendar.getInstance();
+        int year=cal.get(Calendar.YEAR);
+
+        List<User> selectedListByDetail = new ArrayList<>();
+        if(search.getMarrige()==3){//婚姻状况不限
+            search.setMarrige(0);
+            List<User> selectedListByDetail_1 = userMapper.selectByDetail(search);
+            if(selectedListByDetail_1!= null) {
+                selectedListByDetail.addAll(selectedListByDetail_1);
+                System.out.println("1");
+            }
+            search.setMarrige(1);
+            List<User> selectedListByDetail_2 = userMapper.selectByDetail(search);
+            if(selectedListByDetail_2!= null) {
+                selectedListByDetail.addAll(selectedListByDetail_2);
+                System.out.println("2");
+            }
+            search.setMarrige(2);
+            List<User> selectedListByDetail_3 = userMapper.selectByDetail(search);
+            if(selectedListByDetail_3!= null) {
+                selectedListByDetail.addAll(selectedListByDetail_3);
+                System.out.println("3");
+            }
+            System.out.println(selectedListByDetail.size());
+        }
+        else {
+            selectedListByDetail = userMapper.selectByDetail(search);
+        }
+
+        for(int i=0;i<selectedListByDetail.size();i++){//年龄在范围之内
+            //获取用户出生年份
+            Date birthday= selectedListByDetail.get(i).getBirthday();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss aa");
+            String birth_year=sdf.format(birthday).substring(0,4);
+            //得到年龄
+            int age = year-Integer.parseInt(birth_year);
+
+            if(age<search.getYoungest()||age>search.getOldest()){
+                selectedListByDetail.remove(i);
+                i--;
+            }
+        }
+
+        return selectedListByDetail;
     }
 
     /**
@@ -106,7 +158,6 @@ public class UserServiceImpl implements UserService {
         if(currPage == null) currPage = 1;
         //设置从第几页开始查询2条
         PageHelper.startPage(currPage,8);
-        System.out.println("111");
         //分页查询
         PageInfo<User> pageInfo = new PageInfo<>(userMapper.selectAll());
         return pageInfo;
@@ -120,18 +171,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public PageInfo<User> selLabel(Integer currPage, String label, Integer user_id) {
         if(currPage == null) currPage = 1;
+        List<User> userList = selByLabel(label, user_id);
         //设置从第几页开始查询2条
         PageHelper.startPage(currPage,8);
         //分页查询
-        List<User> userListByLabel = userMapper.selectByLabel(label);
-        User currentUser = selById(user_id);
-        for(int i=0;i<userListByLabel.size();i++){
-            if(userListByLabel.get(i).getSex() == currentUser.getSex()){
-                userListByLabel.remove(i);
-                i--;
-            }
-        }
-        PageInfo<User> pageInfo = new PageInfo<>(userListByLabel);
+        PageInfo<User> pageInfo = new PageInfo<>(userList);
         return pageInfo;
     }
 
@@ -146,48 +190,7 @@ public class UserServiceImpl implements UserService {
         //设置从第几页开始查询
         PageHelper.startPage(currPage,8);
         //分页查询
-
-        //获取当前年份
-        Calendar cal=Calendar.getInstance();
-        int year=cal.get(Calendar.YEAR);
-
-        List<User> selectedListByDetail = new ArrayList<>();
-        if(search.getMarrige()==3){//婚姻状况不限
-            search.setMarrige(0);
-            List<User> selectedListByDetail_1 = userMapper.selectByDetail(search);
-            if(selectedListByDetail_1!= null) {
-                selectedListByDetail.addAll(selectedListByDetail_1);
-            }
-            search.setMarrige(1);
-            List<User> selectedListByDetail_2 = userMapper.selectByDetail(search);
-            if(selectedListByDetail_2!= null) {
-                selectedListByDetail.addAll(selectedListByDetail_2);
-            }
-            search.setMarrige(2);
-            List<User> selectedListByDetail_3 = userMapper.selectByDetail(search);
-            if(selectedListByDetail_3!= null) {
-                selectedListByDetail.addAll(selectedListByDetail_3);
-            }
-            System.out.println(selectedListByDetail.size());
-        }
-        else {
-            selectedListByDetail = userMapper.selectByDetail(search);
-        }
-
-        for(int i=0;i<selectedListByDetail.size();i++){//年龄在范围之内
-            //获取用户出生年份
-            Date birthday= selectedListByDetail.get(i).getBirthday();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss aa");
-            String birth_year=sdf.format(birthday).substring(0,4);
-            //得到年龄
-            int age = year-Integer.parseInt(birth_year);
-
-            if(age<search.getYoungest()||age>search.getOldest()){
-                selectedListByDetail.remove(i);
-                i--;
-            }
-        }
-        PageInfo<User> pageInfo = new PageInfo<>(selectedListByDetail);
+        PageInfo<User> pageInfo = new PageInfo<>(selByDetail(search));
         return pageInfo;
     }
 }

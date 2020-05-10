@@ -17,8 +17,7 @@
           <div style="height: 25%;float:bottom;">
             <el-button type="primary" plain @click="handleSayHi()" class="sayHi" style="margin-left: 40px">打招呼
             </el-button>
-            <el-button type="primary" plain @click="handleChat()" class="sayHi" style="margin-left: 10px"
-                       :disabled="userState">发消息
+            <el-button type="primary" plain @click="handleChat()" class="sayHi" style="margin-left: 10px">发消息
             </el-button>
           </div>
         </div>
@@ -141,8 +140,6 @@
         photoAddress: '',
         truth: 0,
         colors: ['#99A9BF', '#F7BA2A', '#FF9900'],  // 等同于 { 2: '#99A9BF', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' }
-        userState: false,
-        chatRoomVisible: false,
         id: 0,//查看对象的id
         userId: 0, //当前用户
         records: {},
@@ -160,10 +157,10 @@
           oldestAge: 30,
           shortestHeight: 175,
           tallestHeight: 185,
-          salary: '10000 ~ 20000元',
+          salary: '10000-20000元',
           education: '本科',
           marriage: '未婚',
-          address: '北京朝阳'
+          address: ''
         },
         hobby: {
           food: '未填写',
@@ -173,6 +170,13 @@
           exercise: '未填写',
           game: '未填写'
         },
+        chatHistory: {
+          userId: 0,
+          chattedUserId: 0,
+          isagree: 0,
+          userAisle: '',
+          chattedUserAisle: ''
+        }
       }
     },
     created () {
@@ -186,10 +190,10 @@
       getData () {
         let url_getCurrentUser = '/getCurrentUser'
         axios.get(url_getCurrentUser).then((res) => {
-          // console.log(res.data.message)
+          console.log(res.data.message.userid)
           this.userId = res.data.message.userid
           // this.userId=res.data
-          this.addCheckHistory()
+          // this.addCheckHistory()
         })
 
         let url = `/user/get/${this.id}`
@@ -270,15 +274,6 @@
           })
         }
       },
-      addCheckHistory () {
-        let url = '/checkHistory/add'
-        this.checkHistoryform.checkedUserId = this.id
-        this.checkHistoryform.userId = this.userId
-        this.$axios.post(url, this.checkHistoryform)
-          .then((res) => {
-            console.log(res.data)
-          })
-      },
       handleSayHi () {
         this.$message({
           message: '成功打招呼',
@@ -290,18 +285,15 @@
         console.log(val)
       },
       handleChat () {
-        let url = `/user/get/${this.userId}`
-        let name
-        axios.get(url).then((res) => {
-          name = res.data.username
-          let routeData = this.$router.resolve({
-            path: '/chatRoom',
-            query: {
-              name: name,
-            }
-          })
-          window.open(routeData.href, '_blank')
+        this.chatHistory.userId = this.userId
+        this.chatHistory.chattedUserId = this.id
+        this.chatHistory.isagree = 0
+
+        let url_add = '/chatHistory/add'
+        this.$axios.post(url_add, this.chatHistory).then((res) => {
+          console.log(res)
         })
+
       },
     }
   }
