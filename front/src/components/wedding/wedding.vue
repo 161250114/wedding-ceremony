@@ -167,7 +167,7 @@
         let result=new Array();
         for(let i=0;i<table.length;i++){
           let data=table[i];
-          if(data["id"].indexOf(input)>=0||data["name"].indexOf(input)>=0){
+          if((data["id"]+"").indexOf(input)>=0||data["name"].indexOf(input)>=0){
             result.push(data);
           }
         }

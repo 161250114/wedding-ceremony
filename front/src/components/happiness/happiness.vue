@@ -96,6 +96,7 @@
                     });
                   axios.post('/happiness/getCommentList',app.happinesslist)
                     .then(function(res){
+                      console.log(app.happinesslist)
                       app.commentlist=res.data
                       console.log(res.data)
                     })
@@ -105,7 +106,6 @@
                   axios.post('/happiness/getLikes',app.happinesslist)
                     .then(function(res){
                       app.likes=res.data
-                      console.log(app.likes)
                     })
                     .catch(function(err){
                       console.log(err);
@@ -141,15 +141,15 @@
         },
         send(index){
           let word=this.input[index];
-          let commentObject=new Object();
-          commentObject["comment"]=word;
-          this.commentlist[index].push(commentObject)
+          let raw_commentlist=JSON.parse(JSON.stringify(this.commentlist[index]))
           let comment=new Object();
           comment.id=0;
           comment.senderId=this.id;
           comment.happinessId=this.list[index].id;
           comment.content=word
           comment.state=0;
+          raw_commentlist.push(comment)
+          this.commentlist.splice(index,1,raw_commentlist)
           axios.post('/comment/add',comment)
             .then(function(res) {
 
@@ -187,7 +187,6 @@
           this.commentlist.splice(index,1)
           axios.post('/happiness/del',happinessId)
             .then(function(res) {
-
             })
             .catch(function (err) {
               console.log(err);

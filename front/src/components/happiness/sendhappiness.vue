@@ -216,5 +216,6 @@
     width: 800px;
     height: 200px;
     margin: 20px;
+    text-align: center;
   }
 </style>
