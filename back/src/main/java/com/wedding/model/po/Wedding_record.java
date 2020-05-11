@@ -1,8 +1,9 @@
 package com.wedding.model.po;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Wedding_record {
+public class Wedding_record implements Serializable {
     private Integer id;
 
     private Integer weddingId;

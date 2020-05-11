@@ -1,6 +1,8 @@
 package com.wedding.model.po;
 
-public class System_message {
+import java.io.Serializable;
+
+public class System_message implements Serializable {
     private Integer id;
 
     private Integer senderId;
