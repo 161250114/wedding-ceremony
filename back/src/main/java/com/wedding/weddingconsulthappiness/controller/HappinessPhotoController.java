@@ -5,6 +5,9 @@ import com.wedding.model.po.Happiness_photo;
 import com.wedding.weddingconsulthappiness.service.HappinessPhotoService;
 import com.wedding.weddingconsulthappiness.vo.HappinessPhotoVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +22,8 @@ import java.util.List;
 public class HappinessPhotoController {
     @Autowired
     HappinessPhotoService hps;
-
+    @Autowired
+    RedisTemplate<Object,Object> redisTemplate;
     @ResponseBody
     @RequestMapping(value="/get",method= RequestMethod.GET)
     public Happiness_photo get(){

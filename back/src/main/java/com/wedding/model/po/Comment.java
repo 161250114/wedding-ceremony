@@ -1,6 +1,8 @@
 package com.wedding.model.po;
 
-public class Comment {
+import java.io.Serializable;
+
+public class Comment implements Serializable {
     private Integer id;
 
     private Integer happinessId;

@@ -1,6 +1,8 @@
 package com.wedding.model.po;
 
-public class Happiness_likes {
+import java.io.Serializable;
+
+public class Happiness_likes implements Serializable {
     private Integer id;
 
     private Integer happinessId;

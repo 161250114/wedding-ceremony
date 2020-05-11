@@ -4,6 +4,9 @@ import com.wedding.model.po.System_message;
 import com.wedding.weddingconsulthappiness.service.SystemMessageService;
 import com.wedding.weddingconsulthappiness.vo.MessageState;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,16 +20,29 @@ import java.util.List;
 public class SystemMessageController {
     @Autowired
     SystemMessageService ts;
+    @Autowired
+    private RedisTemplate<Object,Object> redisTemplate;
     @ResponseBody
     @RequestMapping(value="/add",method = RequestMethod.POST)
     public int addsm(@RequestBody System_message sm, HttpServletRequest resquest){
         sm.setId(ts.getId());
-        return ts.addSystemMessage(sm);
+        RedisSerializer redisSerializer=new StringRedisSerializer();
+        redisTemplate.setKeySerializer(redisSerializer);
+        if(ts.addSystemMessage(sm)==1){
+            redisTemplate.opsForValue().set("System_message",null);
+        }
+        return 1;
     }
     @ResponseBody
     @RequestMapping(value = "/get",method = RequestMethod.POST)
     public List<System_message> getsm(@RequestBody Integer number){
-        List<System_message>list=ts.selectAll();
+        RedisSerializer redisSerializer=new StringRedisSerializer();
+        redisTemplate.setKeySerializer(redisSerializer);
+        List<System_message>list= (List<System_message>) redisTemplate.opsForValue().get("System_message");
+        if(list==null){
+            list=ts.selectAll();
+            redisTemplate.opsForValue().set("System_message",list);
+        }
         ArrayList<System_message>result=new ArrayList<>();
         for(System_message sm:list){
             if(sm.getSenderId()+sm.getReceiverId()==number){
@@ -41,7 +57,13 @@ public class SystemMessageController {
     public int read(@RequestBody String str){
         int from=Integer.parseInt(str.split("_")[0]);
         int to=Integer.parseInt(str.split("_")[1]);
-        List<System_message>list=ts.selectAll();
+        RedisSerializer redisSerializer=new StringRedisSerializer();
+        redisTemplate.setKeySerializer(redisSerializer);
+        List<System_message>list= (List<System_message>) redisTemplate.opsForValue().get("System_message");
+        if(list==null){
+            list=ts.selectAll();
+            redisTemplate.opsForValue().set("System_message",list);
+        }
         for(System_message s:list){
             if(s.getSenderId()==from&&s.getReceiverId()==to){
                 s.setState(1);
@@ -54,12 +76,25 @@ public class SystemMessageController {
     @ResponseBody
     @RequestMapping(value = "/getAll",method = RequestMethod.GET)
     public List<System_message> getAll(){
-        return ts.selectAll();
+        RedisSerializer redisSerializer=new StringRedisSerializer();
+        redisTemplate.setKeySerializer(redisSerializer);
+        List<System_message>list= (List<System_message>) redisTemplate.opsForValue().get("System_message");
+        if(list==null){
+            list=ts.selectAll();
+            redisTemplate.opsForValue().set("System_message",list);
+        }
+        return list;
     }
     @ResponseBody
     @RequestMapping(value = "/getState",method = RequestMethod.GET)
     public List<MessageState> getState(){
-        List<System_message>list=ts.selectAll();
+        RedisSerializer redisSerializer=new StringRedisSerializer();
+        redisTemplate.setKeySerializer(redisSerializer);
+        List<System_message>list= (List<System_message>) redisTemplate.opsForValue().get("System_message");
+        if(list==null){
+            list=ts.selectAll();
+            redisTemplate.opsForValue().set("System_message",list);
+        }
         HashMap<Integer,MessageState>map=new HashMap<>();
         for(System_message s:list){
             int id=s.getSenderId();
@@ -93,7 +128,13 @@ public class SystemMessageController {
     @ResponseBody
     @RequestMapping(value = "/getMyState",method = RequestMethod.GET)
     public int getMyState(@RequestBody int id){
-        List<System_message>list=ts.selectAll();
+        RedisSerializer redisSerializer=new StringRedisSerializer();
+        redisTemplate.setKeySerializer(redisSerializer);
+        List<System_message>list= (List<System_message>) redisTemplate.opsForValue().get("System_message");
+        if(list==null){
+            list=ts.selectAll();
+            redisTemplate.opsForValue().set("System_message",list);
+        }
         for(System_message s:list){
             if(s.getReceiverId()==id&&s.getState()==0){
                 return 0;
