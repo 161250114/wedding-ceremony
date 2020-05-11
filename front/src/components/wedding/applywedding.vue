@@ -271,12 +271,12 @@
               app.wedding.applicantId=id
               axios.post("/wedding/add",app.wedding)
                 .then(successResponse => {
-                  this.$alert("申请成功", '提示', {
+                  app.$alert("申请成功", '提示', {
                     confirmButtonText: '确定',
                   });
                 })
                 .catch(failResponse => {
-                  this.$alert("操作失败，请刷新页面重试", '提示', {
+                  app.$alert("操作失败，请刷新页面重试", '提示', {
                     confirmButtonText: '确定',
                   });
                 }); //失败后的操作
