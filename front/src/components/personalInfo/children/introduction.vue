@@ -424,8 +424,11 @@ export default {
             app.newUserInfo = JSON.parse(JSON.stringify(res.data.message));
             app.userInfo = JSON.parse(JSON.stringify(res.data.message));
             app.questionNumber = res.data.message.questionList.length;
-            for(let i=0;i<app.userInfo.tagList.length;i++){
-              app.tagChosedList.push({label:app.userInfo.tagList[i],color:""})
+            for (let i = 0; i < app.userInfo.tagList.length; i++) {
+              app.tagChosedList.push({
+                label: app.userInfo.tagList[i],
+                color: "",
+              });
             }
             for (let i = 0; i < res.data.message.questionList.length; i++) {
               app.questionList[i] =
@@ -438,8 +441,8 @@ export default {
         })
         .catch(function (error) {});
     },
-    changeIntroduction(){
-      let app=this
+    changeIntroduction() {
+      let app = this;
       Axios.post("/userInfo/changeIntroduction", app.newUserInfo)
         .then(function (res) {
           if (res.data.result) {
@@ -450,11 +453,15 @@ export default {
           }
         })
         .catch(function (error) {});
-    }
+    },
   },
   created() {
     let app = this;
-    app.changeTagList();
+    Axios.get("../../../static/infoList.json").then(function (res) {
+      app.tagAllList = res.data.tagList;
+      app.questionAllList = res.data.questionList;
+      app.changeTagList();
+    });
     app.redo();
     app.$emit("getIndex", "/personalInfo/introduction");
   },

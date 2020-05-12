@@ -70,6 +70,7 @@
             placeholder="请选择"
             class="single_select"
           >
+            <el-option key="不限" label="不限" value="不限"></el-option>
             <el-option
               v-for="item in salaryList"
               :key="item"
@@ -85,6 +86,8 @@
             placeholder="请选择"
             class="single_select"
           >
+            <el-option key="不限" label="不限" value="不限"></el-option>
+
             <el-option
               v-for="item in educationList"
               :key="item"
@@ -152,24 +155,8 @@ export default {
       cities: [],
       addressCode: [],
       newAddressCode: [],
-      educationList: [
-        "不限",
-        "高中中专及以下",
-        "大专",
-        "本科",
-        "双学士",
-        "硕士",
-        "博士",
-      ],
-      salaryList: [
-        "不限",
-        "2000元以下",
-        "2000-5000元",
-        "5000-10000元",
-        "10000-20000元",
-        "20000-50000元",
-        "50000元以上",
-      ],
+      educationList: [],
+      salaryList: [],
     };
   },
   methods: {
@@ -206,25 +193,29 @@ export default {
   },
   created() {
     let app = this;
+    app.cities = JSON.parse(JSON.stringify(regionData));
+    let tempAddress = { label: "不限", value: "不限" };
+    app.cities.splice(0, 0, tempAddress);
+    for (let i = 0; i < app.cities.length; i++) {
+      if (app.cities[i].children != null) {
+        app.cities[i].children.splice(0, 0, tempAddress);
+        for (let j = 0; j < app.cities[i].children.length; j++) {
+          if (app.cities[i].children[j].children != null) {
+            app.cities[i].children[j].children.splice(0, 0, tempAddress);
+          }
+        }
+      }
+    }
+    Axios.get("../../../static/infoList.json").then(function (res) {
+      app.salaryList = res.data.salaryList;
+      app.educationList = res.data.educationList;
+    });
     Axios.get("/userInfo/getStandard")
       .then(function (res) {
         if (res.data.result) {
           console.log(res.data.message);
           app.standard = JSON.parse(JSON.stringify(res.data.message));
           app.newStandard = JSON.parse(JSON.stringify(res.data.message));
-          app.cities = JSON.parse(JSON.stringify(regionData));
-          let tempAddress = { label: "不限", value: "不限" };
-          app.cities.splice(0, 0, tempAddress);
-          for (let i = 0; i < app.cities.length; i++) {
-            if (app.cities[i].children != null) {
-              app.cities[i].children.splice(0, 0, tempAddress);
-              for (let j = 0; j < app.cities[i].children.length; j++) {
-                if (app.cities[i].children[j].children != null) {
-                  app.cities[i].children[j].children.splice(0, 0, tempAddress);
-                }
-              }
-            }
-          }
           let temp = app.cities;
           let cityArray = app.standard.address.split("/");
           for (let i = 0; i < cityArray.length; i++) {
@@ -237,6 +228,7 @@ export default {
             }
           }
           app.newAddressCode = JSON.parse(JSON.stringify(app.addressCode));
+          console.log(app.newAddressCode);
         }
       })
       .catch(function (error) {});

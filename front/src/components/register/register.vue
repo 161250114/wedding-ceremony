@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="text-align:center">
     <el-row style="height: 60px;">
       <el-col ::span="1">&nbsp;</el-col>
     </el-row>
@@ -260,8 +260,10 @@
           <el-row>
             <el-col :span="15">
               <el-form-item label="兴趣爱好:">
-                <label v-if="userInfo.questionList.length==0">尚未选择问题</label>
-                <label v-else>{{questionMessage}}</label>
+                <label v-if="userInfo.questionList.length == 0"
+                  >尚未选择问题</label
+                >
+                <label v-else>{{ questionMessage }}</label>
               </el-form-item>
               <el-divider></el-divider>
             </el-col>
@@ -337,7 +339,7 @@
         <div>
           <el-card class="box-card">
             <div slot="header" class="clearfix">
-              <span style="float: left;">你的性格：</span>
+              <span style="float: left;">你的标签：</span>
               <el-tag
                 v-for="tag in tagChosedList"
                 :key="tag.label"
@@ -551,67 +553,9 @@ export default {
         questionList: [],
       },
       cities: "",
-      educationList: [
-        "高中中专及以下",
-        "大专",
-        "本科",
-        "双学士",
-        "硕士",
-        "博士",
-      ],
-      professionList: [
-        "销售",
-        "客服",
-        "人事/行政/后勤",
-        "餐饮",
-        "旅游",
-        "酒店",
-        "超市/百货/零售",
-        "美容/美发",
-        "保健按摩",
-        "运动健身",
-        "普工/技工",
-        "生产管理/研发",
-        "汽车制造/服务",
-        "建筑",
-        "物业管理",
-        "房产中介",
-        "家政保洁/安保",
-        "司机/交通服务",
-        "贸易/采购",
-        "物流/仓储",
-        "淘宝职位",
-        "美术/设计/创意",
-        "市场/媒介/公关",
-        "广告/会展/咨询",
-        "影视/娱乐/休闲",
-        "教育培训",
-        "财务/审计/统计",
-        "法律",
-        "翻译",
-        "编辑/出版/印刷",
-        "计算机/互联网/通信",
-        "电子/电气",
-        "机械/仪器仪表",
-        "金融/银行/证券/投资",
-        "保险",
-        "医院/医疗/护理",
-        "制药/生物工程",
-        "服装/纺织/食品",
-        "环保/能源",
-        "质控/安防",
-        "高级管理",
-        "农/林/牧/渔业",
-        "其他职业",
-      ],
-      salaryList: [
-        "2000元以下",
-        "2000-5000元",
-        "5000-10000元",
-        "10000-20000元",
-        "20000-50000元",
-        "50000元以上",
-      ],
+      educationList: [],
+      professionList: [],
+      salaryList: [],
       introductionPane: "first",
       rules1: {
         username: [{ validator: checkUsername, trigger: "blur" }],
@@ -622,63 +566,15 @@ export default {
       },
       tagDialog: false,
       questionDialog: false,
-      tagAllList: [
-        "开朗",
-        "大方",
-        "主动",
-        "外向",
-        "俏皮",
-        "敏捷",
-        "乐观",
-        "调皮",
-        "爽朗",
-        "豪爽",
-        "正直",
-        "直率",
-        "直爽",
-        "耿直",
-        "公正",
-        "正派",
-        "爽快",
-        "率真",
-        "真诚",
-        "热诚",
-        "纯真",
-        "坦率",
-        "笃实",
-        "热忱",
-        "热心",
-        "好客",
-        "和气",
-        "和蔼",
-        "和善",
-        "亲切",
-        "谦让",
-        "谦虚",
-        "谦逊",
-        "虚心",
-        "自谦",
-        "强硬",
-        "毅力",
-        "勇敢",
-        "果敢",
-        "坚强",
-      ],
+      tagAllList: [],
       tagColor: ["", "success", "warning", "danger"],
       tagList: [],
       tagChosedList: [],
-      questionAllList: [
-        "1、最喜欢的游戏是",
-        "2、最喜欢的运动是",
-        "3、最喜欢的明星是",
-        "4、最喜欢的食物是",
-        "5、最喜欢的歌曲是",
-        "6、最喜欢的书是",
-      ],
+      questionAllList: [],
       questionList: ["", "", "", "", "", ""],
       questionNumber: 1,
       answerList: ["", "", "", "", "", ""],
-      questionMessage:""
+      questionMessage: "",
     };
   },
   methods: {
@@ -762,7 +658,7 @@ export default {
     changeTagList() {
       let app = this;
       app.tagList = [];
-      while (app.tagList.length < 52) {
+      while (app.tagList.length < 30) {
         let tempIndex = Math.floor(Math.random() * app.tagAllList.length);
         let hasExisted = false;
         for (let i = 0; i < app.tagList.length; i++) {
@@ -805,9 +701,10 @@ export default {
         }
       }
       app.questionDialog = false;
-      app.questionMessage="当前已选问题"
-      for(let i=0;i<app.userInfo.questionList.length;i++){
-        app.questionMessage+=(app.userInfo.questionList[i].questionid+1)+"  "
+      app.questionMessage = "当前已选问题";
+      for (let i = 0; i < app.userInfo.questionList.length; i++) {
+        app.questionMessage +=
+          app.userInfo.questionList[i].questionid + 1 + "  ";
       }
       console.log(app.userInfo.questionList);
     },
@@ -859,8 +756,16 @@ export default {
     },
   },
   created() {
-    this.cities = regionData;
-    this.changeTagList();
+    let app = this;
+    app.cities = regionData;
+    Axios.get("../../../static/infoList.json").then(function (res) {
+      app.tagAllList = res.data.tagList;
+      app.professionList=res.data.professionList
+      app.salaryList=res.data.salaryList
+      app.educationList=res.data.educationList
+      app.questionAllList=res.data.questionList
+      app.changeTagList();
+    });
   },
 };
 </script>

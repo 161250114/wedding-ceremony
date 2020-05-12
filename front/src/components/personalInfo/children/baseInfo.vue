@@ -182,67 +182,9 @@ export default {
         profession: "计算机/互联网/通信",
         salary: "5000-10000元",
       },
-      educationList: [
-        "高中中专及以下",
-        "大专",
-        "本科",
-        "双学士",
-        "硕士",
-        "博士",
-      ],
-      salaryList: [
-        "2000元以下",
-        "2000-5000元",
-        "5000-10000元",
-        "10000-20000元",
-        "20000-50000元",
-        "50000元以上",
-      ],
-      professionList: [
-        "销售",
-        "客服",
-        "人事/行政/后勤",
-        "餐饮",
-        "旅游",
-        "酒店",
-        "超市/百货/零售",
-        "美容/美发",
-        "保健按摩",
-        "运动健身",
-        "普工/技工",
-        "生产管理/研发",
-        "汽车制造/服务",
-        "建筑",
-        "物业管理",
-        "房产中介",
-        "家政保洁/安保",
-        "司机/交通服务",
-        "贸易/采购",
-        "物流/仓储",
-        "淘宝职位",
-        "美术/设计/创意",
-        "市场/媒介/公关",
-        "广告/会展/咨询",
-        "影视/娱乐/休闲",
-        "教育培训",
-        "财务/审计/统计",
-        "法律",
-        "翻译",
-        "编辑/出版/印刷",
-        "计算机/互联网/通信",
-        "电子/电气",
-        "机械/仪器仪表",
-        "金融/银行/证券/投资",
-        "保险",
-        "医院/医疗/护理",
-        "制药/生物工程",
-        "服装/纺织/食品",
-        "环保/能源",
-        "质控/安防",
-        "高级管理",
-        "农/林/牧/渔业",
-        "其他职业",
-      ],
+      educationList: [],
+      salaryList: [],
+      professionList: [],
       addressCode: [],
       cities: "",
       editMode: true,
@@ -293,25 +235,30 @@ export default {
     let app = this;
     app.cities = regionData;
     let temp = app.cities;
+    Axios.get("../../../static/infoList.json").then(function(res){
+      app.salaryList=res.data.salaryList
+      app.educationList=res.data.educationList
+      app.professionList=res.data.professionList
+    })
     Axios.get("/userInfo/getBaseInfo")
       .then(function (res) {
         if (res.data.result) {
           console.log(res.data.message);
           app.userInfo = JSON.parse(JSON.stringify(res.data.message));
           app.newUserInfo = JSON.parse(JSON.stringify(res.data.message));
+          let cityArray = app.userInfo.address.split("/");
+          for (let i = 0; i < cityArray.length; i++) {
+            for (let j = 0; j < temp.length; j++) {
+              if (cityArray[i] == temp[j].label) {
+                app.addressCode.push(temp[j].value);
+                temp = temp[j].children;
+                break;
+              }
+            }
+          }
         }
       })
       .catch(function (error) {});
-    let cityArray = app.userInfo.address.split("/");
-    for (let i = 0; i < cityArray.length; i++) {
-      for (let j = 0; j < temp.length; j++) {
-        if (cityArray[i] == temp[j].label) {
-          app.addressCode.push(temp[j].value);
-          temp = temp[j].children;
-          break;
-        }
-      }
-    }
     app.$emit("getIndex", "/personalInfo/baseInfo");
   },
 };

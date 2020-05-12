@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="text-align:center">
     <el-row>
       <el-col :span="1">&nbsp;</el-col>
     </el-row>

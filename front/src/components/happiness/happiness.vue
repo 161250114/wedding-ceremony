@@ -5,10 +5,10 @@
       <el-avatar :size="80" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png">
       </el-avatar>
     </div>
-      <el-button size="200"style="float:right;top:auto" type="primary" icon="el-icon-edit" @click="write">
+      <el-button size="200" style="float:right;top:auto" type="primary" icon="el-icon-edit" @click="write">
       </el-button>
   </div>
-  <div  v-for="(h,index) in list" class="hp">
+  <div  v-for="(h,index) in list" class="hp" :key="index">
     <div>
       <p @click="myroom" style="margin-left:-700px;margin-top: 50px"><el-avatar :size="30" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" ></el-avatar>
       卢本伟</p>
@@ -21,7 +21,7 @@
     </div>
     <div class="pa">
       <el-row>
-        <el-col :span="8":offset=0  v-for="photo in photolist[index]">
+        <el-col :span="8" :offset=0  v-for="photo in photolist[index]" :key="photo">
           <el-card :body-style="{ padding: '0px' }" >
             <img :src="photo" style="width: 250px;height: 250px" class="image">
           </el-card>
@@ -35,11 +35,11 @@
           {{likes[index]}}
       </span>
       <span style="position: relative;left:-30px;" v-if="list[index].senderId==id">
-          <el-button icon="el-icon-delete"circle @click="del(index)"></el-button>
+          <el-button icon="el-icon-delete" circle @click="del(index)"></el-button>
       </span>
     </div>
     <div class="ca">
-      <div  v-for="comm in commentlist[index]"><p style="margin-left:-700px;margin-top: 50px"><el-avatar :size="30" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" ></el-avatar>
+      <div  v-for="comm in commentlist[index]" :key="comm"><p style="margin-left:-700px;margin-top: 50px"><el-avatar :size="30" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" ></el-avatar>
         {{comm.content}}</p></div>
     </div>
     <div class="ia">

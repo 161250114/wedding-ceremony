@@ -15,27 +15,32 @@
             ></el-avatar>
           </el-col>
           <el-col :span="3">
-            <img src="../../../static/title.png" class="title-img"/>
+            <img src="../../../static/title.png" class="title-img" />
           </el-col>
         </router-link>
-        <el-col :xs="8" :sm="11" :md="14" :lg="13" :xl="13">
+        <el-col :xs="7" :sm="10" :md="13" :lg="12" :xl="12">
           &nbsp;
         </el-col>
-        <el-col :span="3" v-show="!isLogin">
+        <el-col :span="4" v-show="!isLogin">
           <router-link to="/login">
-            <el-button type="text" style="margin-top: 10px;">登录</el-button>
-          </router-link>&nbsp;&nbsp;&nbsp;
+            <el-button type="text" style="margin-top: 10px;"
+              >登录</el-button
+            > </router-link
+          >&nbsp;&nbsp;&nbsp;
           <router-link to="/register">
             <el-button type="text">注册</el-button>
           </router-link>
         </el-col>
-        <el-col :span="3" v-show="isLogin">
+        <el-col :span="4" v-show="isLogin">
           <p style="margin-top: 15px;">
             欢迎您，{{ username }}&nbsp;
             <el-dropdown>
-              <span class="el-dropdown-link">
-                <i class="el-icon-user-solid"></i>
-              </span>
+              <el-button
+                type="info"
+                icon="el-icon-user-solid"
+                circle
+                size="medium"
+              ></el-button>
               <el-dropdown-menu slot="dropdown">
                 <router-link to="/personalInfo">
                   <el-dropdown-item>个人中心</el-dropdown-item>
@@ -61,12 +66,19 @@
             <el-badge :value="chatNotice.length" :max="99">
               <!--              <el-button size="small">{{cNoticeNum}}</el-button>-->
               <el-dropdown>
-              <span class="el-dropdown-link">
-                <i class="el-icon-chat-round"></i>
-              </span>
+                <el-button
+                  type="info"
+                  icon="el-icon-chat-round"
+                  circle
+                  size="medium"
+                ></el-button>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item v-for="(item,index) in chatNotice" :key="index" @click.native="agreeNotice(item)">
-                    {{item.userId}}希望进一步了解您
+                  <el-dropdown-item
+                    v-for="(item, index) in chatNotice"
+                    :key="index"
+                    @click.native="agreeNotice(item)"
+                  >
+                    {{ item.userId }}希望进一步了解您
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -74,18 +86,24 @@
 
             <el-badge :value="requestNotice.length" :max="99">
               <el-dropdown>
-              <span class="el-dropdown-link">
-                <i class="el-icon-bell"></i>
-              </span>
+                <el-button
+                  type="info"
+                  icon="el-icon-bell"
+                  circle
+                  size="medium"
+                ></el-button>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item v-for="(item,index) in requestNotice" :key="index" @click.native="joinRoom(item)">
-                    {{item.chattedUserId}}同意与您深入交谈
+                  <el-dropdown-item
+                    v-for="(item, index) in requestNotice"
+                    :key="index"
+                    @click.native="joinRoom(item)"
+                  >
+                    {{ item.chattedUserId }}同意与您深入交谈
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </el-badge>
           </p>
-
         </el-col>
       </el-row>
     </el-header>
@@ -93,171 +111,175 @@
 </template>
 
 <script>
-  import axios from 'axios'
+import axios from "axios";
 
-  export default {
-    name: 'head',
-    props: {
-      index: {
-        type: String,
-      },
+export default {
+  name: "head",
+  props: {
+    index: {
+      type: String,
     },
-    data () {
-      return {
-        username: '',
-        isLogin: false,
-        chatNotice: {},
-        requestNotice: {},
-        chatUsername: '',
-        chattedUsername: ''
-      }
-    },
-    methods: {
-      quit () {
-        let app = this
-        console.log('ok')
-        axios.get('/quitLogin').then(function (res) {
-          console.log(res)
-          if (res.data.result) {
-            app.isLogin = false
-          }
-        })
-      },
-      getNotice () {
-        let url_getCurrentUser = '/getCurrentUser'
-        axios.get(url_getCurrentUser).then((res) => {
-          // console.log(res.data.message)
-          if (res.data.message !== null) {
-            let id = res.data.message.userid
-            let url_chatNotice = `/chatHistory/request/${id}`
-            axios.get(url_chatNotice).then((res) => {
-              this.chatNotice = res.data
-              // console.log(this.requestNotice)
-            })
-
-            let url_request = `/chatHistory/select/${id}`
-            axios.get(url_request).then((res) => {
-              this.requestNotice = res.data
-              // console.log(this.requestNotice)
-            })
-          }
-        })
-      },
-      agreeNotice (item) {//接受者
-        item.isagree = 1
-        // that.showInfo(object.people, object.aisle)
-        let url_update = '/chatHistory/update'
-        this.$axios.post(url_update, item).then((res) => {
-          console.log(res)
-        })
-
-        this.getChatName(item.id)
-
-        let url = `/user/get/${item.chattedUserId}`
-        axios.get(url).then((res) => {
-          console.log(this.chatUsername)
-          let name = res.data.username
-          let routeData = this.$router.resolve({
-            path: '/chatRoom',
-            query: {
-              username: this.chatUsername,
-              chattedUsername: this.chattedUsername,
-              name: name,
-              aisle: '',
-              chatHistoryId: item.id
-            }
-          })
-          window.open(routeData.href, '_blank')
-        })
-      },
-      joinRoom (item) {//聊天发起者
-        item.isagree = 2
-        // that.showInfo(object.people, object.aisle)
-        let url_update = '/chatHistory/update'
-        this.$axios.post(url_update, item).then((res) => {
-          console.log(res)
-        })
-
-        this.getChatName(item.id)
-
-        let url = `/user/get/${item.userId}`
-        axios.get(url).then((res) => {
-          console.log(this.chatUsername)
-          let name = res.data.username
-          let routeData = this.$router.resolve({
-            path: '/chatRoom',
-            query: {
-              username: this.chatUsername,
-              chattedUsername: this.chattedUsername,
-              name: name,
-              aisle: item.chattedUserAisle,
-              chatHistoryId: item.id
-            }
-          })
-          window.open(routeData.href, '_blank')
-        })
-      },
-      getChatName(id) {
-        let url_chatHistory = `/chatHistory/get/${id}`
-        axios.get(url_chatHistory).then((res) => {
-          let item = res.data
-          console.log(item)
-          let url_user = `/user/get/${item.userId}`
-          axios.get(url_user).then((res) => {
-            // console.log(res.data.username)
-            this.chatUsername = res.data.username
-            // console.log(this.username)
-          })
-          let url_chattedUser = `/user/get/${item.chattedUserId}`
-          axios.get(url_chattedUser).then((res) => {
-            // console.log(res.data.username)
-            this.chattedUsername = res.data.username
-            // console.log(this.chattedUsername)
-          })
-        })
-      }
-    },
-    created () {
-      let app = this
-      axios.get('/getCurrentUser').then(function (res) {
-        console.log('head', res)
+  },
+  data() {
+    return {
+      username: "",
+      isLogin: false,
+      chatNotice: {},
+      requestNotice: {},
+      chatUsername: "",
+      chattedUsername: "",
+    };
+  },
+  methods: {
+    quit() {
+      let app = this;
+      console.log("ok");
+      axios.get("/quitLogin").then(function (res) {
+        console.log(res);
         if (res.data.result) {
-          app.username = res.data.message.uname_phone
-          app.isLogin = true
+          app.isLogin = false;
         }
-        this.getNotice()
-      }).catch(function (error) {
-      })
+      });
     },
-    mounted () {
-      this.timer = setInterval(() => {
-        setTimeout(() => {
-          this.getNotice()
-        }, 0)
-      }, 5000)
-    }
-  }
+    getNotice() {
+      let url_getCurrentUser = "/getCurrentUser";
+      axios.get(url_getCurrentUser).then((res) => {
+        // console.log(res.data.message)
+        if (res.data.message !== null) {
+          let id = res.data.message.userid;
+          let url_chatNotice = `/chatHistory/request/${id}`;
+          axios.get(url_chatNotice).then((res) => {
+            this.chatNotice = res.data;
+            // console.log(this.requestNotice)
+          });
+
+          let url_request = `/chatHistory/select/${id}`;
+          axios.get(url_request).then((res) => {
+            this.requestNotice = res.data;
+            // console.log(this.requestNotice)
+          });
+        }
+      });
+    },
+    agreeNotice(item) {
+      //接受者
+      item.isagree = 1;
+      // that.showInfo(object.people, object.aisle)
+      let url_update = "/chatHistory/update";
+      this.$axios.post(url_update, item).then((res) => {
+        console.log(res);
+      });
+
+      this.getChatName(item.id);
+
+      let url = `/user/get/${item.chattedUserId}`;
+      axios.get(url).then((res) => {
+        console.log(this.chatUsername);
+        let name = res.data.username;
+        let routeData = this.$router.resolve({
+          path: "/chatRoom",
+          query: {
+            username: this.chatUsername,
+            chattedUsername: this.chattedUsername,
+            name: name,
+            aisle: "",
+            chatHistoryId: item.id,
+          },
+        });
+        window.open(routeData.href, "_blank");
+      });
+    },
+    joinRoom(item) {
+      //聊天发起者
+      item.isagree = 2;
+      // that.showInfo(object.people, object.aisle)
+      let url_update = "/chatHistory/update";
+      this.$axios.post(url_update, item).then((res) => {
+        console.log(res);
+      });
+
+      this.getChatName(item.id);
+
+      let url = `/user/get/${item.userId}`;
+      axios.get(url).then((res) => {
+        console.log(this.chatUsername);
+        let name = res.data.username;
+        let routeData = this.$router.resolve({
+          path: "/chatRoom",
+          query: {
+            username: this.chatUsername,
+            chattedUsername: this.chattedUsername,
+            name: name,
+            aisle: item.chattedUserAisle,
+            chatHistoryId: item.id,
+          },
+        });
+        window.open(routeData.href, "_blank");
+      });
+    },
+    getChatName(id) {
+      let url_chatHistory = `/chatHistory/get/${id}`;
+      axios.get(url_chatHistory).then((res) => {
+        let item = res.data;
+        console.log(item);
+        let url_user = `/user/get/${item.userId}`;
+        axios.get(url_user).then((res) => {
+          // console.log(res.data.username)
+          this.chatUsername = res.data.username;
+          // console.log(this.username)
+        });
+        let url_chattedUser = `/user/get/${item.chattedUserId}`;
+        axios.get(url_chattedUser).then((res) => {
+          // console.log(res.data.username)
+          this.chattedUsername = res.data.username;
+          // console.log(this.chattedUsername)
+        });
+      });
+    },
+  },
+  created() {
+    let app = this;
+    axios
+      .get("/getCurrentUser")
+      .then(function (res) {
+        console.log("head", res);
+        if (res.data.result) {
+          app.username = res.data.message.uname_phone;
+          app.isLogin = true;
+        }
+        this.getNotice();
+      })
+      .catch(function (error) {});
+  },
+  mounted() {
+    this.timer = setInterval(() => {
+      setTimeout(() => {
+        this.getNotice();
+      }, 0);
+    }, 5000);
+  },
+};
 </script>
 
 <style scoped>
-  .header {
-    background: #f6f6f6;
-  }
+.header {
+  background: #f6f6f6;
+}
 
-  .title-img {
-    height: 55px;
-  }
+.title-img {
+  height: 55px;
+}
 
-  .el-dropdown-link {
-    cursor: pointer;
-    color: #409eff;
-  }
+.el-dropdown-link {
+  cursor: pointer;
+  color: #409eff;
+}
 
-  .router-link-active {
-    text-decoration: none;
-  }
+.router-link-active {
+  text-decoration: none;
+}
 
-  a {
-    text-decoration: none;
-  }
+a {
+  text-decoration: none;
+}
 </style>
