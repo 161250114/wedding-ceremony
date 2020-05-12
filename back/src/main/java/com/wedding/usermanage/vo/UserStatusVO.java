@@ -8,13 +8,17 @@ public class UserStatusVO implements Serializable {
     int usertype;
     int dateStatus;
     double balance;
+    String vipEnddate;
+    String phone;
 
-    public UserStatusVO(int userid, String username, int usertype, int dateStatus, double balance) {
+
+    public UserStatusVO(int userid, String username, int usertype, int dateStatus, double balance,String vipEnddate,String phone) {
         this.userid = userid;
         this.username = username;
         this.usertype = usertype;
         this.dateStatus = dateStatus;
         this.balance = balance;
+        this.vipEnddate=vipEnddate;
     }
 
     public UserStatusVO() {
@@ -58,5 +62,21 @@ public class UserStatusVO implements Serializable {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public String getVipEnddate() {
+        return vipEnddate;
+    }
+
+    public void setVipEnddate(String vipEnddate) {
+        this.vipEnddate = vipEnddate;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

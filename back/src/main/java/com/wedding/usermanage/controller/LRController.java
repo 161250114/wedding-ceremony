@@ -1,8 +1,10 @@
 package com.wedding.usermanage.controller;
 
 
+import com.github.qcloudsms.SmsSingleSenderResult;
 import com.wedding.model.ReturnMessage;
 import com.wedding.usermanage.service.LRService;
+import com.wedding.usermanage.service.UserInfoService;
 import com.wedding.usermanage.utils.MsgUtil;
 import com.wedding.usermanage.vo.LoginVO;
 import com.wedding.usermanage.vo.RegisterVO;
@@ -24,6 +26,8 @@ public class LRController {
 
     @Autowired
     private LRService lrService;
+    @Autowired
+    private UserInfoService userInfoService;
 
     @ResponseBody
     @RequestMapping(value = "/login",method = RequestMethod.POST)
@@ -44,9 +48,17 @@ public class LRController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/register/sendValidateNumber",method = RequestMethod.POST)
+    @RequestMapping(value = "/sendValidateNumber",method = RequestMethod.POST)
     public ReturnMessage register(@RequestBody String phone, HttpServletRequest httpServletRequest){
-        MsgUtil.sendMsg(phone,httpServletRequest);
+        if(phone.substring(3,7).equals("****")){
+            HttpSession session=httpServletRequest.getSession(false);
+            if(session!=null) {
+                LoginVO loginVO = (LoginVO) session.getAttribute("userinfo");
+                MsgUtil.sendMsg(userInfoService.getPhone(loginVO.getUserid()),httpServletRequest);
+            }
+        }else{
+            MsgUtil.sendMsg(phone,httpServletRequest);
+        }
         return new ReturnMessage(true,"ok");
     }
 

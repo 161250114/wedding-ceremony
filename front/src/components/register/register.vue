@@ -710,7 +710,7 @@ export default {
     },
     sendKey() {
       let app = this;
-      Axios.post("register/sendValidateNumber", app.userInfo.phone)
+      Axios.post("/sendValidateNumber", app.userInfo.phone)
         .then(function (res) {})
         .catch(function (error) {});
       app.validateButton.active = false;

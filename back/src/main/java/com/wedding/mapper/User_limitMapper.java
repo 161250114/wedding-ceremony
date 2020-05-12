@@ -16,4 +16,7 @@ public interface User_limitMapper {
     List<User_limit> selectAll();
 
     int updateByPrimaryKey(User_limit record);
+
+    User_limit selectByUserId(Integer userid);
+
 }

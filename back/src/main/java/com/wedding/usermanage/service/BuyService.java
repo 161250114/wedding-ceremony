@@ -6,4 +6,5 @@ public interface BuyService {
     ReturnMessage chargeMoney(int userid,double money);
     ReturnMessage buyVIP(int userid,int vipDays);
     ReturnMessage buyAlbumMax(int userid,int num);
+    ReturnMessage getAlbumMax(int userid);
 }

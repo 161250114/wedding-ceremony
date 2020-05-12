@@ -76,12 +76,6 @@
             v-model="newUserInfo.username"
           ></el-input>
         </el-form-item>
-        <el-form-item label="手机号:">
-          <el-input
-            prefix-icon="el-icon-phone"
-            v-model="newUserInfo.phone"
-          ></el-input>
-        </el-form-item>
         <el-form-item label="住址:">
           <el-cascader
             ref="cityCascader"
@@ -161,7 +155,6 @@ export default {
         sex: 1,
         birthday: "1998-06-30",
         username: "pikaqiu",
-        phone: "13218051808",
         height: "172",
         address: "江苏省/宿迁市/泗阳县",
         education: "本科",
@@ -235,11 +228,11 @@ export default {
     let app = this;
     app.cities = regionData;
     let temp = app.cities;
-    Axios.get("../../../static/infoList.json").then(function(res){
-      app.salaryList=res.data.salaryList
-      app.educationList=res.data.educationList
-      app.professionList=res.data.professionList
-    })
+    Axios.get("../../../static/infoList.json").then(function (res) {
+      app.salaryList = res.data.salaryList;
+      app.educationList = res.data.educationList;
+      app.professionList = res.data.professionList;
+    });
     Axios.get("/userInfo/getBaseInfo")
       .then(function (res) {
         if (res.data.result) {

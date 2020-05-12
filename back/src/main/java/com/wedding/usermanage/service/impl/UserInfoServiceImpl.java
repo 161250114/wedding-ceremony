@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service("userInfoService")
@@ -40,6 +39,15 @@ public class UserInfoServiceImpl implements UserInfoService {
         userStatusVO.setUserid(userid);
         userStatusVO.setUsername(user.getUsername());
         userStatusVO.setUsertype(user.getUsertype());
+        DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+        if(user.getVipEnddate()!=null){
+            userStatusVO.setVipEnddate(format.format(user.getVipEnddate()));
+        }else{
+            userStatusVO.setVipEnddate("当前不是会员");
+        }
+        StringBuilder sb=new StringBuilder(user.getPhone());
+        sb.replace(3,7,"****");
+        userStatusVO.setPhone(sb.toString());
         return new ReturnMessage(true,userStatusVO);
     }
 
@@ -54,7 +62,6 @@ public class UserInfoServiceImpl implements UserInfoService {
         baseInfoVO.setFullname(user.getFullname());
         baseInfoVO.setHeight(user.getHeight());
         baseInfoVO.setMarriage(user.getMarrige());
-        baseInfoVO.setPhone(user.getPhone());
         baseInfoVO.setProfession(user.getProfession());
         baseInfoVO.setSalary(user.getSalary());
         baseInfoVO.setSex(user.getSex());
@@ -151,5 +158,31 @@ public class UserInfoServiceImpl implements UserInfoService {
             userQuestionMapper.insert(userQuestion);
         }
         return new ReturnMessage(true,"ok");
+    }
+
+    @Override
+    public ReturnMessage changePassword(int userid, PasswordVO passwordVO) {
+        User user=userMapper.selectByPrimaryKey(userid);
+        if(user.getPassword().equals(passwordVO.getOldPassword())){
+            user.setPassword(passwordVO.getNewPassword());
+            userMapper.updateByPrimaryKey(user);
+            return new ReturnMessage(true,"修改成功");
+        }else{
+            return new ReturnMessage(false,"旧密码输入不正确！");
+        }
+    }
+
+    @Override
+    public ReturnMessage changePhone(int userid, String newPhone) {
+        User user=userMapper.selectByPrimaryKey(userid);
+        user.setPhone(newPhone);
+        userMapper.updateByPrimaryKey(user);
+        return new ReturnMessage(true,"修改成功!");
+    }
+
+    @Override
+    public String getPhone(int userid) {
+        User user=userMapper.selectByPrimaryKey(userid);
+        return user.getPhone();
     }
 }

@@ -32,7 +32,7 @@ public class RecordServiceImpl implements RecordService {
             billVO.setBalance(bill.getBalance());
             billVO.setMoney(bill.getMoney());
             billVO.setRemark(bill.getRemark());
-            DateFormat format=new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+            DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             billVO.setTime(format.format(bill.getTime()));
             billVO.setType(bill.getType());
             billVOS[i]=billVO;

@@ -39,9 +39,7 @@ public class BuyController {
         HttpSession session=httpServletRequest.getSession(false);
         if(session!=null){
             LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
-            if(buyService.buyVIP(loginVO.getUserid(),vipDays).isResult()){
-                return new ReturnMessage(true,"购买成功");
-            }
+            return buyService.buyVIP(loginVO.getUserid(),vipDays);
         }
         return new ReturnMessage(false,"尚未登录");
     }
@@ -51,9 +49,18 @@ public class BuyController {
         HttpSession session=httpServletRequest.getSession(false);
         if(session!=null){
             LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
-            if(buyService.buyAlbumMax(loginVO.getUserid(),num).isResult()){
-                return new ReturnMessage(true,"购买成功");
-            }
+            return buyService.buyAlbumMax(loginVO.getUserid(),num);
+        }
+        return new ReturnMessage(false,"尚未登录");
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getAlbumMax",method = RequestMethod.GET)
+    public ReturnMessage getAlbumMax(HttpServletRequest httpServletRequest){
+        HttpSession session=httpServletRequest.getSession(false);
+        if(session!=null){
+            LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
+            return buyService.getAlbumMax(loginVO.getUserid());
         }
         return new ReturnMessage(false,"尚未登录");
     }

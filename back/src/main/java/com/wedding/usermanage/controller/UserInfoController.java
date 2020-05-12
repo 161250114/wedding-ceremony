@@ -2,10 +2,7 @@ package com.wedding.usermanage.controller;
 
 import com.wedding.model.ReturnMessage;
 import com.wedding.usermanage.service.UserInfoService;
-import com.wedding.usermanage.vo.BaseInfoVO;
-import com.wedding.usermanage.vo.IntroductionVO;
-import com.wedding.usermanage.vo.LoginVO;
-import com.wedding.usermanage.vo.StandardVO;
+import com.wedding.usermanage.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -103,6 +100,33 @@ public class UserInfoController {
             LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
             if(userInfoService.changeIntroduction(loginVO.getUserid(),introductionVO).isResult()){
                 return new ReturnMessage(true,"修改成功");
+            }
+        }
+        return new ReturnMessage(false,"尚未登录");
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/changePassword",method = RequestMethod.POST)
+    public ReturnMessage changePassword(@RequestBody PasswordVO passwordVO, HttpServletRequest httpServletRequest){
+        HttpSession session=httpServletRequest.getSession(false);
+        if(session!=null){
+            LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
+            return userInfoService.changePassword(loginVO.getUserid(),passwordVO);
+        }
+        return new ReturnMessage(false,"尚未登录");
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/changePhone",method = RequestMethod.POST)
+    public ReturnMessage changePhone(@RequestBody ChangePhoneVO changePhoneVO, HttpServletRequest httpServletRequest){
+        HttpSession session=httpServletRequest.getSession(false);
+        if(session!=null){
+            LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
+            String validate_code=(String) session.getAttribute("VALIDATE_CODE");
+            if(changePhoneVO.getValidateKey().equals(validate_code)){
+                return userInfoService.changePhone(loginVO.getUserid(),changePhoneVO.getNewPhone());
+            }else{
+                return new ReturnMessage(false,"验证码输入错误！");
             }
         }
         return new ReturnMessage(false,"尚未登录");
