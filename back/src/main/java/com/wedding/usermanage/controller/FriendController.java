@@ -2,6 +2,7 @@ package com.wedding.usermanage.controller;
 
 import com.wedding.model.ReturnMessage;
 import com.wedding.usermanage.service.FriendService;
+import com.wedding.usermanage.vo.FriendApplyVO;
 import com.wedding.usermanage.vo.FriendVO;
 import com.wedding.usermanage.vo.LoginVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,7 @@ public class FriendController {
             LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
             return new ReturnMessage(true,friendService.getFriendList(loginVO.getUserid()));
         }
-        String[] message=new String[1];
-        message[0]="尚未登录";
-        return new ReturnMessage(false,message);
+        return new ReturnMessage(false,"尚未登录!");
     }
 
     @ResponseBody
@@ -40,7 +39,7 @@ public class FriendController {
         HttpSession session=httpServletRequest.getSession(false);
         if(session!=null){
             LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
-            return new ReturnMessage(true,friendService.changeRemark(loginVO.getUserid(),friendVO));
+            return friendService.changeRemark(loginVO.getUserid(),friendVO);
         }
         return new ReturnMessage(false,"尚未登录");
     }
@@ -51,11 +50,74 @@ public class FriendController {
         HttpSession session=httpServletRequest.getSession(false);
         if(session!=null){
             LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
-            return new ReturnMessage(true,friendService.deleteFriend(loginVO.getUserid(),friendVO));
+            return friendService.deleteFriend(loginVO.getUserid(),friendVO);
         }
         return new ReturnMessage(false,"尚未登录");
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/fuzzySearchUserByUsername",method = RequestMethod.POST)
+    public ReturnMessage fuzzySearchUserByUsername(@RequestBody String username, HttpServletRequest httpServletRequest){
+        HttpSession session=httpServletRequest.getSession(false);
+        if(session!=null){
+            LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
+            return new ReturnMessage(true,friendService.fuzzySearchUserByUsername(username));
+        }
+        return new ReturnMessage(false,"尚未登录");
+    }
 
+    @ResponseBody
+    @RequestMapping(value = "/searchUserByUserid",method = RequestMethod.POST)
+    public ReturnMessage fsearchUserByUserid(@RequestBody String userid, HttpServletRequest httpServletRequest){
+        HttpSession session=httpServletRequest.getSession(false);
+        if(session!=null){
+            LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
+            return new ReturnMessage(true,friendService.searchUserByUserid(userid));
+        }
+        return new ReturnMessage(false,"尚未登录");
+    }
 
+    @ResponseBody
+    @RequestMapping(value = "/sendFriendApply",method = RequestMethod.POST)
+    public ReturnMessage fsearchUserByUserid(@RequestBody FriendApplyVO friendApplyVO, HttpServletRequest httpServletRequest){
+        HttpSession session=httpServletRequest.getSession(false);
+        if(session!=null){
+            LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
+            friendApplyVO.setUserid1(loginVO.getUserid());
+            return friendService.sendFriendApply(friendApplyVO);
+        }
+        return new ReturnMessage(false,"尚未登录");
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getSendApplyList",method = RequestMethod.GET)
+    public ReturnMessage getSendApplyList(HttpServletRequest httpServletRequest){
+        HttpSession session=httpServletRequest.getSession(false);
+        if(session!=null){
+            LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
+            return new ReturnMessage(true,friendService.getSendApplyList(loginVO.getUserid()));
+        }
+        return new ReturnMessage(false,"尚未登录！");
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getReceiveApplyList",method = RequestMethod.GET)
+    public ReturnMessage getReceiveApplyList(HttpServletRequest httpServletRequest){
+        HttpSession session=httpServletRequest.getSession(false);
+        if(session!=null){
+            LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
+            return new ReturnMessage(true,friendService.getReceiveApplyList(loginVO.getUserid()));
+        }
+        return new ReturnMessage(false,"尚未登录！");
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/handleFriendApply",method = RequestMethod.POST)
+    public ReturnMessage handleFriendApply(@RequestBody FriendApplyVO friendApplyVO,HttpServletRequest httpServletRequest){
+        HttpSession session=httpServletRequest.getSession(false);
+        if(session!=null){
+            return friendService.handleApply(friendApplyVO);
+        }
+        return new ReturnMessage(false,"尚未登录！");
+    }
 }

@@ -19,6 +19,7 @@ public class UserStatusVO implements Serializable {
         this.dateStatus = dateStatus;
         this.balance = balance;
         this.vipEnddate=vipEnddate;
+        this.phone=phone;
     }
 
     public UserStatusVO() {

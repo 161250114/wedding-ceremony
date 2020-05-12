@@ -52,6 +52,8 @@
 </template>
 
 <script>
+import Axios from "axios";
+
 export default {
   data() {
     return {
@@ -87,6 +89,9 @@ export default {
   },
   created() {
     let app = this;
+    Axios.get("/record/getBillRecords").then(function(res){
+      app.billList=res.data.message
+    })
     app.$emit("getIndex", "/personalInfo/billList");
   }
 };

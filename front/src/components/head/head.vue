@@ -138,7 +138,7 @@ export default {
         console.log(res);
         if (res.data.result) {
           app.isLogin = false;
-
+          window.location.href = "/personalInfo/baseInfo";
         }
       });
     },

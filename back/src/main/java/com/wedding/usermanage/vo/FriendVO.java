@@ -3,25 +3,27 @@ package com.wedding.usermanage.vo;
 import java.io.Serializable;
 
 public class FriendVO implements Serializable {
-    int userid2;
+    int userid;
+    String username;
     String remark;
     int type;
 
-    public FriendVO(int userid2, String remark, int type) {
-        this.userid2 = userid2;
+    public FriendVO(int userid, String remark, int type,String username) {
+        this.userid = userid;
         this.remark = remark;
         this.type = type;
+        this.username=username;
     }
 
     public FriendVO() {
     }
 
-    public int getUserid2() {
-        return userid2;
+    public int getUserid() {
+        return userid;
     }
 
-    public void setUserid2(int userid2) {
-        this.userid2 = userid2;
+    public void setUserid(int userid) {
+        this.userid = userid;
     }
 
     public String getRemark() {
@@ -38,5 +40,13 @@ public class FriendVO implements Serializable {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

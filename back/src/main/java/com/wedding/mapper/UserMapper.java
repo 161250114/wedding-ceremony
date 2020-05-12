@@ -28,4 +28,6 @@ public interface UserMapper {
     List<User> selectByDetail(Search search);
 
     List<User> selectByStandard(Date_standard date_standard);
+
+    List<User> fuzzySelectByUsername(String username);
 }
