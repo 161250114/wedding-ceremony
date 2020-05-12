@@ -24,12 +24,12 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 @ServerEndpoint(value = "/websocket/{nickname}")
 @Component
-public class WebSocketController {
+public class ChatRoomController {
     private String nickname;
     private Session session;
 
     //用来存放每个客户端对应的MyWebSocket对象。
-    private static CopyOnWriteArraySet<WebSocketController> webSocketSet = new CopyOnWriteArraySet<WebSocketController>();
+    private static CopyOnWriteArraySet<ChatRoomController> webSocketSet = new CopyOnWriteArraySet<ChatRoomController>();
     //与某个客户端的连接会话，需要通过它来给客户端发送数据
     //用来记录sessionId和该session进行绑定
     private static Map<String, Session> map = new HashMap<>();
@@ -76,9 +76,9 @@ public class WebSocketController {
         // 然后通过socketMsg的type进行判断是单聊还是群聊，进行相应的处理:
         ObjectMapper objectMapper = new ObjectMapper();
         SocketMsg socketMsg;
-
         try {
             socketMsg = objectMapper.readValue(message, SocketMsg.class);
+            System.out.println(socketMsg.getType());
             if (socketMsg.getType() == 1) {
                 //单聊.需要找到发送者和接受者.
                 socketMsg.setFromUser(session.getId());//发送者.
@@ -97,7 +97,8 @@ public class WebSocketController {
                     //发送给发送者.
                     fromSession.getAsyncRemote().sendText("系统消息：对方不在线或者您输入的频道号不对");
                 }
-            } else {
+            }
+            else {
                 //群发消息
                 broadcast(nickname + ": " + socketMsg.getMsg());
             }
@@ -124,7 +125,7 @@ public class WebSocketController {
      * 群发自定义消息
      */
     public void broadcast(String message) {
-        for (WebSocketController item : webSocketSet) {
+        for (ChatRoomController item : webSocketSet) {
             item.session.getAsyncRemote().sendText(message);//异步发送消息.
         }
     }

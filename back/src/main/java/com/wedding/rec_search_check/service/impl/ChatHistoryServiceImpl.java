@@ -27,13 +27,37 @@ public class ChatHistoryServiceImpl implements ChatHistoryService {
     }
 
     /**
-     * 根据用户id加载记录
+     * 根据聊天发起者id加载记录
      * @param user_id
      * @return
      */
     @Override
     public List<ChatHistory> selByUserId(Integer user_id) {
-        return chatHistoryMapper.selectByUserId(user_id);
+        List<ChatHistory> chatHistoryList = chatHistoryMapper.selectByUserId(user_id);
+        for(int i=0;i<chatHistoryList.size();i++){
+            if(chatHistoryList.get(i).getIsagree()!=1){
+                chatHistoryList.remove(i);
+                i--;
+            }
+        }
+        return chatHistoryList;
+    }
+
+    /**
+     * 根据聊天对象id加载记录
+     * @param chatted_user_id
+     * @return
+     */
+    @Override
+    public List<ChatHistory> selByChattedUserId(Integer chatted_user_id) {
+        List<ChatHistory> chatHistoryList = chatHistoryMapper.selectByChattedUserId(chatted_user_id);
+        for(int i=0;i<chatHistoryList.size();i++){
+            if(chatHistoryList.get(i).getIsagree()!=0){
+                chatHistoryList.remove(i);
+                i--;
+            }
+        }
+        return chatHistoryList;
     }
 
     /**

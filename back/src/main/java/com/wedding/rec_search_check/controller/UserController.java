@@ -14,9 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
@@ -52,6 +51,22 @@ public class UserController {
         return userService.selAll();
     }
 
+    @RequestMapping("memberList")
+    public List<User> memberList(){
+        List<User> allUsers= userService.selAll();
+        for(int i=0;i<allUsers.size();i++){//性别相反
+            if(allUsers.get(i).getUsertype()==0){
+                allUsers.remove(i);
+                i--;
+            }
+        }
+        List<User> listSort = allUsers.stream().sorted(Comparator.comparing(User::getTrueness).reversed()).collect(Collectors.toList());
+        if(listSort.size()>8){
+            listSort=listSort.subList(0,8);
+        }
+        return listSort;
+    }
+
     @RequestMapping("preferList/{user_id}")
     public List<User> preferList(@PathVariable Integer user_id){
         User currentUser = userService.selById(user_id);
@@ -65,13 +80,19 @@ public class UserController {
         if(date_standard.getMarrige()==3){//婚姻状况不限
             date_standard.setMarrige((byte) 0);
             List<User> selectedListByStandard_1 = userService.selByStandard(date_standard);
-            selectedListByStandard.addAll(selectedListByStandard_1);
+            if(selectedListByStandard_1!= null) {
+                selectedListByStandard.addAll(selectedListByStandard_1);
+            }
             date_standard.setMarrige((byte) 1);
             List<User> selectedListByStandard_2 = userService.selByStandard(date_standard);
-            selectedListByStandard.addAll(selectedListByStandard_2);
+            if(selectedListByStandard_2!= null) {
+                selectedListByStandard.addAll(selectedListByStandard_2);
+            }
             date_standard.setMarrige((byte) 2);
             List<User> selectedListByStandard_3 = userService.selByStandard(date_standard);
-            selectedListByStandard.addAll(selectedListByStandard_3);
+            if(selectedListByStandard_3!= null) {
+                selectedListByStandard.addAll(selectedListByStandard_3);
+            }
         }
         else {
             selectedListByStandard = userService.selByStandard(date_standard);
@@ -111,13 +132,19 @@ public class UserController {
             if(date_standard.getMarrige()==3){//婚姻状况不限
                 date_standard.setMarrige((byte) 0);
                 List<User> selectedListByStandard_1 = userService.selByStandard(date_standard);
-                selectedListByStandard.addAll(selectedListByStandard_1);
+                if(selectedListByStandard_1!=null) {
+                    selectedListByStandard.addAll(selectedListByStandard_1);
+                }
                 date_standard.setMarrige((byte) 1);
                 List<User> selectedListByStandard_2 = userService.selByStandard(date_standard);
-                selectedListByStandard.addAll(selectedListByStandard_2);
+                if(selectedListByStandard_2!=null) {
+                    selectedListByStandard.addAll(selectedListByStandard_2);
+                }
                 date_standard.setMarrige((byte) 2);
                 List<User> selectedListByStandard_3 = userService.selByStandard(date_standard);
-                selectedListByStandard.addAll(selectedListByStandard_3);
+                if(selectedListByStandard_3!=null) {
+                    selectedListByStandard.addAll(selectedListByStandard_3);
+                }
             }
             else {
                 selectedListByStandard = userService.selByStandard(date_standard);
@@ -148,53 +175,12 @@ public class UserController {
 
     @RequestMapping("label_search/{label}&{user_id}")
     public List<User> labelSearch(@PathVariable String label, @PathVariable Integer user_id){
-        User currentUser = userService.selById(user_id);
-        List<User> userListByLabel = userService.selByLabel(label);
-        for(int i=0;i<userListByLabel.size();i++){
-            if(userListByLabel.get(i).getSex()== currentUser.getSex()){
-                userListByLabel.remove(i);
-                i--;
-            }
-        }
-        return userListByLabel;
+        return userService.selByLabel(label, user_id);
     }
 
     @RequestMapping("detail_search")
     public List<User> detailSearch(@RequestBody Search search){
-        //获取当前年份
-        Calendar cal=Calendar.getInstance();
-        int year=cal.get(Calendar.YEAR);
-
-        List<User> selectedListByDetail = null;
-        if(search.getMarrige()==3){//婚姻状况不限
-            search.setMarrige(0);
-            List<User> selectedListByDetail_1 = userService.selByDetail(search);
-            selectedListByDetail.addAll(selectedListByDetail_1);
-            search.setMarrige(1);
-            List<User> selectedListByDetail_2 = userService.selByDetail(search);
-            selectedListByDetail.addAll(selectedListByDetail_2);
-            search.setMarrige(2);
-            List<User> selectedListByDetail_3 = userService.selByDetail(search);
-            selectedListByDetail.addAll(selectedListByDetail_3);
-        }
-        else {
-            selectedListByDetail = userService.selByDetail(search);
-        }
-
-        for(int i=0;i<selectedListByDetail.size();i++){//年龄在范围之内
-            //获取用户出生年份
-            Date birthday= selectedListByDetail.get(i).getBirthday();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss aa");
-            String birth_year=sdf.format(birthday).substring(0,4);
-            //得到年龄
-            int age = year-Integer.parseInt(birth_year);
-
-            if(age<search.getYoungest()||age>search.getOldest()){
-                selectedListByDetail.remove(i);
-                i--;
-            }
-        }
-        return selectedListByDetail;
+        return userService.selByDetail(search);
     }
 
     @RequestMapping("query/{page}")

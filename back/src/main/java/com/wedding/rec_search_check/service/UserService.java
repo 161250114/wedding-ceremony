@@ -25,7 +25,7 @@ public interface UserService {
      * 按标签查询
      * @return
      */
-    public List<User> selByLabel(String label);
+    public List<User> selByLabel(String label, Integer user_id);
 
     /**
      * 详细查询

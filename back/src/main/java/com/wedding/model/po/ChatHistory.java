@@ -1,7 +1,5 @@
 package com.wedding.model.po;
 
-import java.util.Date;
-
 public class ChatHistory {
     private Integer id;
 
@@ -9,9 +7,11 @@ public class ChatHistory {
 
     private Integer chattedUserId;
 
-    private Date beginTime;
+    private Byte isagree;
 
-    private Date endTime;
+    private String userAisle;
+
+    private String chattedUserAisle;
 
     public Integer getId() {
         return id;
@@ -37,19 +37,27 @@ public class ChatHistory {
         this.chattedUserId = chattedUserId;
     }
 
-    public Date getBeginTime() {
-        return beginTime;
+    public Byte getIsagree() {
+        return isagree;
     }
 
-    public void setBeginTime(Date beginTime) {
-        this.beginTime = beginTime;
+    public void setIsagree(Byte isagree) {
+        this.isagree = isagree;
     }
 
-    public Date getEndTime() {
-        return endTime;
+    public String getUserAisle() {
+        return userAisle;
     }
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
+    public void setUserAisle(String userAisle) {
+        this.userAisle = userAisle == null ? null : userAisle.trim();
+    }
+
+    public String getChattedUserAisle() {
+        return chattedUserAisle;
+    }
+
+    public void setChattedUserAisle(String chattedUserAisle) {
+        this.chattedUserAisle = chattedUserAisle == null ? null : chattedUserAisle.trim();
     }
 }

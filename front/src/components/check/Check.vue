@@ -7,34 +7,17 @@
       </div>
     </el-backtop>
 
-    <!--    <el-dialog style="" title="聊天室" :close-on-click-modal="false" :lock-scroll="false" :visible.sync="chatRoomVisible"-->
-    <!--               width="40%" :before-close="handleClose">-->
-    <!--      <div style="text-align: center">-->
-    <!--        &lt;!&ndash;        <br>欢迎使用<strong>VueTest</strong>极简聊天室：<br/><br/>&ndash;&gt;-->
-    <!--        <textarea id="content" v-model="content" style="width: 100%; height: 300px" readonly="readonly"></textarea>-->
-    <!--        <div style="width: 100%; margin: 0 auto">-->
-    <!--          <el-input type="textarea" style="width: 100%; height: 50px; border: none" placeholder="请输入内容" v-model="message"></el-input>-->
-    <!--&lt;!&ndash;          <input style="width: 600px; height: 50px; border: none" type="text" v-model="message">&ndash;&gt;-->
-    <!--          <button type="button" @click="sendMsg()" style="float: right;margin-top: 5px">发送消息</button>-->
-    <!--          &lt;!&ndash;        <button @click="joinRoom()">加入群聊</button>&ndash;&gt;-->
-    <!--          &lt;!&ndash;        <button style="vertical-align: middle" @click="exitRoom()">结束聊天</button>&ndash;&gt;-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--    </el-dialog>-->
-
     <div style="margin-top: 20px; height: 350px">
       <el-card class="simpleInfo">
         <div style="height: 100%; width: 30%; float: left">
           <figure style="height: 70%; margin-bottom: 20px">
-            <img src="../recommend/girl2.jpg"/>
-            <!--            <img v-bind:src="album.get(0).address">-->
+            <img :src="photoAddress"/>
           </figure>
 
           <div style="height: 25%;float:bottom;">
             <el-button type="primary" plain @click="handleSayHi()" class="sayHi" style="margin-left: 40px">打招呼
             </el-button>
-            <el-button type="primary" plain @click="handleChat()" class="sayHi" style="margin-left: 10px"
-                       :disabled="userState">发消息
+            <el-button type="primary" plain @click="handleChat()" class="sayHi" style="margin-left: 10px">发消息
             </el-button>
           </div>
         </div>
@@ -42,12 +25,12 @@
         <div style="height: 100%; width: 70%; float: left">
           <div style="width: 80%">
             <el-carousel height="120px" type="card" autoplay="false">
-              <el-carousel-item v-for="(item,index) in 4" :key="index" style="width: 200px">
-                <!--                <el-carousel-item v-for="(item,index) in album" :key="index" style="width: 200px">-->
-                <img src="../recommend/girl.png"/>
-                <!--                <img style="width: 100%;height: 120px" v-bind:src="item.address"/>-->
-                <!--                </el-carousel-item>-->
+              <!--              <el-carousel-item v-for="(item,index) in 4" :key="index" style="width: 200px">-->
+              <el-carousel-item v-for="(item,index) in album" :key="index" style="width: 200px">
+                <!--                <img src="../recommend/girl.png"/>-->
+                <img style="width: 100%;height: 120px" :src="item.address"/>
               </el-carousel-item>
+              <!--              </el-carousel-item>-->
             </el-carousel>
           </div>
 
@@ -55,7 +38,8 @@
             <p style="line-height: 25px">用户名：<span style="font-size: 30px">{{records.username}}</span></p>
             <p style="line-height: 25px">用户编号：<span>{{records.id}}</span></p>
             <p style="line-height: 25px">诚信等级：
-              <el-rate style="display: inline-block" v-model="truth" disabled show-score text-color="#ff9900" :colors="colors"></el-rate>
+              <el-rate style="display: inline-block" v-model="truth" disabled show-score text-color="#ff9900"
+                       :colors="colors"></el-rate>
             </p>
           </div>
         </div>
@@ -152,15 +136,10 @@
     name: 'Check',
     data () {
       return {
-        // url: 'ws://' + window.location.host + '/chatRoom/',
-        // ws: null,
-        // message: '',
-        // content: '',
         album: {},
+        photoAddress: '',
         truth: 0,
         colors: ['#99A9BF', '#F7BA2A', '#FF9900'],  // 等同于 { 2: '#99A9BF', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' }
-        userState: false,
-        chatRoomVisible: false,
         id: 0,//查看对象的id
         userId: 0, //当前用户
         records: {},
@@ -178,10 +157,10 @@
           oldestAge: 30,
           shortestHeight: 175,
           tallestHeight: 185,
-          salary: '10000 ~ 20000元',
+          salary: '10000-20000元',
           education: '本科',
           marriage: '未婚',
-          address: '北京朝阳'
+          address: ''
         },
         hobby: {
           food: '未填写',
@@ -191,6 +170,13 @@
           exercise: '未填写',
           game: '未填写'
         },
+        chatHistory: {
+          userId: 0,
+          chattedUserId: 0,
+          isagree: 0,
+          userAisle: '',
+          chattedUserAisle: ''
+        }
       }
     },
     created () {
@@ -204,10 +190,10 @@
       getData () {
         let url_getCurrentUser = '/getCurrentUser'
         axios.get(url_getCurrentUser).then((res) => {
-          // console.log(res.data.message)
-          this.userId=res.data.message.userid
+          console.log(res.data.message.userid)
+          this.userId = res.data.message.userid
           // this.userId=res.data
-          this.addCheckHistory()
+          // this.addCheckHistory()
         })
 
         let url = `/user/get/${this.id}`
@@ -247,7 +233,8 @@
         axios.get(url_album).then((res) => {
           this.album = res.data
           console.log('album')
-          console.log(this.album)
+          this.photoAddress = this.album[0].address
+          console.log(this.photoAddress)
         })
       },
       getHobby () {
@@ -287,15 +274,6 @@
           })
         }
       },
-      addCheckHistory () {
-        let url = '/checkHistory/add'
-        this.checkHistoryform.checkedUserId = this.id
-        this.checkHistoryform.userId = this.userId
-        this.$axios.post(url, this.checkHistoryform)
-          .then((res) => {
-            console.log(res.data)
-          })
-      },
       handleSayHi () {
         this.$message({
           message: '成功打招呼',
@@ -307,18 +285,15 @@
         console.log(val)
       },
       handleChat () {
-        let url = `/user/get/${this.userId}`
-        let username
-        axios.get(url).then((res) => {
-          username = res.data.username
-          let routeData = this.$router.resolve({
-            path: '/chatRoom',
-            query: {
-              name: username,
-            }
-          })
-          window.open(routeData.href, '_blank')
+        this.chatHistory.userId = this.userId
+        this.chatHistory.chattedUserId = this.id
+        this.chatHistory.isagree = 0
+
+        let url_add = '/chatHistory/add'
+        this.$axios.post(url_add, this.chatHistory).then((res) => {
+          console.log(res)
         })
+
       },
     }
   }

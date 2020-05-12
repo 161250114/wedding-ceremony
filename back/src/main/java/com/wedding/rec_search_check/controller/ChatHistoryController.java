@@ -35,6 +35,16 @@ public class ChatHistoryController {
         return chatHistoryService.selByUserId(user_id);
     }
 
+    @RequestMapping("request/{chatted_user_id}")
+    public List<ChatHistory> request(@PathVariable Integer chatted_user_id){
+        return chatHistoryService.selByChattedUserId(chatted_user_id);
+    }
+
+    @RequestMapping("update")
+    public void update(@RequestBody ChatHistory chatHistory){
+        chatHistoryService.update(chatHistory);
+    }
+
     @RequestMapping("list")
     public List<ChatHistory> list(){
         return chatHistoryService.selAll();
