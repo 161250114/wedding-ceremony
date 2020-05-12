@@ -5,7 +5,7 @@
         <el-col :span="2">
           &nbsp;
         </el-col>
-        <router-link to="/home">
+        <router-link to="/recommend">
           <el-col :span="2">
             <el-avatar
               shape="square"
@@ -138,6 +138,7 @@ export default {
         console.log(res);
         if (res.data.result) {
           app.isLogin = false;
+
         }
       });
     },

@@ -85,5 +85,6 @@ export default {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   height: 600px;
+  text-align: center;
 }
 </style>

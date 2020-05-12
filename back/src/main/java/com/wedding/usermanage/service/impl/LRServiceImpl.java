@@ -87,7 +87,8 @@ public class LRServiceImpl implements LRService {
         user_limitMapper.insert(user_limit);
         //添加用户择偶标准
         Date_standard date_standard=new Date_standard();
-        date_standard.setAddress(registerVO.getAddress());
+        String[] address=registerVO.getAddress().split("/");
+        date_standard.setAddress(address[0]+"/不限/不限");
         int age=getAge(registerVO.getBirthday());
         if(age<21){
             date_standard.setAgemax(age+3);
