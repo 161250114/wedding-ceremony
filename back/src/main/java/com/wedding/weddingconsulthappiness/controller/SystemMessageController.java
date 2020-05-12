@@ -68,6 +68,7 @@ public class SystemMessageController {
             if(s.getSenderId()==from&&s.getReceiverId()==to){
                 s.setState(1);
                 ts.updateByPrimaryKey(s);
+                redisTemplate.opsForValue().set("System_message",null);
             }
         }
         return 1;
@@ -126,7 +127,7 @@ public class SystemMessageController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getMyState",method = RequestMethod.GET)
+    @RequestMapping(value = "/getMyState",method = RequestMethod.POST)
     public int getMyState(@RequestBody int id){
         RedisSerializer redisSerializer=new StringRedisSerializer();
         redisTemplate.setKeySerializer(redisSerializer);
@@ -135,12 +136,13 @@ public class SystemMessageController {
             list=ts.selectAll();
             redisTemplate.opsForValue().set("System_message",list);
         }
+        int result=0;
         for(System_message s:list){
             if(s.getReceiverId()==id&&s.getState()==0){
-                return 0;
+                result++;
             }
         }
-        return 1;
+        return result;
     }
 
     @ResponseBody

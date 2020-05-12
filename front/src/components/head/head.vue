@@ -31,7 +31,7 @@
             <el-button type="text">注册</el-button>
           </router-link>
         </el-col>
-        <el-col :span="4" v-show="isLogin">
+        <el-col :span="5" v-show="isLogin">
           <p style="margin-top: 15px;">
             欢迎您，{{ username }}&nbsp;
             <el-dropdown>
@@ -103,6 +103,17 @@
                 </el-dropdown-menu>
               </el-dropdown>
             </el-badge>
+            <el-badge :value="systemMessages" :max="99">
+              <el-dropdown>
+                <el-button
+                  type="info"
+                  icon="el-icon-s-check"
+                  circle
+                  size="medium"
+                  @click.natie="gotoconsult()"
+                ></el-button>
+              </el-dropdown>
+            </el-badge>
           </p>
         </el-col>
       </el-row>
@@ -122,12 +133,14 @@ export default {
   },
   data() {
     return {
+      id:-1,
       username: "",
       isLogin: false,
       chatNotice: {},
       requestNotice: {},
       chatUsername: "",
       chattedUsername: "",
+      systemMessages:""
     };
   },
   methods: {
@@ -237,6 +250,20 @@ export default {
         });
       });
     },
+    getSystemMessages(){
+      let app=this
+      let id=app.id;
+      axios.post('/systemmessage/getMyState',id)
+        .then(function(res){
+          app.systemMessages=res.data
+        })
+        .catch(function(err){
+          console.log(err);
+        });
+    },
+    gotoconsult(){
+      this.$router.push("./consult")
+    }
   },
   created() {
     let app = this;
@@ -244,6 +271,7 @@ export default {
       .get("/getCurrentUser")
       .then(function (res) {
         console.log("head", res);
+        app.id=res.data.message.userid;
         if (res.data.result) {
           app.username = res.data.message.uname_phone;
           app.isLogin = true;
@@ -253,9 +281,11 @@ export default {
       .catch(function (error) {});
   },
   mounted() {
+    let app=this
     this.timer = setInterval(() => {
       setTimeout(() => {
         this.getNotice();
+        app.getSystemMessages();
       }, 0);
     }, 5000);
   },
