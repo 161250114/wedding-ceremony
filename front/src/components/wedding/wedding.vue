@@ -96,6 +96,11 @@
           let app = this
           axios.get("/getCurrentUser")
             .then(function(res) {
+              if(res.data.result==false){
+                app.$router.push({
+                  path: './login',
+                })
+              }
               let message = res.data.message
               let id = message.userid;
               axios.post('/wedding/get',id)

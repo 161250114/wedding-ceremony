@@ -48,6 +48,18 @@
       methods:{
         load(){
           let app=this
+          axios.get("/getCurrentUser")
+            .then(function(res) {
+              if(res.data.result==false){
+                app.$router.push({
+                  path: './login',
+                })
+              }
+              app.id=res.data.message.userid
+            })
+            .catch(function (err) {
+              console.log(err);
+            })
           axios.get("/systemmessage/getState")
             .then(function(res) {
               app.tableData=res.data

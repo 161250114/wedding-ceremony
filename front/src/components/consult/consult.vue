@@ -34,6 +34,11 @@
         }
         axios.get("/getCurrentUser")
           .then(function(res) {
+            if(res.data.result==false){
+              app.$router.push({
+                path: './login',
+              })
+            }
             app.id=res.data.message.userid
           })
           .catch(function (err) {
