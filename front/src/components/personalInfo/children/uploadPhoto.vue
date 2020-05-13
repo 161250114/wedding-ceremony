@@ -99,6 +99,9 @@ export default {
     removeAll(){
       let app=this
       app.pictureList.splice(0,app.pictureList.length)
+    },
+    submitUpload(){
+      let app=this
     }
   },
   created() {

@@ -44,7 +44,7 @@
                 <el-input v-model="currentIndex" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
-            <el-col span="3" v-if="editMode == false">
+            <el-col :span="3" v-if="editMode == false">
               <el-button type="primary" @click="changeMode(true)"
                 >更改</el-button
               >
