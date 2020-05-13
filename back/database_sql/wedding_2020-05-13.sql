@@ -927,7 +927,7 @@ CREATE TABLE `wedding_record` (
   `wedding_id` int(11) NOT NULL,
   `approver_id` int(11) NOT NULL,
   `time` date NOT NULL,
-  `result` int(11) NOT NULL,
+  `result` varchar(500) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
