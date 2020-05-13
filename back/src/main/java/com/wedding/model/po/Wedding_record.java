@@ -12,7 +12,7 @@ public class Wedding_record implements Serializable {
 
     private Date time;
 
-    private Integer result;
+    private String result;
 
     public Integer getId() {
         return id;
@@ -46,11 +46,11 @@ public class Wedding_record implements Serializable {
         this.time = time;
     }
 
-    public Integer getResult() {
+    public String getResult() {
         return result;
     }
 
-    public void setResult(Integer result) {
+    public void setResult(String result) {
         this.result = result;
     }
 }

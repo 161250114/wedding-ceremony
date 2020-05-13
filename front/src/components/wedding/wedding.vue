@@ -190,7 +190,7 @@
               record["weddingId"]=row.id;
               record["approverId"]=1;
               record["time"]=new Date();
-              record["result"]=1;
+              record["result"]="通过";
               axios.post("/weddingrecord/add",record)
                 .then(successResponse=>{
                   this.$alert("操作成功", '提示', {
@@ -221,7 +221,7 @@
               record["weddingId"]=row.id;
               record["approverId"]=data.applicant_id
               record["time"]=new Date();
-              record["result"]=2;
+              record["result"]="取消";
               axios.post("/weddingrecord/add",record)
                 .then(successResponse=>{
                   this.$alert("操作成功", '提示', {
