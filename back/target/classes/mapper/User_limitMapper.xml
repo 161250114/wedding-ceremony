@@ -39,4 +39,9 @@
     select id, userid, limit_browse, limit_message, limit_fapply, limit_dapply
     from user_limit
   </select>
+  <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, userid, limit_browse, limit_message, limit_fapply, limit_dapply
+    from user_limit
+    where userid = #{userid,jdbcType=INTEGER}
+  </select>
 </mapper>

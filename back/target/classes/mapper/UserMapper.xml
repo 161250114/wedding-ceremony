@@ -126,4 +126,11 @@
         and marrige = #{marrige}
         and address like concat('%',#{address},'%')
   </select>
+  <select id="fuzzySelectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, username, password, phone, usertype, fullname, sex, birthday, height,
+    introduction, address, education, marrige, salary, balance, trueness, profession,
+    albumid,vip_enddate, date_status
+    from user
+    where username like concat('%',#{username},'%')
+  </select>
 </mapper>

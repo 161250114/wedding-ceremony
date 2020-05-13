@@ -30,3 +30,18 @@ pagehelper:
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
+
+redis:
+    host: 127.0.0.1
+    port: 6379
+    pool:
+      max-active: 8
+      max-idle: 8
+      max-wait: -1
+      maxTotal: 8
+      maxWaitMillis: 1000
+      min-idle: 0
+    sentinel:
+      master: ''
+      nodes: ''
+    timeout: 60000

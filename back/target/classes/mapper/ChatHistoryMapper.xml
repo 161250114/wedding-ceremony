@@ -5,8 +5,9 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="chatted_user_id" jdbcType="INTEGER" property="chattedUserId" />
-    <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime" />
-    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="isAgree" jdbcType="TINYINT" property="isagree" />
+    <result column="user_aisle" jdbcType="VARCHAR" property="userAisle" />
+    <result column="chatted_user_aisle" jdbcType="VARCHAR" property="chattedUserAisle" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from chat_history
@@ -14,30 +15,37 @@
   </delete>
   <insert id="insert" parameterType="com.wedding.model.po.ChatHistory">
     insert into chat_history (id, user_id, chatted_user_id, 
-      begin_time, end_time)
+      isAgree, user_aisle, chatted_user_aisle
+      )
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{chattedUserId,jdbcType=INTEGER}, 
-      #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP})
+      #{isagree,jdbcType=TINYINT}, #{userAisle,jdbcType=VARCHAR}, #{chattedUserAisle,jdbcType=VARCHAR}
+      )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.ChatHistory">
     update chat_history
     set user_id = #{userId,jdbcType=INTEGER},
       chatted_user_id = #{chattedUserId,jdbcType=INTEGER},
-      begin_time = #{beginTime,jdbcType=TIMESTAMP},
-      end_time = #{endTime,jdbcType=TIMESTAMP}
+      isAgree = #{isagree,jdbcType=TINYINT},
+      user_aisle = #{userAisle,jdbcType=VARCHAR},
+      chatted_user_aisle = #{chattedUserAisle,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, user_id, chatted_user_id, begin_time, end_time
+    select id, user_id, chatted_user_id, isAgree, user_aisle, chatted_user_aisle
     from chat_history
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_id, chatted_user_id, isAgree, user_aisle, chatted_user_aisle
+    from chat_history
+  </select>
   <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, user_id, chatted_user_id, begin_time, end_time
+    select id, user_id, chatted_user_id, isAgree, user_aisle, chatted_user_aisle
     from chat_history
     where user_id = #{user_id,jdbcType=INTEGER}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, user_id, chatted_user_id, begin_time, end_time
+  </select><select id="selectByChattedUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, user_id, chatted_user_id, isAgree, user_aisle, chatted_user_aisle
     from chat_history
+    where chatted_user_id = #{chatted_user_id,jdbcType=INTEGER}
   </select>
 </mapper>
