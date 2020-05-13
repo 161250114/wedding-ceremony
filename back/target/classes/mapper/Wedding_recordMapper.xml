@@ -6,7 +6,7 @@
     <result column="wedding_id" property="weddingId" jdbcType="INTEGER" />
     <result column="approver_id" property="approverId" jdbcType="INTEGER" />
     <result column="time" property="time" jdbcType="DATE" />
-    <result column="result" property="result" jdbcType="INTEGER" />
+    <result column="result" property="result" jdbcType="VARCHAR" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from wedding_record
@@ -16,14 +16,14 @@
     insert into wedding_record (id, wedding_id, approver_id,
       time, result)
     values (#{id,jdbcType=INTEGER}, #{weddingId,jdbcType=INTEGER}, #{approverId,jdbcType=INTEGER},
-      #{time,jdbcType=DATE}, #{result,jdbcType=INTEGER})
+      #{time,jdbcType=DATE}, #{result,jdbcType=VARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.Wedding_record" >
     update wedding_record
     set wedding_id = #{weddingId,jdbcType=INTEGER},
       approver_id = #{approverId,jdbcType=INTEGER},
       time = #{time,jdbcType=DATE},
-      result = #{result,jdbcType=INTEGER}
+      result = #{result,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

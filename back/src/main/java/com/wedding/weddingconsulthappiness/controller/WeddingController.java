@@ -45,7 +45,7 @@ public class WeddingController {
     }
     @ResponseBody
     @RequestMapping(value="/get",method = RequestMethod.POST)
-    public List<Wedding> get(@RequestBody Integer id){
+    public List<WeddingVO> get(@RequestBody Integer id){
         RedisSerializer redisSerializer=new StringRedisSerializer();
         redisTemplate.setKeySerializer(redisSerializer);
         List<Wedding>list= (List<Wedding>) redisTemplate.opsForValue().get("Wedding");
@@ -53,11 +53,13 @@ public class WeddingController {
             list=ws.selectAll();
             redisTemplate.opsForValue().set("Wedding",list);
         }
-        List result=new ArrayList();
-        for(int i=0;i<list.size();i++){
-            Wedding w= (Wedding) list.get(i);
-            if(w.getApplicantId()==id){
-                result.add(new WeddingVO((Wedding)list.get(i)));
+        ArrayList<WeddingVO> result=new ArrayList<>();
+        for(Wedding w:list){
+            System.out.println(w.getApplicantId()+""+id);
+            if(w.getApplicantId()-id==0){
+                System.out.println();System.out.println();System.out.println();System.out.println();System.out.println();
+                WeddingVO W=new WeddingVO(w);
+                result.add(W);
             }
         }
         return result;
