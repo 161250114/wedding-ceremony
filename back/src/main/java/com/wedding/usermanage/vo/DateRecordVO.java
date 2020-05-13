@@ -4,27 +4,27 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class DateRecordVO implements Serializable {
-    private Integer userid2;
+
+    private int id;
+    private int userid1;
+    private int userid2;
 
     private String startDate;
 
     private String endDate;
 
-    public DateRecordVO(Integer userid2, String startDate, String endDate) {
+    private String status;
+
+    public DateRecordVO(int id,int userid1,int userid2, String startDate, String endDate,String status) {
+        this.id=id;
+        this.userid1=userid1;
         this.userid2 = userid2;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.status=status;
     }
 
     public DateRecordVO() {
-    }
-
-    public Integer getUserid2() {
-        return userid2;
-    }
-
-    public void setUserid2(Integer userid2) {
-        this.userid2 = userid2;
     }
 
     public String getStartDate() {
@@ -41,5 +41,37 @@ public class DateRecordVO implements Serializable {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getUserid1() {
+        return userid1;
+    }
+
+    public void setUserid1(int userid1) {
+        this.userid1 = userid1;
+    }
+
+    public void setUserid2(int userid2) {
+        this.userid2 = userid2;
+    }
+
+    public int getUserid2() {
+        return userid2;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

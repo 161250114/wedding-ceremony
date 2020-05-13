@@ -2,9 +2,11 @@ package com.wedding.usermanage.controller;
 
 import com.wedding.model.ReturnMessage;
 import com.wedding.usermanage.service.RecordService;
+import com.wedding.usermanage.vo.DateRecordVO;
 import com.wedding.usermanage.vo.LoginVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,5 +42,16 @@ public class RecordController {
         }
         return new ReturnMessage(false,"尚未登录");
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/stopDating",method = RequestMethod.POST)
+    public ReturnMessage stopDating(@RequestBody DateRecordVO dateRecordVO, HttpServletRequest httpServletRequest){
+        HttpSession session=httpServletRequest.getSession(false);
+        if(session!=null){
+            return recordService.stopDating(dateRecordVO);
+        }
+        return new ReturnMessage(false,"尚未登录");
+    }
+
 
 }

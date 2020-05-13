@@ -41,4 +41,14 @@
     select id, userid1, userid2, applyinfo, replyinfo, result, applydate
     from date_apply
   </select>
+  <select id="selectByUserid1" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, userid1, userid2, applyInfo, result, replyInfo, applydate
+    from date_apply
+    where userid1 = #{userid1,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUserid2" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, userid1, userid2, applyInfo, result, replyInfo, applydate
+    from date_apply
+    where userid2 = #{userid2,jdbcType=INTEGER}
+  </select>
 </mapper>

@@ -122,10 +122,24 @@
           </el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
-              <el-button type="danger" v-if="scope.row.result == '等待'"
+              <el-button
+                type="danger"
+                v-if="scope.row.result == '等待'"
+                @click="
+                  currentEditRow = scope.row;
+                  undoApply();
+                "
                 >撤销申请</el-button
               >
-              <el-button type="primary" v-if="scope.row.result == '拒绝'"
+              <el-button
+                type="primary"
+                v-if="
+                  scope.row.result == '拒绝' || scope.row.result == '已撤销'
+                "
+                @click="
+                  sendApplyDialog = true;
+                  currentEditRow = {userid:scope.row.userid2};
+                "
                 >重新申请</el-button
               >
             </template>
@@ -363,14 +377,15 @@ export default {
     },
     getSendApplyList() {
       let app = this;
-      Axios.get("/friend/getSendApplyList").then(function (res) {
+      Axios.get("/friend/getSendFriendApplyList").then(function (res) {
         app.sendApplyList = res.data.message;
-      });
+      }).catch(function(error){});
     },
     getReceiveApplyList() {
       let app = this;
-      Axios.get("/friend/getReceiveApplyList").then(function (res) {
+      Axios.get("/friend/getReceiveFriendApplyList").then(function (res) {
         for (let i = 0; i < res.data.message.length; i++) {
+          console.log(res.data);
           if (res.data.message[i].result == "等待") {
             app.unhandledApplyList.push(res.data.message[i]);
           } else {
@@ -378,6 +393,21 @@ export default {
           }
         }
       });
+    },
+    undoApply() {
+      let app = this;
+      Axios.post("/friend/handleFriendApply", {
+        id: app.currentEditRow.id,
+        result: "已撤销",
+        replyInfo: "暂无",
+      })
+        .then(function (res) {
+          app.$message({
+            message: res.data.message,
+            type: "success",
+          });
+        })
+        .catch(function (error) {});
     },
   },
   created() {

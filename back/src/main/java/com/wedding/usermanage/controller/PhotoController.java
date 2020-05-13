@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-@RequestMapping("/")
+@RequestMapping("/photo")
 @Controller
 public class PhotoController {
 

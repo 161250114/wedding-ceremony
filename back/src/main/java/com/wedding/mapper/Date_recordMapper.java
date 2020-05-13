@@ -17,6 +17,6 @@ public interface Date_recordMapper {
 
     int updateByPrimaryKey(Date_record record);
 
-    List<Date_record> selectByUserId(Integer userid);
+    List<Date_record> selectByUserId1AndUserId2(Integer userid);
 
 }

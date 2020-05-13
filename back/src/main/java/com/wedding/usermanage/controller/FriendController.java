@@ -1,7 +1,9 @@
 package com.wedding.usermanage.controller;
 
 import com.wedding.model.ReturnMessage;
+import com.wedding.model.po.Date_apply;
 import com.wedding.usermanage.service.FriendService;
+import com.wedding.usermanage.vo.DateApplyVO;
 import com.wedding.usermanage.vo.FriendApplyVO;
 import com.wedding.usermanage.vo.FriendVO;
 import com.wedding.usermanage.vo.LoginVO;
@@ -90,23 +92,23 @@ public class FriendController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getSendApplyList",method = RequestMethod.GET)
-    public ReturnMessage getSendApplyList(HttpServletRequest httpServletRequest){
+    @RequestMapping(value = "/getSendFriendApplyList",method = RequestMethod.GET)
+    public ReturnMessage getSendFriendApplyList(HttpServletRequest httpServletRequest){
         HttpSession session=httpServletRequest.getSession(false);
         if(session!=null){
             LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
-            return new ReturnMessage(true,friendService.getSendApplyList(loginVO.getUserid()));
+            return new ReturnMessage(true,friendService.getSendFriendApplyList(loginVO.getUserid()));
         }
         return new ReturnMessage(false,"尚未登录！");
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getReceiveApplyList",method = RequestMethod.GET)
-    public ReturnMessage getReceiveApplyList(HttpServletRequest httpServletRequest){
+    @RequestMapping(value = "/getReceiveFriendApplyList",method = RequestMethod.GET)
+    public ReturnMessage getReceiveFriendApplyList(HttpServletRequest httpServletRequest){
         HttpSession session=httpServletRequest.getSession(false);
         if(session!=null){
             LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
-            return new ReturnMessage(true,friendService.getReceiveApplyList(loginVO.getUserid()));
+            return new ReturnMessage(true,friendService.getReceiveFriendApplyList(loginVO.getUserid()));
         }
         return new ReturnMessage(false,"尚未登录！");
     }
@@ -116,7 +118,51 @@ public class FriendController {
     public ReturnMessage handleFriendApply(@RequestBody FriendApplyVO friendApplyVO,HttpServletRequest httpServletRequest){
         HttpSession session=httpServletRequest.getSession(false);
         if(session!=null){
-            return friendService.handleApply(friendApplyVO);
+            return friendService.handleFriendApply(friendApplyVO);
+        }
+        return new ReturnMessage(false,"尚未登录！");
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/sendDateApply",method = RequestMethod.POST)
+    public ReturnMessage sendDateApply(@RequestBody DateApplyVO dateApplyVO, HttpServletRequest httpServletRequest){
+        HttpSession session=httpServletRequest.getSession(false);
+        if(session!=null){
+            LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
+            dateApplyVO.setUserid1(loginVO.getUserid());
+            return friendService.sendDateApply(dateApplyVO);
+        }
+        return new ReturnMessage(false,"尚未登录！");
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getSendDateApplyList",method = RequestMethod.GET)
+    public ReturnMessage getSendDateApplyList(HttpServletRequest httpServletRequest){
+        HttpSession session=httpServletRequest.getSession(false);
+        if(session!=null){
+            LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
+            return new ReturnMessage(true,friendService.getSendDateApplyList(loginVO.getUserid()));
+        }
+        return new ReturnMessage(false,"尚未登录！");
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getReceiveDateApplyList",method = RequestMethod.GET)
+    public ReturnMessage getReceiveDateApplyList(HttpServletRequest httpServletRequest){
+        HttpSession session=httpServletRequest.getSession(false);
+        if(session!=null){
+            LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
+            return new ReturnMessage(true,friendService.getReceiveDateApplyList(loginVO.getUserid()));
+        }
+        return new ReturnMessage(false,"尚未登录！");
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/handleDateApply",method = RequestMethod.POST)
+    public ReturnMessage handleDateApply(@RequestBody DateApplyVO dateApplyVO, HttpServletRequest httpServletRequest){
+        HttpSession session=httpServletRequest.getSession(false);
+        if(session!=null){
+            return friendService.handleDateApply(dateApplyVO);
         }
         return new ReturnMessage(false,"尚未登录！");
     }

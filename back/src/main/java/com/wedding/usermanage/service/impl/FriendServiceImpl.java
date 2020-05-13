@@ -1,16 +1,10 @@
 package com.wedding.usermanage.service.impl;
 
-import com.wedding.mapper.Friend_applyMapper;
-import com.wedding.mapper.UserMapper;
-import com.wedding.mapper.User_relationMapper;
+import com.wedding.mapper.*;
 import com.wedding.model.ReturnMessage;
-import com.wedding.model.po.Friend_apply;
-import com.wedding.model.po.User;
-import com.wedding.model.po.User_relation;
+import com.wedding.model.po.*;
 import com.wedding.usermanage.service.FriendService;
-import com.wedding.usermanage.vo.FriendApplyVO;
-import com.wedding.usermanage.vo.FriendVO;
-import com.wedding.usermanage.vo.IntroductionVO;
+import com.wedding.usermanage.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +20,10 @@ public class FriendServiceImpl implements FriendService {
     private UserMapper userMapper;
     @Autowired
     private Friend_applyMapper friend_applyMapper;
+    @Autowired
+    private Date_applyMapper date_applyMapper;
+    @Autowired
+    private Date_recordMapper date_recordMapper;
 
     @Override
     public FriendVO[] getFriendList(int userid) {
@@ -100,7 +98,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public FriendApplyVO[] getSendApplyList(int userid) {
+    public FriendApplyVO[] getSendFriendApplyList(int userid) {
         List<Friend_apply> friend_applies=friend_applyMapper.selectByUserid1(userid);
         FriendApplyVO[] friendApplyVOS=new FriendApplyVO[friend_applies.size()];
         for(int i=0;i<friend_applies.size();i++){
@@ -119,12 +117,23 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public FriendApplyVO[] getReceiveApplyList(int userid) {
+    public FriendApplyVO[] getReceiveFriendApplyList(int userid) {
         List<Friend_apply> friend_applies=friend_applyMapper.selectByUserid2(userid);
-        FriendApplyVO[] friendApplyVOS=new FriendApplyVO[friend_applies.size()];
+        int size=friend_applies.size();
+        for(int i=0;i<friend_applies.size();i++){
+            Friend_apply friend_apply=friend_applies.get(i);
+            if(friend_apply.getResult().equals("已撤销")){
+                size--;
+            }
+        }
+        FriendApplyVO[] friendApplyVOS=new FriendApplyVO[size];
+        int arrayIndex=0;
         for(int i=0;i<friend_applies.size();i++){
             FriendApplyVO friendApplyVO=new FriendApplyVO();
             Friend_apply friend_apply=friend_applies.get(i);
+            if(friend_apply.getResult().equals("已撤销")){
+                continue;
+            }
             friendApplyVO.setUserid1(friend_apply.getUserid1());
             friendApplyVO.setId(friend_apply.getId());
             friendApplyVO.setApplyDate(new SimpleDateFormat("yyyy-MM-dd").format(friend_apply.getApplydate()));
@@ -132,13 +141,14 @@ public class FriendServiceImpl implements FriendService {
             friendApplyVO.setReplyInfo(friend_apply.getReplyinfo());
             friendApplyVO.setResult(friend_apply.getResult());
             friendApplyVO.setUserid2(friend_apply.getUserid2());
-            friendApplyVOS[i]=friendApplyVO;
+            friendApplyVOS[arrayIndex]=friendApplyVO;
+            arrayIndex++;
         }
         return friendApplyVOS;
     }
 
     @Override
-    public ReturnMessage handleApply(FriendApplyVO friendApplyVO) {
+    public ReturnMessage handleFriendApply(FriendApplyVO friendApplyVO) {
         Friend_apply friend_apply=friend_applyMapper.selectByPrimaryKey(friendApplyVO.getId());
         friend_apply.setResult(friendApplyVO.getResult());
         friend_apply.setReplyinfo(friendApplyVO.getReplyInfo());
@@ -160,6 +170,105 @@ public class FriendServiceImpl implements FriendService {
             user_relation2.setType((byte)1);
             user_relationMapper.insert(user_relation2);
 
+        }
+        return new ReturnMessage(true,"处理成功");
+    }
+
+    @Override
+    public ReturnMessage sendDateApply(DateApplyVO dateApplyVO) {
+        User user=userMapper.selectByPrimaryKey(dateApplyVO.getUserid1());
+        if(user.getDateStatus()==1){
+            return new ReturnMessage(false,"你已经有约会对象啦！请勿花心！！");
+        }
+        List<Date_apply> date_applies=date_applyMapper.selectByUserid1(dateApplyVO.getUserid1());
+        for(int i=0;i<date_applies.size();i++){
+            Date_apply date_apply=date_applies.get(i);
+            if(date_apply.getUserid2()==dateApplyVO.getUserid2()&&date_apply.getResult().equals("等待")){
+                return new ReturnMessage(false,"您已向该用户发送过申请啦！请耐心等待~~");
+            }
+        }
+        Date_apply date_apply=new Date_apply();
+        date_apply.setApplydate(new Date());
+        date_apply.setApplyinfo(dateApplyVO.getApplyInfo());
+        date_apply.setReplyinfo("暂无");
+        date_apply.setResult("等待");
+        date_apply.setUserid1(dateApplyVO.getUserid1());
+        date_apply.setUserid2(dateApplyVO.getUserid2());
+        date_applyMapper.insert(date_apply);
+        return new ReturnMessage(true,"发送成功!");
+    }
+
+    @Override
+    public DateApplyVO[] getSendDateApplyList(int userid) {
+        List<Date_apply> date_applies=date_applyMapper.selectByUserid1(userid);
+        DateApplyVO[] dateApplyVOS=new DateApplyVO[date_applies.size()];
+        for(int i=0;i<date_applies.size();i++){
+            DateApplyVO dateApplyVO=new DateApplyVO();
+            Date_apply date_apply=date_applies.get(i);
+            dateApplyVO.setUserid1(date_apply.getUserid1());
+            dateApplyVO.setApplyDate(new SimpleDateFormat("yyyy-MM-dd").format(date_apply.getApplydate()));
+            dateApplyVO.setApplyInfo(date_apply.getApplyinfo());
+            dateApplyVO.setReplyInfo(date_apply.getReplyinfo());
+            dateApplyVO.setId(date_apply.getId());
+            dateApplyVO.setResult(date_apply.getResult());
+            dateApplyVO.setUserid2(date_apply.getUserid2());
+            dateApplyVOS[i]=dateApplyVO;
+        }
+        return dateApplyVOS;
+    }
+
+    @Override
+    public DateApplyVO[] getReceiveDateApplyList(int userid) {
+        List<Date_apply> date_applies=date_applyMapper.selectByUserid2(userid);
+        int size=date_applies.size();
+        for(int i=0;i<date_applies.size();i++){
+            Date_apply date_apply=date_applies.get(i);
+            if(date_apply.getResult().equals("已撤销")){
+                size--;
+            }
+        }
+        DateApplyVO[] dateApplyVOS=new DateApplyVO[size];
+        int arrayIndex=0;
+        for(int i=0;i<date_applies.size();i++){
+            DateApplyVO dateApplyVO=new DateApplyVO();
+            Date_apply date_apply=date_applies.get(i);
+            if(date_apply.getResult().equals("已撤销")){
+                continue;
+            }
+            dateApplyVO.setUserid1(date_apply.getUserid1());
+            dateApplyVO.setId(date_apply.getId());
+            dateApplyVO.setApplyDate(new SimpleDateFormat("yyyy-MM-dd").format(date_apply.getApplydate()));
+            dateApplyVO.setApplyInfo(date_apply.getApplyinfo());
+            dateApplyVO.setReplyInfo(date_apply.getReplyinfo());
+            dateApplyVO.setResult(date_apply.getResult());
+            dateApplyVO.setUserid2(date_apply.getUserid2());
+            dateApplyVOS[arrayIndex]=dateApplyVO;
+            arrayIndex++;
+        }
+        return dateApplyVOS;
+    }
+
+    @Override
+    public ReturnMessage handleDateApply(DateApplyVO dateApplyVO) {
+        Date_apply date_apply=date_applyMapper.selectByPrimaryKey(dateApplyVO.getId());
+        date_apply.setResult(dateApplyVO.getResult());
+        date_apply.setReplyinfo(dateApplyVO.getReplyInfo());
+        date_applyMapper.updateByPrimaryKey(date_apply);
+        if(dateApplyVO.getResult().equals("通过")){
+            Date_record date_record=new Date_record();
+            date_record.setStartDate(new Date());
+            date_record.setUserid1(date_apply.getUserid1());
+            date_record.setUserid2(date_apply.getUserid2());
+            date_record.setEndDate(null);
+            date_recordMapper.insert(date_record);
+
+            User user1=userMapper.selectByPrimaryKey(date_apply.getUserid1());
+            user1.setDateStatus((byte)1);
+            userMapper.updateByPrimaryKey(user1);
+
+            User user2=userMapper.selectByPrimaryKey(date_apply.getUserid2());
+            user2.setDateStatus((byte)1);
+            userMapper.updateByPrimaryKey(user2);
         }
         return new ReturnMessage(true,"处理成功");
     }
