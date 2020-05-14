@@ -53,7 +53,8 @@ public class HappinessController {
         }
         h.setId(list.size());
         if(hs.insert(h)==1){
-            redisTemplate.opsForValue().set("Happiness",null);
+            list.add(h);
+            redisTemplate.opsForValue().set("Happiness",h);
         }
         return 0;
     }
@@ -247,7 +248,8 @@ public class HappinessController {
         }
         Happiness_likes h=new Happiness_likes(hls.selectAll().size(),id,userId,0);
         if(hls.insert(h)==1){
-            redisTemplate.opsForValue().set("Happiness_likes",null);
+            list.add(h);
+            redisTemplate.opsForValue().set("Happiness_likes",list);
             return 1;
         }
         return 0;

@@ -38,7 +38,8 @@ public class WeddingController {
         }
         w.setId(list.size());
         if(ws.insert(w)==1){
-            redisTemplate.opsForValue().set("Wedding",null);
+            list.add(w);
+            redisTemplate.opsForValue().set("Wedding",list);
             return 1;
         }
         return 0;

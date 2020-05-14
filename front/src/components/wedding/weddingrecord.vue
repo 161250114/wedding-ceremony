@@ -12,48 +12,32 @@
       style="width: 100%">
       <el-table-column
         prop="id"
-        label="编号"
+        label="id"
         width="180">
       </el-table-column>
       <el-table-column
-        prop="name"
-        label="姓名"
+        prop="weddingId"
+        label="婚宴id"
         width="180">
       </el-table-column>
       <el-table-column
-        prop="phone"
-        label="电话">
+        prop="approverId"
+        label="审批人id"
+        width="180">
       </el-table-column>
       <el-table-column
-        prop="email"
-        label="邮箱">
+        prop="time"
+        label="时间">
       </el-table-column>
       <el-table-column
-        prop="total"
-        label="总人数">
+        prop="result"
+        label="具体结果">
       </el-table-column>
       <el-table-column
-        prop="state"
-        label="状态">
-      </el-table-column>
-      <el-table-column
-        prop="start"
-        label="开始时间">
-      </el-table-column>
-      <el-table-column
-        prop="end"
-        label="结束时间">
-      </el-table-column>
-      <el-table-column
-        label="位置信息">
+        label="操作">
         <template slot-scope="scope">
-          <el-button @click="checkLoc(scope.row)" type="text" size="small">查看</el-button>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="细节">
-        <template slot-scope="scope">
-          <el-button @click="checkDet(scope.row)" type="text" size="small">查看</el-button>
+          <el-input v-model="resultinput[scope.row.id]"></el-input>
+          <el-button @click="updateResult(scope.row)" type="text" size="small">更新结果</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -66,6 +50,7 @@
     name: "weddingrecord",
     data() {
       return {
+        resultinput:[],
         input:"",
         id:-1,
         storage:[],
@@ -74,7 +59,7 @@
     },
     created(){
       let app=this
-      axios.get("/getCurrentUser")
+      /*axios.get("/getCurrentUser")
         .then(function(res) {
           if(res.data.result==false){
             app.$router.push({
@@ -87,6 +72,8 @@
         .catch(function (err) {
           console.log(err);
         })
+        */
+      app.load()
     },
     methods: {
       showAll(){
@@ -98,11 +85,13 @@
       load(){
         let app=this
         let id=app.id
-        axios.post('/wedding/get',id)
+        axios.get('/weddingrecord/getAll')
           .then(function(res){
-            console.log(res.data)
             app.tableData=res.data
             app.storage=JSON.parse(JSON.stringify(res.data))
+            for(let i=0;i<res.data.length;i++){
+              app.resultinput.splice(i,0,"");
+            }
           })
           .catch(function(err){
             console.log(err);
@@ -118,32 +107,6 @@
           }
         }
       },
-      checkLoc(row){
-        let app=this
-        let table=this.tableData
-        let info=""
-        for(let i=0;i<table.length;i++){
-          if(table[i]["id"]==row.id){
-            info=table[i]["location"];
-          }
-        }
-        this.$alert(info, '位置信息', {
-          confirmButtonText: '确定',
-        });
-      },
-      checkDet(row){
-        let app=this
-        let table=this.tableData
-        let info=""
-        for(let i=0;i<table.length;i++){
-          if(table[i]["id"]==row.id){
-            info=table[i]["detail"];
-          }
-        }
-        this.$alert(info, '细节信息', {
-          confirmButtonText: '确定',
-        });
-      },
       search(input){
         let app=this
         let table=this.tableData
@@ -156,68 +119,23 @@
         }
         this.tableData=result
       },
-      pass(row){
-        let app=this
-        row.state="通过"
-        let data=JSON.parse(JSON.stringify(row))
-        data.state=1
-        data.applicantId=1
-        axios.post("/wedding/update",data)
-          .then(successResponse => {
-            let record=new Object();
-            record["id"]=0;
-            record["weddingId"]=row.id;
-            record["approverId"]=1;
-            record["time"]=new Date();
-            record["result"]=1;
-            axios.post("/weddingrecord/add",record)
-              .then(successResponse=>{
-                this.$alert("操作成功", '提示', {
-                  confirmButtonText: '确定',
-                });
-              })
-              .catch(failResponse=>{
-                this.$alert("操作失败，请刷新页面重试", '提示', {
-                  confirmButtonText: '确定',
-                });
-              })
-          })
-          .catch(failResponse => {
-            this.$alert("操作失败，请刷新页面重试", '提示', {
+      updateResult(row){
+        let app=this;
+        let newObject=JSON.parse(JSON.stringify(app.tableData[row.id]));
+        newObject.result=app.resultinput[row.id];
+        console.log(newObject)
+        app.tableData.splice(row.id,1,newObject)
+        axios.post("/weddingrecord/update",newObject)
+          .then(successResponse=>{
+            app.$alert("操作成功", '提示', {
               confirmButtonText: '确定',
             });
-          }); //失败后的操作
-      },
-      cancel(row){
-        row.state="取消"
-        let data=JSON.parse(JSON.stringify(row))
-        data.state=2
-        data.applicantId=1
-        axios.post("/wedding/update",data)
-          .then(successResponse => {
-            let record=new Object();
-            record["id"]=0;
-            record["weddingId"]=row.id;
-            record["approverId"]=1;
-            record["time"]=new Date();
-            record["result"]=2;
-            axios.post("/weddingrecord/add",record)
-              .then(successResponse=>{
-                this.$alert("操作成功", '提示', {
-                  confirmButtonText: '确定',
-                });
-              })
-              .catch(failResponse=>{
-                this.$alert("操作失败，请刷新页面重试", '提示', {
-                  confirmButtonText: '确定',
-                });
-              })
           })
-          .catch(failResponse => {
-            this.$alert("操作失败，请刷新页面重试", '提示', {
+          .catch(failResponse=>{
+            app.$alert("操作失败，请刷新页面重试", '提示', {
               confirmButtonText: '确定',
             });
-          }); //失败后的操作
+          })
       }
     }
 

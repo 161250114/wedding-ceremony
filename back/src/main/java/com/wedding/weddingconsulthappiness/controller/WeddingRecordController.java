@@ -37,7 +37,8 @@ public class WeddingRecordController {
         }
         wr.setId(list.size());
         if(wrs.insert(wr)==1){
-            redisTemplate.opsForValue().set("Wedding_record",null);
+            list.add(wr);
+            redisTemplate.opsForValue().set("Wedding_record",list);
             return 1;
         }
         return 0;
