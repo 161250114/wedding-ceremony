@@ -25,11 +25,17 @@ public class SystemMessageController {
     @ResponseBody
     @RequestMapping(value="/add",method = RequestMethod.POST)
     public int addsm(@RequestBody System_message sm, HttpServletRequest resquest){
-        sm.setId(ts.getId());
         RedisSerializer redisSerializer=new StringRedisSerializer();
         redisTemplate.setKeySerializer(redisSerializer);
+        List<System_message>list= (List<System_message>) redisTemplate.opsForValue().get("System_message");
+        if(list==null){
+            list=ts.selectAll();
+            redisTemplate.opsForValue().set("System_message",list);
+        }
+        sm.setId(list.size());
         if(ts.addSystemMessage(sm)==1){
-            redisTemplate.opsForValue().set("System_message",null);
+            list.add(sm);
+            redisTemplate.opsForValue().set("System_message",list);
         }
         return 1;
     }

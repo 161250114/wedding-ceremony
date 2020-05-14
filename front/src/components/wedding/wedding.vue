@@ -103,8 +103,10 @@
               }
               let message = res.data.message
               let id = message.userid;
+              app.id=id;
               axios.post('/wedding/get',id)
                 .then(function (res) {
+                  console.log(res.data)
                   app.tableData = res.data
                   app.storage = JSON.parse(JSON.stringify(res.data))
                   if(id==0){
@@ -188,28 +190,29 @@
               let record=new Object();
               record["id"]=0;
               record["weddingId"]=row.id;
-              record["approverId"]=1;
+              record["approverId"]=app.id;
               record["time"]=new Date();
               record["result"]="通过";
               axios.post("/weddingrecord/add",record)
                 .then(successResponse=>{
-                  this.$alert("操作成功", '提示', {
+                  app.$alert("操作成功", '提示', {
                     confirmButtonText: '确定',
                   });
                 })
                 .catch(failResponse=>{
-                  this.$alert("操作失败，请刷新页面重试", '提示', {
+                  app.$alert("操作失败，请刷新页面重试", '提示', {
                     confirmButtonText: '确定',
                   });
                 })
             })
             .catch(failResponse => {
-              this.$alert("操作失败，请刷新页面重试", '提示', {
+              app.$alert("操作失败，请刷新页面重试", '提示', {
                 confirmButtonText: '确定',
               });
             }); //失败后的操作
         },
         cancel(row){
+          let app=this
           row.state="取消"
           let data=JSON.parse(JSON.stringify(this.find(row.id)))
           console.log(data)
@@ -219,23 +222,23 @@
               let record=new Object();
               record["id"]=0;
               record["weddingId"]=row.id;
-              record["approverId"]=data.applicant_id
+              record["approverId"]=app.id
               record["time"]=new Date();
               record["result"]="取消";
               axios.post("/weddingrecord/add",record)
                 .then(successResponse=>{
-                  this.$alert("操作成功", '提示', {
+                  app.$alert("操作成功", '提示', {
                     confirmButtonText: '确定',
                   });
                 })
                 .catch(failResponse=>{
-                  this.$alert("操作失败，请刷新页面重试", '提示', {
+                  app.$alert("操作失败，请刷新页面重试", '提示', {
                     confirmButtonText: '确定',
                   });
                 })
         })
             .catch(failResponse => {
-              this.$alert("操作失败，请刷新页面重试", '提示', {
+              app.$alert("操作失败，请刷新页面重试", '提示', {
                 confirmButtonText: '确定',
               });
             }); //失败后的操作

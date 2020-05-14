@@ -33,7 +33,8 @@ public class CommentController {
         }
         c.setId(list.size());
         if(cs.insert(c)==1){
-            redisTemplate.opsForValue().set("Comment",null);
+            list.add(c);
+            redisTemplate.opsForValue().set("Comment",list);
             return 1;
         }
         return 0;
