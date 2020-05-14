@@ -54,7 +54,7 @@ public class HappinessController {
         h.setId(list.size());
         if(hs.insert(h)==1){
             list.add(h);
-            redisTemplate.opsForValue().set("Happiness",h);
+            redisTemplate.opsForValue().set("Happiness",list);
         }
         return 0;
     }
@@ -131,7 +131,7 @@ public class HappinessController {
         for(Integer id:ids){
             boolean r=false;
             for(Happiness_likes hl:list){
-                if(hl.getHappinessId()==id&&hl.getLikeId()==userId&&hl.getState()==0){
+                if(hl.getHappinessId()-id==0&&hl.getLikeId()-userId==0&&hl.getState()==0){
                     r=true;
                 }
             }
@@ -153,7 +153,7 @@ public class HappinessController {
         for(Integer id:ids){
             List<String>r=new ArrayList<>();
             for(Happiness_photo hp:list){
-                if(hp.getHappinessId()==id){
+                if(hp.getHappinessId()-id==0){
                     r.add(new String(hp.getPhoto()));
                 }
             }
@@ -168,6 +168,11 @@ public class HappinessController {
         RedisSerializer redisSerializer=new StringRedisSerializer();
         redisTemplate.setKeySerializer(redisSerializer);
         List<Comment>list= (List<Comment>) redisTemplate.opsForValue().get("Comment");
+        System.out.println(list.size());
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
         if(list==null){
             list=cs.selectAll();
             redisTemplate.opsForValue().set("Comment",list);
@@ -176,7 +181,7 @@ public class HappinessController {
         for(Integer id:ids){
             List<Comment>r=new ArrayList<>();
             for(Comment c:list){
-                if(c.getHappinessId()==id){
+                if(c.getHappinessId()-id==0){
                     r.add(c);
                 }
             }

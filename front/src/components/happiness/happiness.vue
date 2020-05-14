@@ -39,7 +39,7 @@
       </span>
     </div>
     <div class="ca">
-      <div  v-for="comm in commentlist[index]" :key="comm"><p style="margin-left:-700px;margin-top: 50px"><el-avatar :size="30" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" ></el-avatar>
+      <div  v-for="(comm,j) in commentlist[index]" :key="j"><p style="margin-left:-700px;margin-top: 50px"><el-avatar :size="30" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" ></el-avatar>
         {{comm.content}}</p></div>
     </div>
     <div class="ia">
@@ -59,7 +59,8 @@
           return{
             id:-1,
             list:[],
-            friendlist:[10,3],
+            friendlist:[],
+            usernamelist:[],
             happinesslist:[],
             islike:[],
             likes:[],
@@ -85,43 +86,50 @@
                 })
               }
               app.id=res.data.message.userid
-              let ids=app.friendlist
-              axios.post('/happiness/get',ids)
-                .then(function(res){
-                  app.list=res.data;
-                  for(let i=0;i<app.list.length;i++){
-                    app.happinesslist.push(app.list[i].id)
+              axios.get("/friend/getFriendList")
+                .then(function (res) {
+                  let message=res.data.message;
+                  console.log(res.data)
+                  for(let i=0;i<message.length;i++){
+                    app.friendlist.push(message[i].userid)
                   }
-                  axios.post('/happiness/getPhotoList',app.happinesslist)
+                  let ids=app.friendlist
+                  axios.post('/happiness/get',ids)
                     .then(function(res){
-                      app.photolist=res.data
-                    })
-                    .catch(function(err){
-                      console.log(err);
-                    });
-                  axios.post('/happiness/getCommentList',app.happinesslist)
-                    .then(function(res){
-                      console.log(app.happinesslist)
-                      app.commentlist=res.data
-                      console.log(res.data)
-                    })
-                    .catch(function(err){
-                      console.log(err);
-                    });
-                  axios.post('/happiness/getLikes',app.happinesslist)
-                    .then(function(res){
-                      app.likes=res.data
-                    })
-                    .catch(function(err){
-                      console.log(err);
-                    });
-                  axios.post('/happiness/getMyLikes',app.happinesslist)
-                    .then(function(res){
-                      app.islike=res.data
-                    })
-                    .catch(function(err){
-                      console.log(err);
-                    });
+                      app.list=res.data;
+                      for(let i=0;i<app.list.length;i++){
+                        app.happinesslist.push(app.list[i].id)
+                      }
+                      axios.post('/happiness/getPhotoList',app.happinesslist)
+                        .then(function(res){
+                          app.photolist=res.data
+                        })
+                        .catch(function(err){
+                          console.log(err);
+                        });
+                      axios.post('/happiness/getCommentList',app.happinesslist)
+                        .then(function(res){
+                          app.commentlist=res.data
+                        })
+                        .catch(function(err){
+                          console.log(err);
+                        });
+                      axios.post('/happiness/getLikes',app.happinesslist)
+                        .then(function(res){
+                          app.likes=res.data
+                        })
+                        .catch(function(err){
+                          console.log(err);
+                        });
+                      axios.post('/happiness/getMyLikes',app.happinesslist)
+                        .then(function(res){
+                          app.islike=res.data
+                        })
+                        .catch(function(err){
+                          console.log(err);
+                        });
+                })
+
                 })
                 .catch(function (err) {
                   console.log(err);
