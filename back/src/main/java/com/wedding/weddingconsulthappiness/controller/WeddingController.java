@@ -28,7 +28,7 @@ public class WeddingController {
     RedisTemplate<Object,Object>redisTemplate;
     @ResponseBody
     @RequestMapping(value="/add",method = RequestMethod.POST)
-    public int addsm(@RequestBody Wedding w, HttpServletRequest request){
+    public int addw(@RequestBody Wedding w, HttpServletRequest request){
         RedisSerializer redisSerializer=new StringRedisSerializer();
         redisTemplate.setKeySerializer(redisSerializer);
         List<Wedding>list= (List<Wedding>) redisTemplate.opsForValue().get("Wedding");
@@ -46,7 +46,7 @@ public class WeddingController {
     }
     @ResponseBody
     @RequestMapping(value="/get",method = RequestMethod.POST)
-    public List<WeddingVO> get(@RequestBody Integer id){
+    public List<WeddingVO> getw(@RequestBody Integer id){
         RedisSerializer redisSerializer=new StringRedisSerializer();
         redisTemplate.setKeySerializer(redisSerializer);
         List<Wedding>list= (List<Wedding>) redisTemplate.opsForValue().get("Wedding");
@@ -56,9 +56,7 @@ public class WeddingController {
         }
         ArrayList<WeddingVO> result=new ArrayList<>();
         for(Wedding w:list){
-            System.out.println(w.getApplicantId()+""+id);
             if(w.getApplicantId()-id==0){
-                System.out.println();System.out.println();System.out.println();System.out.println();System.out.println();
                 WeddingVO W=new WeddingVO(w);
                 result.add(W);
             }
@@ -77,7 +75,7 @@ public class WeddingController {
         }
         List result=new ArrayList();
         for(int i=0;i<list.size();i++){
-            result.add(new WeddingVO((Wedding)list.get(i)));
+            result.add(new WeddingVO(list.get(i)));
         }
         return result;
     }
@@ -94,7 +92,7 @@ public class WeddingController {
         List result=new ArrayList();
         Wedding we=new Wedding();
         for(int i=0;i<list.size();i++){
-            Wedding W= (Wedding) list.get(i);
+            Wedding W= list.get(i);
             if(W.getId()==w.getId()){
                 we=W;
             }
