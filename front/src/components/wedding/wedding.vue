@@ -169,7 +169,6 @@
           });
           return;
         }
-        let app=this
         let table=this.tableData
         let result=new Array();
         for(let i=0;i<table.length;i++){

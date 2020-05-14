@@ -1,8 +1,10 @@
 <template>
   <div style="text-align: center">
     <div style="width: 100%;height: 100px">
-      <el-input style="width: 200px;margin:20px"v-model="input" placeholder="按姓名或编号查询"></el-input>
-      <el-button type="primary" @click="search(input)">搜索</el-button>
+      <el-input style="width: 200px;margin:20px"v-model="input1" placeholder="按id查询"></el-input>
+      <el-input style="width: 200px;margin:20px"v-model="input2" placeholder="按婚宴id查询"></el-input>
+      <el-input style="width: 200px;margin:20px"v-model="input3" placeholder="按审批人id查询"></el-input>
+      <el-button type="primary" @click="search(input1,input2,input3)">搜索</el-button>
       <el-button type="primary" @click="showAll()">显示全部</el-button>
       </div>
     <el-table
@@ -51,7 +53,9 @@
     data() {
       return {
         resultinput:[],
-        input:"",
+        input1:"",
+        input2:"",
+        input3:"",
         id:-1,
         storage:[],
         tableData: [],
@@ -107,13 +111,16 @@
           }
         }
       },
-      search(input){
+      search(input1,input2,input3){
         let app=this
-        let table=this.tableData
+        let table=this.storage
         let result=new Array();
         for(let i=0;i<table.length;i++){
           let data=table[i];
-          if(data["id"].indexOf(input)>=0||data["name"].indexOf(input)>=0){
+          let hasId=input1==""?true:(data.id+"").indexOf(input1)>=0;
+          let hasWeddingId=input2==""?true:(data.weddingId+"").indexOf(input2)>=0;
+          let hasApproverId=input3==""?true:(data.approverId+"").indexOf(input3)>=0;
+          if(hasId&&hasWeddingId&&hasApproverId){
             result.push(data);
           }
         }
@@ -121,7 +128,7 @@
       },
       updateResult(row){
         let app=this;
-        let newObject=JSON.parse(JSON.stringify(app.tableData[row.id]));
+        let newObject=JSON.parse(JSON.stringify(app.storage[row.id]));
         newObject.result=app.resultinput[row.id];
         console.log(newObject)
         app.tableData.splice(row.id,1,newObject)

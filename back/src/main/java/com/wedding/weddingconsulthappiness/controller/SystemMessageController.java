@@ -36,8 +36,9 @@ public class SystemMessageController {
         if(ts.addSystemMessage(sm)==1){
             list.add(sm);
             redisTemplate.opsForValue().set("System_message",list);
+            return 1;
         }
-        return 1;
+        return 0;
     }
     @ResponseBody
     @RequestMapping(value = "/get",method = RequestMethod.POST)
@@ -73,7 +74,9 @@ public class SystemMessageController {
         for(System_message s:list){
             if(s.getSenderId()==from&&s.getReceiverId()==to){
                 s.setState(1);
-                ts.updateByPrimaryKey(s);
+                if(ts.updateByPrimaryKey(s)==0){
+                    return 0;
+                }
                 redisTemplate.opsForValue().set("System_message",null);
             }
         }
