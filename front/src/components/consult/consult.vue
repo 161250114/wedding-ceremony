@@ -32,18 +32,23 @@
         if(toid===undefined){
           this.toid=0
         }
-        axios.get("/getCurrentUser")
-          .then(function(res) {
-            if(res.data.result==false){
-              app.$router.push({
-                path: './login',
-              })
-            }
-            app.id=res.data.message.userid
-          })
-          .catch(function (err) {
-            console.log(err);
-          })
+        if(this.$route.id==0){
+          app.id==0;
+        }
+        else{
+          axios.get("/getCurrentUser")
+            .then(function(res) {
+              if(res.data.result==false){
+                app.$router.push({
+                  path: './login',
+                })
+              }
+              app.id=res.data.message.userid
+            })
+            .catch(function (err) {
+              console.log(err);
+            })
+        }
         this.load();
       },
       destroyed: function () {

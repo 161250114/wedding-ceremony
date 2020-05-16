@@ -126,12 +126,22 @@
         }
         this.tableData=result
       },
+      getIndex(id){
+        let app=this
+        let table=app.tableData;
+        for(let i=0;i<table.length;i++){
+          if(table[i].id==id){
+            return i;
+          }
+        }
+        return -1;
+      },
       updateResult(row){
         let app=this;
         let newObject=JSON.parse(JSON.stringify(app.storage[row.id]));
         newObject.result=app.resultinput[row.id];
-        console.log(newObject)
-        app.tableData.splice(row.id,1,newObject)
+        app.tableData.splice(app/getIndex(row.id),1,newObject)
+        app.storage.splice(row.id,1,newObject)
         axios.post("/weddingrecord/update",newObject)
           .then(successResponse=>{
             app.$alert("操作成功", '提示', {

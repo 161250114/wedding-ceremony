@@ -84,7 +84,8 @@
           this.$router.push({
             path: './consult',
             query: {
-              id: row.toid
+              toid: row.id,
+              id:0
             }
           })
         }
