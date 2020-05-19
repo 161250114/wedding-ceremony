@@ -206,9 +206,9 @@ export default {
     };
   },
   methods: {
-    handleApplyClose(){
-      let app=this;
-      app.handleApplyDialog=false;
+    handleApplyClose() {
+      let app = this;
+      app.handleApplyDialog = false;
     },
     handleDateApply() {
       let app = this;
@@ -223,6 +223,8 @@ export default {
             message: res.data.message,
             type: "success",
           });
+          app.$emit("updateInfo");
+          app.getReceiveApplyList();
         })
         .catch(function (error) {});
     },
@@ -231,6 +233,7 @@ export default {
     },
     getSendDateApplyList() {
       let app = this;
+      app.sendApplyList.splice(0, app.sendApplyList.length);
       Axios.get("/friend/getSendDateApplyList")
         .then(function (res) {
           app.sendApplyList = res.data.message;
@@ -239,6 +242,8 @@ export default {
     },
     getReceiveApplyList() {
       let app = this;
+      app.unhandledApplyList.splice(0, app.unhandledApplyList.length);
+      app.handledApplyList.splice(0, app.handledApplyList.length);
       Axios.get("/friend/getReceiveDateApplyList").then(function (res) {
         for (let i = 0; i < res.data.message.length; i++) {
           console.log(res.data);

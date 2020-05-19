@@ -52,7 +52,7 @@ export default {
             message: "修改成功！",
             type: "success",
           });
-          window.location.href = "/personalInfo/baseInfo";
+          app.$emit("updateInfo");
         }
       });
     },

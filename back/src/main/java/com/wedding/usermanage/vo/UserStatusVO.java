@@ -7,19 +7,26 @@ public class UserStatusVO implements Serializable {
     String username;
     int usertype;
     int dateStatus;
+    int dateFriendId;
     double balance;
     String vipEnddate;
     String phone;
+    String headPhotoUrl;
+    int newFapplyNum;
+    int newDapplyNum;
 
-
-    public UserStatusVO(int userid, String username, int usertype, int dateStatus, double balance,String vipEnddate,String phone) {
+    public UserStatusVO(int userid, String username, int usertype, int dateStatus, int dateFriendId, double balance, String vipEnddate, String phone, String headPhotoUrl, int newFapplyNum, int newDapplyNum) {
         this.userid = userid;
         this.username = username;
         this.usertype = usertype;
         this.dateStatus = dateStatus;
+        this.dateFriendId = dateFriendId;
         this.balance = balance;
-        this.vipEnddate=vipEnddate;
-        this.phone=phone;
+        this.vipEnddate = vipEnddate;
+        this.phone = phone;
+        this.headPhotoUrl = headPhotoUrl;
+        this.newFapplyNum = newFapplyNum;
+        this.newDapplyNum = newDapplyNum;
     }
 
     public UserStatusVO() {
@@ -79,5 +86,37 @@ public class UserStatusVO implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getHeadPhotoUrl() {
+        return headPhotoUrl;
+    }
+
+    public void setHeadPhotoUrl(String headPhotoUrl) {
+        this.headPhotoUrl = headPhotoUrl;
+    }
+
+    public int getDateFriendId() {
+        return dateFriendId;
+    }
+
+    public void setDateFriendId(int dateFriendId) {
+        this.dateFriendId = dateFriendId;
+    }
+
+    public int getNewFapplyNum() {
+        return newFapplyNum;
+    }
+
+    public void setNewFapplyNum(int newFapplyNum) {
+        this.newFapplyNum = newFapplyNum;
+    }
+
+    public int getNewDapplyNum() {
+        return newDapplyNum;
+    }
+
+    public void setNewDapplyNum(int newDapplyNum) {
+        this.newDapplyNum = newDapplyNum;
     }
 }

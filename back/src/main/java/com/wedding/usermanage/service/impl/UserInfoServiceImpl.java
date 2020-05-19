@@ -1,14 +1,8 @@
 package com.wedding.usermanage.service.impl;
 
-import com.wedding.mapper.Date_standardMapper;
-import com.wedding.mapper.UserLabelMapper;
-import com.wedding.mapper.UserMapper;
-import com.wedding.mapper.UserQuestionMapper;
+import com.wedding.mapper.*;
 import com.wedding.model.ReturnMessage;
-import com.wedding.model.po.Date_standard;
-import com.wedding.model.po.User;
-import com.wedding.model.po.UserLabel;
-import com.wedding.model.po.UserQuestion;
+import com.wedding.model.po.*;
 import com.wedding.usermanage.service.UserInfoService;
 import com.wedding.usermanage.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +23,35 @@ public class UserInfoServiceImpl implements UserInfoService {
     private UserLabelMapper userLabelMapper;
     @Autowired
     private UserQuestionMapper userQuestionMapper;
+    @Autowired
+    private Album_photoMapper album_photoMapper;
+    @Autowired
+    private Date_recordMapper date_recordMapper;
+    @Autowired
+    private Date_applyMapper date_applyMapper;
+    @Autowired
+    private Friend_applyMapper friend_applyMapper;
 
     @Override
     public ReturnMessage getUserStatus(int userid) {
         User user=userMapper.selectByPrimaryKey(userid);
         UserStatusVO userStatusVO=new UserStatusVO();
+        List<Album_photo> photos=album_photoMapper.selectByAlbumId(user.getAlbumid());
+        for(int i=0;i<photos.size();i++){
+            if(photos.get(i).getOrderNumber()==1){
+                userStatusVO.setHeadPhotoUrl(photos.get(i).getAddress());
+                break;
+            }
+        }
+        List<Date_record> date_records=date_recordMapper.selectByUserId1AndUserId2(userid);
+        for(int i=0;i<date_records.size();i++){
+            if(date_records.get(i).getEndDate()==null){
+                userStatusVO.setDateFriendId(date_records.get(i).getUserid2());
+                if(userid==date_records.get(i).getUserid2()){
+                    userStatusVO.setDateFriendId(date_records.get(i).getUserid1());
+                }
+            }
+        }
         userStatusVO.setBalance(user.getBalance());
         userStatusVO.setDateStatus(user.getDateStatus());
         userStatusVO.setUserid(userid);
@@ -48,6 +66,24 @@ public class UserInfoServiceImpl implements UserInfoService {
         StringBuilder sb=new StringBuilder(user.getPhone());
         sb.replace(3,7,"****");
         userStatusVO.setPhone(sb.toString());
+
+        int newDapplyNum=0;
+        List<Date_apply> date_applies=date_applyMapper.selectByUserid2(userid);
+        for(int i=0;i<date_applies.size();i++){
+            if(date_applies.get(i).getResult().equals("等待")){
+                newDapplyNum++;
+            }
+        }
+        userStatusVO.setNewDapplyNum(newDapplyNum);
+
+        int newFapplyNum=0;
+        List<Friend_apply> friend_applies=friend_applyMapper.selectByUserid2(userid);
+        for(int i=0;i<friend_applies.size();i++){
+            if(friend_applies.get(i).getResult().equals("等待")){
+                newFapplyNum++;
+            }
+        }
+        userStatusVO.setNewFapplyNum(newFapplyNum);
         return new ReturnMessage(true,userStatusVO);
     }
 
@@ -73,7 +109,6 @@ public class UserInfoServiceImpl implements UserInfoService {
     public ReturnMessage changeBaseInfo(int userid, BaseInfoVO baseInfoVO) {
         User user=userMapper.selectByPrimaryKey(userid);
         user.setUsername(baseInfoVO.getUsername());
-        user.setPhone(baseInfoVO.getPhone());
         user.setAddress(baseInfoVO.getAddress());
         user.setEducation(baseInfoVO.getEducation());
         user.setMarrige((byte)baseInfoVO.getMarriage());

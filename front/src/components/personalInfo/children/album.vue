@@ -1,12 +1,12 @@
 <template>
   <div class="info_div">
     <el-container>
-      <el-header style="border-bottom:1px solid #d3dce6"
+      <el-header style="border-bottom: 1px solid #d3dce6;"
         ><h3>
           <label
-            >当前相册最大容量：{{ maxNum }}&nbsp;&nbsp;&nbsp;已使用容量：{{
-              photos.length
-            }}</label
+            >当前相册最大容量：{{
+              album.maxNumber
+            }}&nbsp;&nbsp;&nbsp;已使用容量：{{ album.currentNumber }}</label
           >
         </h3>
       </el-header>
@@ -18,14 +18,17 @@
           :autoplay="false"
           indicator-position="outside"
           @change="
-            currentIndex => {
+            (currentIndex) => {
               getPhotoIndex(currentIndex);
             }
           "
           :loop="false"
         >
-          <el-carousel-item v-for="item in photos.length" :key="item">
-            <img :src="photos[item - 1].url" style="width:100%;height:100%" />
+          <el-carousel-item v-for="item in album.photos.length" :key="item">
+            <img
+              :src="album.photos[item - 1].url"
+              style="width: 100%; height: 100%;"
+            />
           </el-carousel-item>
         </el-carousel>
       </el-main>
@@ -55,7 +58,7 @@
                   <el-input v-model="newIndex"></el-input>
                 </el-form-item>
               </el-col>
-              <el-col span="5">
+              <el-col :span="5">
                 <el-button type="primary" @click="saveEdit">保存</el-button>
                 <el-button type="primary" @click="changeMode(false)"
                   >取消</el-button
@@ -75,7 +78,7 @@
                 @click="deletePhoto"
               ></el-button>
             </el-tooltip>
-            <div style="float:right">
+            <div style="float: right;">
               <router-link to="/personalInfo/addAlbumMax"
                 ><el-button type="primary" size="medium"
                   >购买相册容量</el-button
@@ -96,31 +99,14 @@
 </template>
 
 <script>
+import Axios from "axios";
 export default {
   data() {
     return {
-      photos: [
-        {
-          url: "../../../static/photo1.jpg",
-          index: 1
-        },
-        {
-          url: "../../../static/photo2.jpg",
-          index: 2
-        },
-        {
-          url: "../../../static/photo3.jpeg",
-          index: 3
-        },
-        {
-          url: "../../../static/photo4.jpeg",
-          index: 4
-        }
-      ],
+      album: { photos: [] },
       currentIndex: 1,
       newIndex: "",
-      maxNum: 5,
-      editMode: false
+      editMode: false,
     };
   },
   methods: {
@@ -134,34 +120,65 @@ export default {
     },
     saveEdit() {
       let app = this;
-      let temp = app.photos[app.currentIndex - 1];
-      app.photos.splice(app.currentIndex - 1, 1, app.photos[app.newIndex - 1]);
-      app.photos.splice(app.newIndex - 1, 1, temp);
+      let temp = app.album.photos[app.currentIndex - 1];
+      Axios.post("/photo/changePhotoOrder", {
+        id: app.album.photos[app.currentIndex - 1].id,
+        order_number: app.newIndex,
+      })
+        .then(function (res) {
+          if (res.data.result) {
+            app.$message({
+              message: res.data.message,
+              type: "success",
+            });
+          }
+          app.$emit("updateInfo");
+        })
+        .catch(function (error) {});
+      app.album.photos.splice(
+        app.currentIndex - 1,
+        1,
+        app.album.photos[app.newIndex - 1]
+      );
+      app.album.photos.splice(app.newIndex - 1, 1, temp);
       app.newIndex = "";
       app.changeMode(false);
-      app.$message({
-        message: "修改成功！",
-        type: "success"
-      });
     },
     deletePhoto() {
       let app = this;
-      app.photos.splice(app.currentIndex-1,1)     
-      app.$message({
-        message:
-          "已删除第" +
-          app.currentIndex +
-          "张照片，当前相册剩余" +
-          app.photos.length +
-          "张！",
-        type: "success"
-      });
-    }
+      Axios.post("/photo/deletePhoto", app.album.photos[app.currentIndex - 1])
+        .then(function (res) {
+          if (res.data.result) {
+            app.album.photos.splice(app.currentIndex - 1, 1);
+            app.album.currentNumber--;
+            app.$message({
+              message:
+                "已删除第" +
+                app.currentIndex +
+                "张照片，当前相册剩余" +
+                app.album.photos.length +
+                "张！",
+              type: "success",
+            });
+            app.$emit("updateInfo");
+          }
+        })
+        .catch(function (error) {});
+    },
   },
   created() {
     let app = this;
+    Axios.get("/photo/getAlbum").then(function (res) {
+      console.log(res.data);
+      if (res.data.result) {
+        app.album = JSON.parse(JSON.stringify(res.data.message));
+        for (let i = 0; i < app.album.currentNumber; i++) {
+          app.album.photos[i].url = "/api" + app.album.photos[i].url;
+        }
+      }
+    });
     app.$emit("getIndex", "/personalInfo/album");
-  }
+  },
 };
 </script>
 

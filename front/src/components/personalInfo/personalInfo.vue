@@ -1,5 +1,5 @@
 <template>
-  <div style="text-align:center">
+  <div style="text-align: center;">
     <el-row>
       <el-col :span="1">&nbsp;</el-col>
     </el-row>
@@ -11,18 +11,34 @@
             <div>
               <el-avatar
                 :size="100"
-                src="../../../static/photo1.jpg"
+                :src="userinfo.headPhotoUrl"
                 style="margin-top: 10px;"
+                :key="userinfo.headPhotoUrl"
               ></el-avatar>
               <p>
-                <b>{{ userinfo.username }}&nbsp;</b
-                ><b id="vip_paid" v-if="userinfo.usertype == 1"
-                  >&nbsp;VIP&nbsp;</b
-                ><b id="vip_free" v-else>&nbsp;VIP&nbsp;</b>
+                <b>{{ userinfo.username }}&nbsp;</b>
+                <el-tooltip
+                  :content="
+                    userinfo.usertype === 0
+                      ? '当前不是VIP'
+                      : '会员有效期至：' + userinfo.vipEnddate
+                  "
+                  placement="bottom-start"
+                  class="item"
+                  effect="dark"
+                  ><b id="vip_paid" v-if="userinfo.usertype == 1"
+                    >&nbsp;VIP&nbsp;</b
+                  >
+                  <b id="vip_free" v-else>&nbsp;VIP&nbsp;</b>
+                </el-tooltip>
                 <el-tooltip
                   class="item"
                   effect="dark"
-                  content="当前没有约会对象"
+                  :content="
+                    userinfo.dateStatus === 0
+                      ? '当前没有约会对象'
+                      : '当前约会对象ID：' + userinfo.dateFriendId
+                  "
                   placement="bottom-start"
                 >
                   <img
@@ -72,12 +88,22 @@
                 <el-menu-item index="/personalInfo/friends"
                   >好友管理</el-menu-item
                 >
-                <el-badge :value="3" class="item">
+                <el-badge
+                  :value="
+                    userinfo.newFapplyNum === 0 ? '' : userinfo.newFapplyNum
+                  "
+                  class="item"
+                >
                   <el-menu-item index="/personalInfo/friendApply"
                     >好友申请</el-menu-item
                   >
                 </el-badge>
-                <el-badge value="新" class="item">
+                <el-badge
+                  :value="
+                    userinfo.newDapplyNum === 0 ? '' : userinfo.newDapplyNum
+                  "
+                  class="item"
+                >
                   <el-menu-item index="/personalInfo/dateApply"
                     >约会申请</el-menu-item
                   >
@@ -128,7 +154,10 @@
             </el-header>
 
             <el-main>
-              <router-view @getIndex="getCurrentIndex"></router-view>
+              <router-view
+                @getIndex="getCurrentIndex"
+                @updateInfo="updateInfo"
+              ></router-view>
             </el-main>
           </el-container>
         </el-container>
@@ -148,6 +177,9 @@ export default {
         usertype: 0,
         balance: 50,
         dateStatus: 0,
+        headPhotoUrl: "",
+        newFapplyNum: 0,
+        newDapplyNum: 0,
       },
     };
   },
@@ -161,17 +193,21 @@ export default {
       let app = this;
       app.currentIndex = newIndex;
     },
+    updateInfo() {
+      let app = this;
+      Axios.get("/userInfo/getStatusInfo")
+        .then(function (res) {
+          console.log(res);
+          if (res.data.result) {
+            app.userinfo = JSON.parse(JSON.stringify(res.data.message));
+            app.userinfo.headPhotoUrl = "/api" + app.userinfo.headPhotoUrl;
+          }
+        })
+        .catch(function (error) {});
+    },
   },
   created() {
-    let app = this;
-    Axios.get("/userInfo/getStatusInfo")
-      .then(function (res) {
-        console.log(res)
-        if (res.data.result) {
-          app.userinfo = res.data.message;
-        }
-      })
-      .catch(function (error) {});
+    this.updateInfo();
   },
 };
 </script>

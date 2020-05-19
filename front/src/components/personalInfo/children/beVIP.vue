@@ -66,7 +66,7 @@ export default {
             type: "success",
           });
           if (res.data.result) {
-            window.location.href = "/personalInfo/baseInfo";
+            app.$emit("updateInfo");
           }
         })
         .catch(function (error) {});

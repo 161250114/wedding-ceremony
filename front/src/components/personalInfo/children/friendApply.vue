@@ -138,7 +138,7 @@
                 "
                 @click="
                   sendApplyDialog = true;
-                  currentEditRow = {userid:scope.row.userid2};
+                  currentEditRow = { userid: scope.row.userid2 };
                 "
                 >重新申请</el-button
               >
@@ -332,6 +332,8 @@ export default {
             message: res.data.message,
             type: "success",
           });
+          app.getReceiveApplyList();
+          app.$emit("updateInfo");
         })
         .catch(function (error) {});
     },
@@ -372,17 +374,23 @@ export default {
             message: res.data.message,
             type: "success",
           });
+          app.getSendApplyList();
         })
         .catch(function (error) {});
     },
     getSendApplyList() {
       let app = this;
-      Axios.get("/friend/getSendFriendApplyList").then(function (res) {
-        app.sendApplyList = res.data.message;
-      }).catch(function(error){});
+      app.sendApplyList.splice(0,app.sendApplyList.length)
+      Axios.get("/friend/getSendFriendApplyList")
+        .then(function (res) {
+          app.sendApplyList = res.data.message;
+        })
+        .catch(function (error) {});
     },
     getReceiveApplyList() {
       let app = this;
+      app.unhandledApplyList.splice(0,app.unhandledApplyList.length)
+      app.handledApplyList.splice(0,app.handledApplyList.length)
       Axios.get("/friend/getReceiveFriendApplyList").then(function (res) {
         for (let i = 0; i < res.data.message.length; i++) {
           console.log(res.data);
