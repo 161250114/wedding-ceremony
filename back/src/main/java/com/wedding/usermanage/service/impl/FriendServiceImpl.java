@@ -153,6 +153,7 @@ public class FriendServiceImpl implements FriendService {
         friend_apply.setResult(friendApplyVO.getResult());
         friend_apply.setReplyinfo(friendApplyVO.getReplyInfo());
         friend_applyMapper.updateByPrimaryKey(friend_apply);
+        //如果通过好友申请，就在用户间建立对应关系，备注名默认为用户名
         if(friendApplyVO.getResult().equals("通过")){
             User_relation user_relation1=new User_relation();
             user_relation1.setUserid1(friend_apply.getUserid1());
@@ -251,10 +252,14 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public ReturnMessage handleDateApply(DateApplyVO dateApplyVO) {
         Date_apply date_apply=date_applyMapper.selectByPrimaryKey(dateApplyVO.getId());
+        if(date_apply.getResult().equals("已撤销")){
+            return new ReturnMessage(false,"该申请已被撤销！");//如果已被撤销就不做更改
+        }
         date_apply.setResult(dateApplyVO.getResult());
         date_apply.setReplyinfo(dateApplyVO.getReplyInfo());
         date_applyMapper.updateByPrimaryKey(date_apply);
         if(dateApplyVO.getResult().equals("通过")){
+            //建立约会关系
             Date_record date_record=new Date_record();
             date_record.setStartDate(new Date());
             date_record.setUserid1(date_apply.getUserid1());

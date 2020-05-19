@@ -4,6 +4,8 @@ import com.wedding.mapper.*;
 import com.wedding.model.ReturnMessage;
 import com.wedding.model.po.*;
 import com.wedding.usermanage.service.LRService;
+import com.wedding.usermanage.utils.Base64Converter;
+import com.wedding.usermanage.utils.Statistics;
 import com.wedding.usermanage.vo.LoginVO;
 import com.wedding.usermanage.vo.RegisterVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +35,11 @@ public class LRServiceImpl implements LRService {
     @Override
     public LoginVO login(LoginVO loginVO) {
         User user=userMapper.selectByPhone(loginVO.getUname_phone());
-        if(user!=null&&user.getPassword().equals(loginVO.getPassword())){
+        if(user!=null&&Base64Converter.decode(user.getPassword()).equals(loginVO.getPassword())){
             return new LoginVO(user.getId(),loginVO.getUname_phone(),"");
         }else{
             user=userMapper.selectByUsername(loginVO.getUname_phone());
-            if(user!=null&&user.getPassword().equals(loginVO.getPassword())){
+            if(user!=null&&Base64Converter.decode(user.getPassword()).equals(loginVO.getPassword())){
                 return new LoginVO(user.getId(),loginVO.getUname_phone(),"");
             }
         }
@@ -67,12 +69,12 @@ public class LRServiceImpl implements LRService {
         user.setHeight(registerVO.getHeight());
         user.setIntroduction(registerVO.getIntroduction());
         user.setMarrige((byte)registerVO.getMarriage());
-        user.setPassword(registerVO.getPassword());
+        user.setPassword(Base64Converter.encode(registerVO.getPassword()));//base64加密
         user.setPhone(registerVO.getPhone());
         user.setProfession(registerVO.getProfession());
         user.setSalary(registerVO.getSalary());
         user.setSex((byte)registerVO.getSex());
-        user.setTrueness(60);
+        user.setTrueness(Statistics.meanCredit);
         user.setUsername(registerVO.getUsername());
         user.setUsertype((byte)0);
         user.setDateStatus((byte)0);

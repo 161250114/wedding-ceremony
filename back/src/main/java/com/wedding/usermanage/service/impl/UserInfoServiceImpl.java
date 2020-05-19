@@ -4,6 +4,7 @@ import com.wedding.mapper.*;
 import com.wedding.model.ReturnMessage;
 import com.wedding.model.po.*;
 import com.wedding.usermanage.service.UserInfoService;
+import com.wedding.usermanage.utils.Base64Converter;
 import com.wedding.usermanage.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -178,12 +179,14 @@ public class UserInfoServiceImpl implements UserInfoService {
         user.setIntroduction(introductionVO.getIntroduction());
         userMapper.updateByPrimaryKey(user);
         userLabelMapper.deleteByUserId(userid);
+        //调整标签信息
         for(int i=0;i<introductionVO.getTagList().length;i++){
             UserLabel userLabel=new UserLabel();
             userLabel.setUserId(user.getId());
             userLabel.setLabel(introductionVO.getTagList()[i]);
             userLabelMapper.insert(userLabel);
         }
+        //调整兴趣爱好信息
         userQuestionMapper.deleteByUserId(userid);
         for(int i=0;i<introductionVO.getQuestionList().length;i++){
             UserQuestion userQuestion=new UserQuestion();
@@ -198,8 +201,10 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public ReturnMessage changePassword(int userid, PasswordVO passwordVO) {
         User user=userMapper.selectByPrimaryKey(userid);
-        if(user.getPassword().equals(passwordVO.getOldPassword())){
-            user.setPassword(passwordVO.getNewPassword());
+        //判断解密后密码与输入密码是否一致
+        if(Base64Converter.decode(user.getPassword()).equals(passwordVO.getOldPassword())){
+            //数据库存储新的加密密码
+            user.setPassword(Base64Converter.encode(passwordVO.getNewPassword()));
             userMapper.updateByPrimaryKey(user);
             return new ReturnMessage(true,"修改成功");
         }else{

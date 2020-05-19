@@ -47,7 +47,6 @@ public class PhotoServiceImpl implements PhotoService {
             album_photo.setAlbumid(album.getId());
             album_photo.setOrderNumber(album.getCurrentNumber()+1);
             album_photoMapper.insert(album_photo);
-
             try {
                 inputStream = filecontent.getInputStream();
                 fileName = filecontent.getOriginalFilename();
@@ -73,12 +72,11 @@ public class PhotoServiceImpl implements PhotoService {
                 while ((len = inputStream.read(bs)) != -1) {
                     os.write(bs, 0, len);
                 }
-
+                //更新相册信息
                 album_photo.setAddress(album_photo.getAddress()+"/"+fileName);
                 album_photoMapper.updateByPrimaryKey(album_photo);
                 album.setCurrentNumber(album.getCurrentNumber()+1);
                 albumMapper.updateByPrimaryKey(album);
-
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (Exception e) {
