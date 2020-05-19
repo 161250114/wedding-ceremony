@@ -15,13 +15,16 @@ public class DateRecordVO implements Serializable {
 
     private String status;
 
-    public DateRecordVO(int id,int userid1,int userid2, String startDate, String endDate,String status) {
-        this.id=id;
-        this.userid1=userid1;
+    private int isCommented;
+
+    public DateRecordVO(int id, int userid1, int userid2, String startDate, String endDate, String status, int isCommented) {
+        this.id = id;
+        this.userid1 = userid1;
         this.userid2 = userid2;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.status=status;
+        this.status = status;
+        this.isCommented = isCommented;
     }
 
     public DateRecordVO() {
@@ -73,5 +76,13 @@ public class DateRecordVO implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getIsCommented() {
+        return isCommented;
+    }
+
+    public void setIsCommented(int isCommented) {
+        this.isCommented = isCommented;
     }
 }
