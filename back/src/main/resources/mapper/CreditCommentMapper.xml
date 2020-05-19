@@ -3,40 +3,42 @@
 <mapper namespace="com.wedding.mapper.CreditCommentMapper" >
   <resultMap id="BaseResultMap" type="com.wedding.model.po.CreditComment" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="userid1" property="userid1" jdbcType="INTEGER" />
     <result column="daterecordid" property="daterecordid" jdbcType="INTEGER" />
     <result column="basiccomment" property="basiccomment" jdbcType="INTEGER" />
     <result column="extracomment" property="extracomment" jdbcType="INTEGER" />
     <result column="labelcomment" property="labelcomment" jdbcType="INTEGER" />
+    <result column="userid2" property="userid2" jdbcType="INTEGER" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from credit_comment
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wedding.model.po.CreditComment" >
-    insert into credit_comment (id, userid, daterecordid, 
-      basiccomment, extracomment, labelcomment
-      )
-    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{daterecordid,jdbcType=INTEGER}, 
-      #{basiccomment,jdbcType=INTEGER}, #{extracomment,jdbcType=INTEGER}, #{labelcomment,jdbcType=INTEGER}
-      )
+    insert into credit_comment (id, userid1, daterecordid, 
+      basiccomment, extracomment, labelcomment, 
+      userid2)
+    values (#{id,jdbcType=INTEGER}, #{userid1,jdbcType=INTEGER}, #{daterecordid,jdbcType=INTEGER}, 
+      #{basiccomment,jdbcType=INTEGER}, #{extracomment,jdbcType=INTEGER}, #{labelcomment,jdbcType=INTEGER}, 
+      #{userid2,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.CreditComment" >
     update credit_comment
-    set userid = #{userid,jdbcType=INTEGER},
+    set userid1 = #{userid1,jdbcType=INTEGER},
       daterecordid = #{daterecordid,jdbcType=INTEGER},
       basiccomment = #{basiccomment,jdbcType=INTEGER},
       extracomment = #{extracomment,jdbcType=INTEGER},
-      labelcomment = #{labelcomment,jdbcType=INTEGER}
+      labelcomment = #{labelcomment,jdbcType=INTEGER},
+      userid2 = #{userid2,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, userid, daterecordid, basiccomment, extracomment, labelcomment
+    select id, userid1, daterecordid, basiccomment, extracomment, labelcomment, userid2
     from credit_comment
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, userid, daterecordid, basiccomment, extracomment, labelcomment
+    select id, userid1, daterecordid, basiccomment, extracomment, labelcomment, userid2
     from credit_comment
   </select>
 </mapper>

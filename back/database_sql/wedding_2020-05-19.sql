@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.29)
 # Database: wedding
-# Generation Time: 2020-05-19 07:45:30 +0000
+# Generation Time: 2020-05-19 07:49:09 +0000
 # ************************************************************
 
 
@@ -553,11 +553,12 @@ DROP TABLE IF EXISTS `credit_comment`;
 
 CREATE TABLE `credit_comment` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `userid` int(11) NOT NULL,
+  `userid1` int(11) NOT NULL,
   `daterecordid` int(11) NOT NULL,
   `basiccomment` int(11) NOT NULL,
   `extracomment` int(11) NOT NULL,
   `labelcomment` int(11) NOT NULL,
+  `userid2` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

@@ -27,6 +27,8 @@ public class RecordServiceImpl implements RecordService {
     private Date_recordMapper date_recordMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private CreditCommentMapper creditCommentMapper;
 
     @Override
     public BillVO[] getBillRecords(int userid) {

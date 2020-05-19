@@ -3,7 +3,7 @@ package com.wedding.model.po;
 public class CreditComment {
     private Integer id;
 
-    private Integer userid;
+    private Integer userid1;
 
     private Integer daterecordid;
 
@@ -13,6 +13,8 @@ public class CreditComment {
 
     private Integer labelcomment;
 
+    private Integer userid2;
+
     public Integer getId() {
         return id;
     }
@@ -21,12 +23,12 @@ public class CreditComment {
         this.id = id;
     }
 
-    public Integer getUserid() {
-        return userid;
+    public Integer getUserid1() {
+        return userid1;
     }
 
-    public void setUserid(Integer userid) {
-        this.userid = userid;
+    public void setUserid1(Integer userid1) {
+        this.userid1 = userid1;
     }
 
     public Integer getDaterecordid() {
@@ -59,5 +61,13 @@ public class CreditComment {
 
     public void setLabelcomment(Integer labelcomment) {
         this.labelcomment = labelcomment;
+    }
+
+    public Integer getUserid2() {
+        return userid2;
+    }
+
+    public void setUserid2(Integer userid2) {
+        this.userid2 = userid2;
     }
 }
