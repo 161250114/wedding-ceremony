@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="title" style="text-align: center"><p style="font-size: 20px">正在与管理员聊天</p></div>
+    <div class="title" style="text-align: center"><p style="font-size: 20px">{{notice}}</p></div>
     <div class="talk_con">
       <div class="talk_show" id="words">
         <div  v-for="mess in list"  :class="{'atalk':mess.senderId==id,'btalk':mess.receiverId==id}"><span>{{mess.content}}</span></div>
@@ -24,16 +24,23 @@
             input:"",
             isMy:true,
             list:[],
+            notice:"正在与管理员聊天"
       }
       },
       created(){
         let app=this
-        let toid=this.$route.toid
+        let toid=app.$route.query.toid
+        let id=app.$route.query.id
         if(toid===undefined){
-          this.toid=0
+          app.toid=0
         }
-        if(this.$route.id==0){
-          app.id==0;
+        else{
+          app.toid=toid;
+        }
+        if(id==0){
+          app.id=0;
+          app.notice="正在与"+app.$route.query.username+"聊天"
+          app.load();
         }
         else{
           axios.get("/getCurrentUser")
@@ -44,16 +51,16 @@
                 })
               }
               app.id=res.data.message.userid
+              app.load();
             })
             .catch(function (err) {
               console.log(err);
             })
         }
-        this.load();
       },
       destroyed: function () {
         let app=this;
-        if(app.id==null){
+        if(app.id==-1){
           return;
         }
         else{

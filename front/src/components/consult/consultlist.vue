@@ -62,7 +62,9 @@
             })
           axios.get("/systemmessage/getState")
             .then(function(res) {
-              app.tableData=res.data
+              let temp=JSON.parse(JSON.stringify(res.data))
+              temp[0].username="sjw"
+              app.tableData=temp
             })
             .catch(function (err) {
               console.log(err);
@@ -85,7 +87,8 @@
             path: './consult',
             query: {
               toid: row.id,
-              id:0
+              id:0,
+              username:row.username
             }
           })
         }

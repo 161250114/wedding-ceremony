@@ -44,13 +44,7 @@ public class HappinessController {
     @ResponseBody
     @RequestMapping(value="/add",method = RequestMethod.POST)
     public int add(@RequestBody Happiness h, HttpServletRequest request){
-        RedisSerializer redisSerializer=new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        List<Happiness>list= (List<Happiness>) redisTemplate.opsForValue().get("Happiness");
-        if(list==null){
-            list=hs.selectAll();
-            redisTemplate.opsForValue().set("Happiness",list);
-        }
+        List<Happiness>list=getHFromRedis();
         h.setId(list.size());
         if(hs.insert(h)==1){
             list.add(h);
@@ -65,13 +59,7 @@ public class HappinessController {
         for(int i:Ids){
             ids.add(i);
         }
-        RedisSerializer redisSerializer=new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        List<Happiness>list= (List<Happiness>) redisTemplate.opsForValue().get("Happiness");
-        if(list==null){
-            list=hs.selectAll();
-            redisTemplate.opsForValue().set("Happiness",list);
-        }
+        List<Happiness>list=getHFromRedis();
         List<Happiness>result=new ArrayList<Happiness>();
         for(Happiness h:list){
             if(ids.contains(h.getSenderId())&&h.getState()==0){
@@ -87,13 +75,7 @@ public class HappinessController {
         for(int i:Ids){
             ids.add(i);
         }
-        RedisSerializer redisSerializer=new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        List<Happiness_likes>list= (List<Happiness_likes>) redisTemplate.opsForValue().get("Happiness_likes");
-        if(list==null){
-            list=hls.selectAll();
-            redisTemplate.opsForValue().set("Happiness_likes",list);
-        }
+        List<Happiness_likes>list=getHlFromRedis();
         List<Integer>result=new ArrayList<>();
         for(Integer id:ids){
             Integer num=0;
@@ -120,13 +102,7 @@ public class HappinessController {
             LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
             userId=loginVO.getUserid();
         }
-        RedisSerializer redisSerializer=new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        List<Happiness_likes>list= (List<Happiness_likes>) redisTemplate.opsForValue().get("Happiness_likes");
-        if(list==null){
-            list=hls.selectAll();
-            redisTemplate.opsForValue().set("Happiness_likes",list);
-        }
+        List<Happiness_likes>list=getHlFromRedis();
         List<Boolean>result=new ArrayList<>();
         for(Integer id:ids){
             boolean r=false;
@@ -148,7 +124,6 @@ public class HappinessController {
             ids.add(i);
         }
         List<Happiness_photo>list=hps.selectAll();
-
         List<List<String>>result=new ArrayList<>();
         for(Integer id:ids){
             List<String>r=new ArrayList<>();
@@ -165,13 +140,7 @@ public class HappinessController {
     @ResponseBody
     @RequestMapping(value="/getCommentList",method = RequestMethod.POST)
     public List<List<Comment>> getCommentList(@RequestBody int[] ids){
-        RedisSerializer redisSerializer=new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        List<Comment>list= (List<Comment>) redisTemplate.opsForValue().get("Comment");
-        if(list==null){
-            list=cs.selectAll();
-            redisTemplate.opsForValue().set("Comment",list);
-        }
+        List<Comment>list=getCFROMRedis();
         List<List<Comment>>result=new ArrayList<>();
         for(int id:ids){
             List<Comment>r=new ArrayList<>();
@@ -188,32 +157,26 @@ public class HappinessController {
     @ResponseBody
     @RequestMapping(value="/getAll",method = RequestMethod.GET)
     public List<Happiness> getAll(){
-        RedisSerializer redisSerializer=new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        List<Happiness>list= (List<Happiness>) redisTemplate.opsForValue().get("Happiness");
-        if(list==null){
-            list=hs.selectAll();
-            redisTemplate.opsForValue().set("Happiness",list);
-        }
+        List<Happiness>list=getHFromRedis();
         return list;
     }
 
     @ResponseBody
     @RequestMapping(value="/getId",method = RequestMethod.GET)
     public int getId(){
-        RedisSerializer redisSerializer=new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        List<Happiness>list= (List<Happiness>) redisTemplate.opsForValue().get("Happiness");
-        if(list==null){
-            list=hs.selectAll();
-            redisTemplate.opsForValue().set("Happiness",list);
-        }
+        List<Happiness>list=getHFromRedis();
         return list.size();
     }
     @ResponseBody
     @RequestMapping(value="/del",method = RequestMethod.POST)
     public int del(@RequestBody int id){
-        Happiness h=hs.selectByPrimaryKey(id);
+        List<Happiness>list=getHFromRedis();
+        Happiness h=new Happiness();
+        for(Happiness ha:list){
+            if(ha.getId()==id){
+                h=ha;
+            }
+        }
         h.setState(1);
         redisTemplate.opsForValue().set("Happiness",null);
         return hs.updateByPrimaryKey(h);
@@ -227,13 +190,7 @@ public class HappinessController {
             LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
             userId=loginVO.getUserid();
         }
-        RedisSerializer redisSerializer=new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        List<Happiness_likes>list= (List<Happiness_likes>) redisTemplate.opsForValue().get("Happiness_likes");
-        if(list==null){
-            list=hls.selectAll();
-            redisTemplate.opsForValue().set("Happiness_likes",list);
-        }
+        List<Happiness_likes>list=getHlFromRedis();
         for(Happiness_likes h:list){
             if(h.getLikeId()==userId&&h.getHappinessId()==id){
                 h.setState(1-h.getState());
@@ -246,7 +203,7 @@ public class HappinessController {
                 }
             }
         }
-        Happiness_likes h=new Happiness_likes(hls.selectAll().size(),id,userId,0);
+        Happiness_likes h=new Happiness_likes(list.size(),id,userId,0);
         if(hls.insert(h)==1){
             list.add(h);
             redisTemplate.opsForValue().set("Happiness_likes",list);
@@ -257,12 +214,39 @@ public class HappinessController {
     @ResponseBody
     @RequestMapping(value="/getAlll",method = RequestMethod.GET)
     public List<Happiness_likes> getAlll(){
+       List<Happiness_likes>list=getHlFromRedis();
+        return list;
+    }
+
+    public List<Happiness> getHFromRedis(){
+        RedisSerializer redisSerializer=new StringRedisSerializer();
+        redisTemplate.setKeySerializer(redisSerializer);
+        List<Happiness>list= (List<Happiness>) redisTemplate.opsForValue().get("Happiness");
+        if(list==null){
+            list=hs.selectAll();
+            redisTemplate.opsForValue().set("Happiness",list);
+        }
+        return list;
+    }
+
+    public List<Happiness_likes> getHlFromRedis(){
         RedisSerializer redisSerializer=new StringRedisSerializer();
         redisTemplate.setKeySerializer(redisSerializer);
         List<Happiness_likes>list= (List<Happiness_likes>) redisTemplate.opsForValue().get("Happiness_likes");
         if(list==null){
             list=hls.selectAll();
             redisTemplate.opsForValue().set("Happiness_likes",list);
+        }
+        return list;
+    }
+
+    public List<Comment> getCFROMRedis(){
+        RedisSerializer redisSerializer=new StringRedisSerializer();
+        redisTemplate.setKeySerializer(redisSerializer);
+        List<Comment>list= (List<Comment>) redisTemplate.opsForValue().get("Comment");
+        if(list==null){
+            list=cs.selectAll();
+            redisTemplate.opsForValue().set("Comment",list);
         }
         return list;
     }

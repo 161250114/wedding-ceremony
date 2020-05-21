@@ -29,13 +29,7 @@ public class WeddingController {
     @ResponseBody
     @RequestMapping(value="/add",method = RequestMethod.POST)
     public int addw(@RequestBody Wedding w, HttpServletRequest request){
-        RedisSerializer redisSerializer=new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        List<Wedding>list= (List<Wedding>) redisTemplate.opsForValue().get("Wedding");
-        if(list==null){
-            list=ws.selectAll();
-            redisTemplate.opsForValue().set("Wedding",list);
-        }
+        List<Wedding>list=getWFromRedis();
         w.setId(list.size());
         if(ws.insert(w)==1){
             list.add(w);
@@ -47,13 +41,7 @@ public class WeddingController {
     @ResponseBody
     @RequestMapping(value="/get",method = RequestMethod.POST)
     public List<WeddingVO> getw(@RequestBody Integer id){
-        RedisSerializer redisSerializer=new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        List<Wedding>list= (List<Wedding>) redisTemplate.opsForValue().get("Wedding");
-        if(list==null){
-            list=ws.selectAll();
-            redisTemplate.opsForValue().set("Wedding",list);
-        }
+        List<Wedding>list=getWFromRedis();
         ArrayList<WeddingVO> result=new ArrayList<>();
         for(Wedding w:list){
             if(w.getApplicantId()-id==0){
@@ -66,13 +54,7 @@ public class WeddingController {
     @ResponseBody
     @RequestMapping(value="/getAll",method = RequestMethod.GET)
     public List<Wedding> getAll(){
-        RedisSerializer redisSerializer=new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        List<Wedding>list= (List<Wedding>) redisTemplate.opsForValue().get("Wedding");
-        if(list==null){
-            list=ws.selectAll();
-            redisTemplate.opsForValue().set("Wedding",list);
-        }
+        List<Wedding>list=getWFromRedis();
         List result=new ArrayList();
         for(int i=0;i<list.size();i++){
             result.add(new WeddingVO(list.get(i)));
@@ -82,14 +64,7 @@ public class WeddingController {
     @ResponseBody
     @RequestMapping(value="/update",method = RequestMethod.POST)
     public int update(@RequestBody WeddingVO w, HttpServletRequest request){
-        RedisSerializer redisSerializer=new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        List<Wedding>list= (List<Wedding>) redisTemplate.opsForValue().get("Wedding");
-        if(list==null){
-            list=ws.selectAll();
-            redisTemplate.opsForValue().set("Wedding",list);
-        }
-        List result=new ArrayList();
+        List<Wedding>list=getWFromRedis();
         Wedding we=new Wedding();
         for(int i=0;i<list.size();i++){
             Wedding W= list.get(i);
@@ -109,6 +84,17 @@ public class WeddingController {
             return 1;
         }
         return 0;
+    }
+
+    public List<Wedding> getWFromRedis(){
+        RedisSerializer redisSerializer=new StringRedisSerializer();
+        redisTemplate.setKeySerializer(redisSerializer);
+        List<Wedding>list= (List<Wedding>) redisTemplate.opsForValue().get("Wedding");
+        if(list==null){
+            list=ws.selectAll();
+            redisTemplate.opsForValue().set("Wedding",list);
+        }
+        return list;
     }
 
 }

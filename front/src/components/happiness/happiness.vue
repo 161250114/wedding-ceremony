@@ -10,8 +10,8 @@
   </div>
   <div  v-for="(h,index) in list" class="hp" :key="index">
     <div>
-      <p @click="myroom" style="margin-left:-700px;margin-top: 50px"><el-avatar :size="30" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" ></el-avatar>
-      卢本伟</p>
+      <p @click="myroom" style="margin-left:-700px;margin-top: 50px"><el-avatar :size="30" src="../../../static/photo1.jpg" ></el-avatar>
+      sjw1</p>
     </div>
     <div class="wa">
       <div style="width: 760px;
@@ -39,7 +39,7 @@
       </span>
     </div>
     <div class="ca">
-      <div  v-for="(comm,j) in commentlist[index]" :key="j"><p style="margin-left:-700px;margin-top: 50px"><el-avatar :size="30" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" ></el-avatar>
+      <div  style="text-align: left" v-for="(comm,j) in commentlist[index]" :key="j"><p><el-avatar :size="30" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" ></el-avatar>
         {{comm.content}}</p></div>
     </div>
     <div class="ia">
@@ -67,6 +67,7 @@
             input:[],
             photolist:[],
             commentlist:[],
+            avaterlist:[],
           }
       },
       computed:{
