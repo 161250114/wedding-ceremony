@@ -24,13 +24,7 @@ public class CommentController {
     @ResponseBody
     @RequestMapping(value="/add",method = RequestMethod.POST)
     public int add(@RequestBody Comment c){
-        RedisSerializer redisSerializer=new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        List<Comment>list= (List<Comment>) redisTemplate.opsForValue().get("Comment");
-        if(list==null){
-            list=cs.selectAll();
-            redisTemplate.opsForValue().set("Comment",list);
-        }
+        List<Comment>list=getCFROMRedis();
         c.setId(list.size());
         if(cs.insert(c)==1){
             list.add(c);
@@ -50,4 +44,14 @@ public class CommentController {
         return cs.selectAll();
     }
 
+    public List<Comment> getCFROMRedis(){
+        RedisSerializer redisSerializer=new StringRedisSerializer();
+        redisTemplate.setKeySerializer(redisSerializer);
+        List<Comment>list= (List<Comment>) redisTemplate.opsForValue().get("Comment");
+        if(list==null){
+            list=cs.selectAll();
+            redisTemplate.opsForValue().set("Comment",list);
+        }
+        return list;
+    }
 }

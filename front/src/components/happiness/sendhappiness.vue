@@ -29,7 +29,6 @@
   </div>
   <div id="buttonpanel" class="bp">
     <el-button type="primary" class="talk_sub" @click="send()">发布动态</el-button>
-    <el-button type="primary" class="talk_sub" @click="save()">存为草稿</el-button>
   </div>
 </div>
 </template>
