@@ -2,20 +2,20 @@ package com.wedding.weddingconsulthappiness.service;
 
 
 import com.wedding.model.po.System_message;
+import com.wedding.weddingconsulthappiness.vo.MessageState;
 
 import java.util.List;
 
 public interface SystemMessageService {
     int addSystemMessage(System_message sm);
 
-    int deleteByPrimaryKey(Integer id);
+     List<System_message> getsm(Integer number);
 
-    System_message selectByPrimaryKey(Integer id);
+    public int read(String str);
 
+    public List<System_message> getAll();
 
-    int updateByPrimaryKey(System_message record);
+    public List<MessageState> getState();
 
-    List<System_message> selectAll();
-
-    int getId();
+    public int getMyState(int id);
 }

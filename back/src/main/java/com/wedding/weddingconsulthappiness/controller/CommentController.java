@@ -19,39 +19,11 @@ import java.util.List;
 public class CommentController {
     @Autowired
     CommentService cs;
-    @Autowired
-    RedisTemplate<Object,Object> redisTemplate;
     @ResponseBody
     @RequestMapping(value="/add",method = RequestMethod.POST)
     public int add(@RequestBody Comment c){
-        List<Comment>list=getCFROMRedis();
-        c.setId(list.size());
-        if(cs.insert(c)==1){
-            list.add(c);
-            redisTemplate.opsForValue().set("Comment",list);
-            return 1;
-        }
-        return 0;
-    }
-    @ResponseBody
-    @RequestMapping(value="/get",method = RequestMethod.GET)
-    public Comment get(){
-        return cs.selectByPrimaryKey(0);
-    }
-    @ResponseBody
-    @RequestMapping(value="/getAll",method = RequestMethod.GET)
-    public List<Comment> getAll(){
-        return cs.selectAll();
+        return cs.add(c);
     }
 
-    public List<Comment> getCFROMRedis(){
-        RedisSerializer redisSerializer=new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        List<Comment>list= (List<Comment>) redisTemplate.opsForValue().get("Comment");
-        if(list==null){
-            list=cs.selectAll();
-            redisTemplate.opsForValue().set("Comment",list);
-        }
-        return list;
-    }
+
 }

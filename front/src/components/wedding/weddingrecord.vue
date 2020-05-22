@@ -140,7 +140,13 @@
         let app=this;
         let newObject=JSON.parse(JSON.stringify(app.storage[row.id]));
         newObject.result=app.resultinput[row.id];
-        app.tableData.splice(app/getIndex(row.id),1,newObject)
+        let index=0;
+        for(let i=0;i<app.tableData.length;i++){
+          if(app.tableData[i].id==row.id){
+            index=i;
+          }
+        }
+        app.tableData.splice(index,1,newObject)
         app.storage.splice(row.id,1,newObject)
         axios.post("/weddingrecord/update",newObject)
           .then(successResponse=>{

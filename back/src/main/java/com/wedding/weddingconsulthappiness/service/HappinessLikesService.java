@@ -5,13 +5,12 @@ import com.wedding.model.po.Happiness_likes;
 import java.util.List;
 
 public interface HappinessLikesService {
-    int deleteByPrimaryKey(Integer id);
 
-    int insert(Happiness_likes record);
+    public int addl(int id,int userId);
+    public List<Happiness_likes> getAlll();
 
-    Happiness_likes selectByPrimaryKey(Integer id);
+    public List<Boolean> getMyLikes(int[] Ids,int userId);
 
-    List<Happiness_likes> selectAll();
+    public List<Integer> getLikes(int[] Ids);
 
-    int updateByPrimaryKey(Happiness_likes record);
 }

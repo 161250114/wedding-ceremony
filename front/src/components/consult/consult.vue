@@ -93,6 +93,7 @@
           axios.post('/systemmessage/get',number)
             .then(function(res){
               app.list=res.data
+              console.log(app.list)
             })
             .catch(function(err){
               console.log(err);

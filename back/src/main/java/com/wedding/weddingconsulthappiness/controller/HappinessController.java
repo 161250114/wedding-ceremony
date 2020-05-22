@@ -39,147 +39,61 @@ public class HappinessController {
     CommentService cs;
     @Autowired
     UserInfoService userInfoService;
-    @Autowired
-    RedisTemplate<Object,Object> redisTemplate;
     @ResponseBody
     @RequestMapping(value="/add",method = RequestMethod.POST)
     public int add(@RequestBody Happiness h, HttpServletRequest request){
-        List<Happiness>list=getHFromRedis();
-        h.setId(list.size());
-        if(hs.insert(h)==1){
-            list.add(h);
-            redisTemplate.opsForValue().set("Happiness",list);
-        }
-        return 0;
+        return hs.add(h);
     }
     @ResponseBody
     @RequestMapping(value="/get",method = RequestMethod.POST)
     public List<Happiness> get(@RequestBody int[] Ids){
-        List<Integer>ids=new ArrayList<>();
-        for(int i:Ids){
-            ids.add(i);
-        }
-        List<Happiness>list=getHFromRedis();
-        List<Happiness>result=new ArrayList<Happiness>();
-        for(Happiness h:list){
-            if(ids.contains(h.getSenderId())&&h.getState()==0){
-                result.add(h);
-            }
-        }
-        return result;
+        return hs.get(Ids);
     }
     @ResponseBody
     @RequestMapping(value="/getLikes",method = RequestMethod.POST)
     public List<Integer> getLikes(@RequestBody int[] Ids){
-        List<Integer>ids=new ArrayList<>();
-        for(int i:Ids){
-            ids.add(i);
-        }
-        List<Happiness_likes>list=getHlFromRedis();
-        List<Integer>result=new ArrayList<>();
-        for(Integer id:ids){
-            Integer num=0;
-            for(Happiness_likes hl:list){
-                if(hl.getHappinessId()-id==0&&hl.getState()==0){
-                    num++;
-                }
-            }
-            result.add(num);
-        }
-        return result;
+        return hls.getLikes(Ids);
     }
 
     @ResponseBody
     @RequestMapping(value="/getMyLikes",method = RequestMethod.POST)
     public List<Boolean> getMyLikes(@RequestBody int[] Ids,HttpServletRequest httpServletRequest){
-        List<Integer>ids=new ArrayList<>();
-        for(int i:Ids){
-            ids.add(i);
-        }
         HttpSession session=httpServletRequest.getSession(false);
         int userId=-1;
         if(session!=null){
             LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
             userId=loginVO.getUserid();
         }
-        List<Happiness_likes>list=getHlFromRedis();
-        List<Boolean>result=new ArrayList<>();
-        for(Integer id:ids){
-            boolean r=false;
-            for(Happiness_likes hl:list){
-                if(hl.getHappinessId()-id==0&&hl.getLikeId()-userId==0&&hl.getState()==0){
-                    r=true;
-                }
-            }
-            result.add(r);
-        }
-        return result;
+        return hls.getMyLikes(Ids,userId);
     }
 
     @ResponseBody
     @RequestMapping(value="/getPhotoList",method = RequestMethod.POST)
     public List<List<String>> getPhotoList(@RequestBody int[] Ids){
-        List<Integer>ids=new ArrayList<>();
-        for(int i:Ids){
-            ids.add(i);
-        }
-        List<Happiness_photo>list=hps.selectAll();
-        List<List<String>>result=new ArrayList<>();
-        for(Integer id:ids){
-            List<String>r=new ArrayList<>();
-            for(Happiness_photo hp:list){
-                if(hp.getHappinessId()-id==0){
-                    r.add(new String(hp.getPhoto()));
-                }
-            }
-            result.add(r);
-        }
-        return result;
+        return hps.getPhotoList(Ids);
     }
 
     @ResponseBody
     @RequestMapping(value="/getCommentList",method = RequestMethod.POST)
     public List<List<Comment>> getCommentList(@RequestBody int[] ids){
-        List<Comment>list=getCFROMRedis();
-        List<List<Comment>>result=new ArrayList<>();
-        for(int id:ids){
-            List<Comment>r=new ArrayList<>();
-            for(Comment c:list){
-                if(c.getHappinessId()==id){
-                    r.add(c);
-                }
-            }
-            result.add(r);
-        }
-        return result;
+        return cs.getCommentList(ids);
 
     }
     @ResponseBody
     @RequestMapping(value="/getAll",method = RequestMethod.GET)
     public List<Happiness> getAll(){
-        List<Happiness>list=getHFromRedis();
-        return list;
+        return hs.getAll();
     }
 
     @ResponseBody
     @RequestMapping(value="/getId",method = RequestMethod.GET)
     public int getId(){
-        List<Happiness>list=getHFromRedis();
-        return list.size();
+        return hs.getId();
     }
     @ResponseBody
     @RequestMapping(value="/del",method = RequestMethod.POST)
     public int del(@RequestBody int id){
-        List<Happiness>list=getHFromRedis();
-        Happiness h=new Happiness();
-        for(Happiness ha:list){
-            if(ha.getId()==id){
-                h=ha;
-            }
-        }
-        h.setState(1);
-        redisTemplate.opsForValue().set("Happiness",null);
-        return hs.updateByPrimaryKey(h);
+        return hs.del(id);
     }
     @ResponseBody
     @RequestMapping(value="/updatel",method = RequestMethod.POST)
@@ -190,64 +104,12 @@ public class HappinessController {
             LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
             userId=loginVO.getUserid();
         }
-        List<Happiness_likes>list=getHlFromRedis();
-        for(Happiness_likes h:list){
-            if(h.getLikeId()==userId&&h.getHappinessId()==id){
-                h.setState(1-h.getState());
-                if(hls.updateByPrimaryKey(h)==1){
-                    redisTemplate.opsForValue().set("Happiness_likes",null);
-                    return 1;
-                }
-                else{
-                    return 0;
-                }
-            }
-        }
-        Happiness_likes h=new Happiness_likes(list.size(),id,userId,0);
-        if(hls.insert(h)==1){
-            list.add(h);
-            redisTemplate.opsForValue().set("Happiness_likes",list);
-            return 1;
-        }
-        return 0;
+        return hls.addl(id,userId);
     }
     @ResponseBody
     @RequestMapping(value="/getAlll",method = RequestMethod.GET)
     public List<Happiness_likes> getAlll(){
-       List<Happiness_likes>list=getHlFromRedis();
-        return list;
+        return hls.getAlll();
     }
 
-    public List<Happiness> getHFromRedis(){
-        RedisSerializer redisSerializer=new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        List<Happiness>list= (List<Happiness>) redisTemplate.opsForValue().get("Happiness");
-        if(list==null){
-            list=hs.selectAll();
-            redisTemplate.opsForValue().set("Happiness",list);
-        }
-        return list;
-    }
-
-    public List<Happiness_likes> getHlFromRedis(){
-        RedisSerializer redisSerializer=new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        List<Happiness_likes>list= (List<Happiness_likes>) redisTemplate.opsForValue().get("Happiness_likes");
-        if(list==null){
-            list=hls.selectAll();
-            redisTemplate.opsForValue().set("Happiness_likes",list);
-        }
-        return list;
-    }
-
-    public List<Comment> getCFROMRedis(){
-        RedisSerializer redisSerializer=new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        List<Comment>list= (List<Comment>) redisTemplate.opsForValue().get("Comment");
-        if(list==null){
-            list=cs.selectAll();
-            redisTemplate.opsForValue().set("Comment",list);
-        }
-        return list;
-    }
 }
