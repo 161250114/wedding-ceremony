@@ -25,117 +25,37 @@ public class SystemMessageController {
     @ResponseBody
     @RequestMapping(value="/add",method = RequestMethod.POST)
     public int addsm(@RequestBody System_message sm, HttpServletRequest resquest){
-        List<System_message>list=getSmFromRedis();
-        sm.setId(list.size());
-        if(ts.addSystemMessage(sm)==1){
-            list.add(sm);
-            redisTemplate.opsForValue().set("System_message",list);
-            return 1;
-        }
-        return 0;
+        return ts.addSystemMessage(sm);
     }
     @ResponseBody
     @RequestMapping(value = "/get",method = RequestMethod.POST)
     public List<System_message> getsm(@RequestBody Integer number){
-        List<System_message>list=getSmFromRedis();
-        ArrayList<System_message>result=new ArrayList<>();
-        for(System_message sm:list){
-            if(sm.getSenderId()+sm.getReceiverId()==number){
-                result.add(sm);
-            }
-        }
-        return result;
+        return ts.getsm(number);
     }
 
     @ResponseBody
     @RequestMapping(value = "/read",method = RequestMethod.POST)
     public int read(@RequestBody String str){
-        int from=Integer.parseInt(str.split("_")[0]);
-        int to=Integer.parseInt(str.split("_")[1]);
-        List<System_message>list=getSmFromRedis();
-        for(System_message s:list){
-            if(s.getSenderId()==from&&s.getReceiverId()==to){
-                s.setState(1);
-                if(ts.updateByPrimaryKey(s)==0){
-                    return 0;
-                }
-                redisTemplate.opsForValue().set("System_message",null);
-            }
-        }
-        return 1;
+        return ts.read(str);
     }
 
     @ResponseBody
     @RequestMapping(value = "/getAll",method = RequestMethod.GET)
     public List<System_message> getAll(){
-        List<System_message>list=getSmFromRedis();
-        return list;
+        return ts.getAll();
     }
     @ResponseBody
     @RequestMapping(value = "/getState",method = RequestMethod.GET)
     public List<MessageState> getState(){
-        List<System_message>list=getSmFromRedis();
-        HashMap<Integer,MessageState>map=new HashMap<>();
-        for(System_message s:list){
-            int id=s.getSenderId();
-            if(id==0){
-                continue;
-            }
-            if(!map.containsKey(id)){
-                MessageState m=new MessageState(id,"","无新消息");
-                map.put(id,m);
-            }
-            if(s.getState()==0){
-                MessageState m=new MessageState(id,"","有新消息");
-                map.put(id,m);
-            }
-        }
-        List<MessageState>result=new ArrayList<MessageState>();
-        for(Integer key:map.keySet()){
-            result.add(map.get(key));
-        }
-        return result;
+        return ts.getState();
     }
-    @ResponseBody
-    @RequestMapping(value = "/update",method = RequestMethod.GET)
-    public int update(){
-        System_message sm=new System_message();
-        sm.setId(0);
-        sm.setSenderId(1);
-        sm.setReceiverId(3);
-        sm.setContent("hhh");
-        sm.setState(1);
-        return ts.updateByPrimaryKey(sm);
-    }
+
 
     @ResponseBody
     @RequestMapping(value = "/getMyState",method = RequestMethod.POST)
     public int getMyState(@RequestBody int id){
-        List<System_message>list=getSmFromRedis();
-        int result=0;
-        for(System_message s:list){
-            if(s.getReceiverId()==id&&s.getState()==0){
-                result++;
-            }
-        }
-        return result;
+        return ts.getMyState(id);
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/delete",method = RequestMethod.GET)
-    public int deletesm(){
-        return ts.deleteByPrimaryKey(0);
-    }
-
-    public List<System_message> getSmFromRedis(){
-        RedisSerializer redisSerializer=new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        List<System_message>list= (List<System_message>) redisTemplate.opsForValue().get("System_message");
-        if(list==null){
-            list=ts.selectAll();
-            redisTemplate.opsForValue().set("System_message",list);
-        }
-        return list;
-    }
 
 }
