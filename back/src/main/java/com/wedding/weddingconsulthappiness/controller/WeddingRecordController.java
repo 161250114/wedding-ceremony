@@ -22,24 +22,22 @@ import java.util.List;
 @RequestMapping("/weddingrecord")
 public class WeddingRecordController {
     @Autowired
-    WeddingRecordService wrs;
-    @Autowired
-    RedisTemplate<Object,Object> redisTemplate;
+    WeddingRecordService weddingRecordService;
     @ResponseBody
     @RequestMapping(value="/add",method= RequestMethod.POST)
     public int add(@RequestBody Wedding_record wr){
-        return wrs.add(wr);
+        return weddingRecordService.add(wr);
     }
     @ResponseBody
     @RequestMapping(value="/getAll",method = RequestMethod.GET)
     public List<WeddingRecordVO> getAll(){
-        return wrs.getAll();
+        return weddingRecordService.getAll();
     }
 
     @ResponseBody
     @RequestMapping(value="/update",method = RequestMethod.POST)
     public int update(@RequestBody WeddingRecordVO vo){
-        return wrs.update(vo);
+        return weddingRecordService.update(vo);
     }
 
 }

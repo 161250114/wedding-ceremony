@@ -21,14 +21,18 @@ import java.util.List;
 @RequestMapping("/happinessphoto")
 public class HappinessPhotoController {
     @Autowired
-    HappinessPhotoService hps;
+    HappinessPhotoService happinessPhotoService;
 
     @ResponseBody
     @RequestMapping(value="/addlist",method = RequestMethod.POST)
     public int add(@RequestBody HappinessPhotoVO[] list, HttpServletRequest request){
-        return hps.add(list);
+        return happinessPhotoService.add(list);
     }
-
+    @ResponseBody
+    @RequestMapping(value="/getPhotoList",method = RequestMethod.POST)
+    public List<List<String>> getPhotoList(@RequestBody int[] Ids){
+        return happinessPhotoService.getPhotoList(Ids);
+    }
 
 
 }

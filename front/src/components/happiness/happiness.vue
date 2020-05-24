@@ -1,7 +1,7 @@
 <template>
 <div class="hsp">
   <div style="height: 100px;width: 800px;background-color: white;margin-left: auto;margin-right: auto;">
-    <div style="float: left" @click="myroom">
+    <div style="float: left;cursor: pointer" @click="myroom()">
       <el-avatar :size="80" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png">
       </el-avatar>
     </div>
@@ -39,8 +39,13 @@
       </span>
     </div>
     <div class="ca">
-      <div  style="text-align: left" v-for="(comm,j) in commentlist[index]" :key="j"><p><el-avatar :size="30" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" ></el-avatar>
-        {{comm.content}}</p></div>
+      <div  style="text-align: left" v-for="(comm,j) in commentlist[index]" :key="j">
+        <div @click="enter()" style="cursor:pointer;">
+          <el-avatar :size="30" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png">
+          </el-avatar>
+          sjw
+        </div>
+        <p>{{comm.content}}</p></div>
     </div>
     <div class="ia">
       <el-input v-model="input[index]" placeholder="评论" class="send_comment"></el-input>
@@ -77,6 +82,9 @@
         this.load();
       },
       methods:{
+        enter(){
+          alert("hhh")
+        },
         load(){
           let app=this
           axios.get("/getCurrentUser")
@@ -87,54 +95,103 @@
                 })
               }
               app.id=res.data.message.userid
-              axios.get("/friend/getFriendList")
-                .then(function (res) {
-                  let message=res.data.message;
-                  console.log(res.data)
-                  for(let i=0;i<message.length;i++){
-                    app.friendlist.push(message[i].userid)
-                  }
-                  let ids=app.friendlist
-                  axios.post('/happiness/get',ids)
-                    .then(function(res){
-                      app.list=res.data;
-                      for(let i=0;i<app.list.length;i++){
-                        app.happinesslist.push(app.list[i].id)
-                      }
-                      axios.post('/happiness/getPhotoList',app.happinesslist)
-                        .then(function(res){
-                          app.photolist=res.data
-                        })
-                        .catch(function(err){
-                          console.log(err);
-                        });
-                      axios.post('/happiness/getCommentList',app.happinesslist)
-                        .then(function(res){
-                          app.commentlist=res.data
-                        })
-                        .catch(function(err){
-                          console.log(err);
-                        });
-                      axios.post('/happiness/getLikes',app.happinesslist)
-                        .then(function(res){
-                          app.likes=res.data
-                        })
-                        .catch(function(err){
-                          console.log(err);
-                        });
-                      axios.post('/happiness/getMyLikes',app.happinesslist)
-                        .then(function(res){
-                          app.islike=res.data
-                        })
-                        .catch(function(err){
-                          console.log(err);
-                        });
-                })
+              if(app.$route.query.whosroom==undefined){
+                axios.get("/friend/getFriendList")
+                  .then(function (res) {
+                    app.friendlist.push(app.id)
+                    let message=res.data.message
+                    console.log(res.data)
+                    for(let i=0;i<message.length;i++){
+                      app.friendlist.push(message[i].userid)
+                    }
+                    let ids=app.friendlist
+                    axios.post('/happiness/get',ids)
+                      .then(function(res){
+                        app.list=res.data;
+                        for(let i=0;i<app.list.length;i++){
+                          app.happinesslist.push(app.list[i].id)
+                        }
+                        axios.post('/happinessphoto/getPhotoList',app.happinesslist)
+                          .then(function(res){
+                            app.photolist=res.data
+                          })
+                          .catch(function(err){
+                            console.log(err);
+                          });
+                        axios.post('/comment/getCommentList',app.happinesslist)
+                          .then(function(res){
+                            app.commentlist=res.data
+                          })
+                          .catch(function(err){
+                            console.log(err);
+                          });
+                        axios.post('/happiness/getLikes',app.happinesslist)
+                          .then(function(res){
+                            app.likes=res.data
+                          })
+                          .catch(function(err){
+                            console.log(err);
+                          });
+                        axios.post('/happiness/getMyLikes',app.happinesslist)
+                          .then(function(res){
+                            app.islike=res.data
+                          })
+                          .catch(function(err){
+                            console.log(err);
+                          });
+                      })
+                      .catch(function (err) {
+                        console.log(err);
+                      })
 
-                })
-                .catch(function (err) {
-                  console.log(err);
-                })
+                  })
+                  .catch(function (err) {
+                    console.log(err);
+                  })
+              }
+              else{
+                app.friendlist.push(app.$route.query.whosroom)
+                let ids=app.friendlist
+                console.log(ids)
+                axios.post('/happiness/get',ids)
+                  .then(function(res){
+                    app.list=res.data;
+                    for(let i=0;i<app.list.length;i++){
+                      app.happinesslist.push(app.list[i].id)
+                    }
+                    axios.post('/happinessphoto/getPhotoList',app.happinesslist)
+                      .then(function(res){
+                        app.photolist=res.data
+                      })
+                      .catch(function(err){
+                        console.log(err);
+                      });
+                    axios.post('/comment/getCommentList',app.happinesslist)
+                      .then(function(res){
+                        app.commentlist=res.data
+                      })
+                      .catch(function(err){
+                        console.log(err);
+                      });
+                    axios.post('/happiness/getLikes',app.happinesslist)
+                      .then(function(res){
+                        app.likes=res.data
+                      })
+                      .catch(function(err){
+                        console.log(err);
+                      });
+                    axios.post('/happiness/getMyLikes',app.happinesslist)
+                      .then(function(res){
+                        app.islike=res.data
+                      })
+                      .catch(function(err){
+                        console.log(err);
+                      });
+                  })
+                  .catch(function (err) {
+                    console.log(err);
+                  })
+              }
                 })
                 .catch(function(err){
                   console.log(err);
@@ -149,8 +206,12 @@
           })
         },
         myroom(){
-          this.$router.push({
-            path: './happiness',
+          let app=this;
+          app.$router.push({
+            path: './personalhappiness',
+            query: {
+              whosroom:app.id
+            }
           })
         },
         send(index){

@@ -23,28 +23,26 @@ import java.util.List;
 @RequestMapping("/wedding")
 public class WeddingController {
     @Autowired
-    WeddingService ws;
-    @Autowired
-    RedisTemplate<Object,Object>redisTemplate;
+    WeddingService weddingService;
     @ResponseBody
     @RequestMapping(value="/add",method = RequestMethod.POST)
     public int addw(@RequestBody Wedding w, HttpServletRequest request){
-        return ws.addw(w);
+        return weddingService.addw(w);
     }
     @ResponseBody
     @RequestMapping(value="/get",method = RequestMethod.POST)
     public List<WeddingVO> getw(@RequestBody Integer id){
-        return ws.getw(id);
+        return weddingService.getw(id);
     }
     @ResponseBody
     @RequestMapping(value="/getAll",method = RequestMethod.GET)
     public List<Wedding> getAll(){
-        return ws.getAll();
+        return weddingService.getAll();
     }
     @ResponseBody
     @RequestMapping(value="/update",method = RequestMethod.POST)
-    public int update(@RequestBody WeddingVO w, HttpServletRequest request){
-        return ws.update(w);
+    public int update(@RequestBody WeddingVO w){
+        return weddingService.update(w);
     }
 
 

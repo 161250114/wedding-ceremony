@@ -3,9 +3,6 @@ package com.wedding.weddingconsulthappiness.controller;
 import com.wedding.model.po.Comment;
 import com.wedding.weddingconsulthappiness.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,12 +15,17 @@ import java.util.List;
 @RequestMapping("/comment")
 public class CommentController {
     @Autowired
-    CommentService cs;
+    CommentService commentService;
     @ResponseBody
     @RequestMapping(value="/add",method = RequestMethod.POST)
     public int add(@RequestBody Comment c){
-        return cs.add(c);
+        return commentService.add(c);
     }
+    @ResponseBody
+    @RequestMapping(value="/getCommentList",method = RequestMethod.POST)
+    public List<List<Comment>> getCommentList(@RequestBody int[] ids){
+        return commentService.getCommentList(ids);
 
+    }
 
 }

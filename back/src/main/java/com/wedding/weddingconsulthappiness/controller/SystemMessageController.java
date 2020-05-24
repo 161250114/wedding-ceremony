@@ -19,42 +19,40 @@ import java.util.List;
 @RequestMapping("/systemmessage")
 public class SystemMessageController {
     @Autowired
-    SystemMessageService ts;
-    @Autowired
-    private RedisTemplate<Object,Object> redisTemplate;
+    SystemMessageService systemMessageService;
     @ResponseBody
     @RequestMapping(value="/add",method = RequestMethod.POST)
-    public int addsm(@RequestBody System_message sm, HttpServletRequest resquest){
-        return ts.addSystemMessage(sm);
+    public int addsm(@RequestBody System_message sm){
+        return systemMessageService.addSystemMessage(sm);
     }
     @ResponseBody
     @RequestMapping(value = "/get",method = RequestMethod.POST)
     public List<System_message> getsm(@RequestBody Integer number){
-        return ts.getsm(number);
+        return systemMessageService.getsm(number);
     }
 
     @ResponseBody
     @RequestMapping(value = "/read",method = RequestMethod.POST)
     public int read(@RequestBody String str){
-        return ts.read(str);
+        return systemMessageService.read(str);
     }
 
     @ResponseBody
     @RequestMapping(value = "/getAll",method = RequestMethod.GET)
     public List<System_message> getAll(){
-        return ts.getAll();
+        return systemMessageService.getAll();
     }
     @ResponseBody
     @RequestMapping(value = "/getState",method = RequestMethod.GET)
     public List<MessageState> getState(){
-        return ts.getState();
+        return systemMessageService.getState();
     }
 
 
     @ResponseBody
     @RequestMapping(value = "/getMyState",method = RequestMethod.POST)
     public int getMyState(@RequestBody int id){
-        return ts.getMyState(id);
+        return systemMessageService.getMyState(id);
     }
 
 

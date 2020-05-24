@@ -30,29 +30,25 @@ import java.util.List;
 @RequestMapping("/happiness")
 public class HappinessController {
     @Autowired
-    HappinessService hs;
+    HappinessService happinessService;
     @Autowired
-    HappinessLikesService hls;
-    @Autowired
-    HappinessPhotoService hps;
-    @Autowired
-    CommentService cs;
+    HappinessLikesService happinessLikesService;
     @Autowired
     UserInfoService userInfoService;
     @ResponseBody
     @RequestMapping(value="/add",method = RequestMethod.POST)
     public int add(@RequestBody Happiness h, HttpServletRequest request){
-        return hs.add(h);
+        return happinessService.add(h);
     }
     @ResponseBody
     @RequestMapping(value="/get",method = RequestMethod.POST)
     public List<Happiness> get(@RequestBody int[] Ids){
-        return hs.get(Ids);
+        return happinessService.get(Ids);
     }
     @ResponseBody
     @RequestMapping(value="/getLikes",method = RequestMethod.POST)
     public List<Integer> getLikes(@RequestBody int[] Ids){
-        return hls.getLikes(Ids);
+        return happinessLikesService.getLikes(Ids);
     }
 
     @ResponseBody
@@ -64,52 +60,41 @@ public class HappinessController {
             LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
             userId=loginVO.getUserid();
         }
-        return hls.getMyLikes(Ids,userId);
+        return happinessLikesService.getMyLikes(Ids,userId);
     }
 
-    @ResponseBody
-    @RequestMapping(value="/getPhotoList",method = RequestMethod.POST)
-    public List<List<String>> getPhotoList(@RequestBody int[] Ids){
-        return hps.getPhotoList(Ids);
-    }
 
-    @ResponseBody
-    @RequestMapping(value="/getCommentList",method = RequestMethod.POST)
-    public List<List<Comment>> getCommentList(@RequestBody int[] ids){
-        return cs.getCommentList(ids);
-
-    }
     @ResponseBody
     @RequestMapping(value="/getAll",method = RequestMethod.GET)
     public List<Happiness> getAll(){
-        return hs.getAll();
+        return happinessService.getAll();
     }
 
     @ResponseBody
     @RequestMapping(value="/getId",method = RequestMethod.GET)
     public int getId(){
-        return hs.getId();
+        return happinessService.getId();
     }
     @ResponseBody
     @RequestMapping(value="/del",method = RequestMethod.POST)
     public int del(@RequestBody int id){
-        return hs.del(id);
+        return happinessService.del(id);
     }
     @ResponseBody
     @RequestMapping(value="/updatel",method = RequestMethod.POST)
-    public int addl(@RequestBody int id,HttpServletRequest httpServletRequest){
+    public int updatel(@RequestBody int id,HttpServletRequest httpServletRequest){
         int userId=-1;
         HttpSession session=httpServletRequest.getSession(false);
         if(session!=null){
             LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
             userId=loginVO.getUserid();
         }
-        return hls.addl(id,userId);
+        return happinessLikesService.addl(id,userId);
     }
     @ResponseBody
     @RequestMapping(value="/getAlll",method = RequestMethod.GET)
     public List<Happiness_likes> getAlll(){
-        return hls.getAlll();
+        return happinessLikesService.getAlll();
     }
 
 }
