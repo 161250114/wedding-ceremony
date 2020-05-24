@@ -14,6 +14,7 @@ import ChatRoom from "../components/chatRoom/ChatRoom"
 import Check from "../components/check/Check"
 import Recommend from "../components/recommend/Recommend"
 import Search from "../components/search/Search"
+import PersonalHappiness from '@/components/happiness/personalhappiness'
 
 Vue.use(Router)
 
@@ -142,6 +143,10 @@ export default new Router({
     {
       path:'/consultlist',
       component:ConsultList
+    },
+    {
+      path:'/personalhappiness',
+      component:PersonalHappiness
     }
   ]
 })

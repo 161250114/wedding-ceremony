@@ -18,7 +18,7 @@ import java.util.List;
 @Service(value="SystemMessageService")
 public class SystemMessageServiceImpl implements SystemMessageService {
     @Autowired
-    private System_messageMapper smm;//这里会报错，但是并不会影响
+    private System_messageMapper smm;
 
     @Autowired
     RedisTemplate<Object,Object> redisTemplate;

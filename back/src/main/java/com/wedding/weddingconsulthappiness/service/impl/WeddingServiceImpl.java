@@ -71,7 +71,6 @@ public class WeddingServiceImpl implements WeddingService {
         else{
             we.setState(1);
         }
-
         if(wm.updateByPrimaryKey(we)==1){
             redisTemplate.opsForValue().set("Wedding",null);
             return 1;
