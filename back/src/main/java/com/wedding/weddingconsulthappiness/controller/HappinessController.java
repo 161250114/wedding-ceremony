@@ -97,4 +97,10 @@ public class HappinessController {
         return happinessLikesService.getAlll();
     }
 
+    @ResponseBody
+    @RequestMapping(value="/getName",method = RequestMethod.POST)
+    public String getName(@RequestBody int id){
+        return happinessService.getFullName(id);
+    }
+
 }

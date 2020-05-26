@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="title" style="text-align: center"><p style="font-size: 20px">{{notice}}</p></div>
+    <div class="title" style="width:800px;margin:0px auto 0;text-align: center"><p style="font-size: 20px">{{notice}}</p></div>
     <div class="talk_con">
       <div class="talk_show" id="words">
         <div  v-for="mess in list"  :class="{'atalk':mess.senderId==id,'btalk':mess.receiverId==id}"><span>{{mess.content}}</span></div>

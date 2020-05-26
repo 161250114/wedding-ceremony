@@ -2,7 +2,9 @@ package com.wedding.weddingconsulthappiness.service.impl;
 
 
 import com.wedding.mapper.System_messageMapper;
+import com.wedding.mapper.UserMapper;
 import com.wedding.model.po.System_message;
+import com.wedding.model.po.User;
 import com.wedding.weddingconsulthappiness.service.SystemMessageService;
 import com.wedding.weddingconsulthappiness.vo.MessageState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +13,16 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service(value="SystemMessageService")
 public class SystemMessageServiceImpl implements SystemMessageService {
     @Autowired
     private System_messageMapper smm;
+
+    @Autowired
+
+    private UserMapper um;
 
     @Autowired
     RedisTemplate<Object,Object> redisTemplate;
@@ -73,26 +77,44 @@ public class SystemMessageServiceImpl implements SystemMessageService {
 
     @Override
     public List<MessageState> getState() {
+        List<User>users=um.selectAll();
         List<System_message>list=getSmFromRedis();
-        HashMap<Integer,MessageState> map=new HashMap<>();
+        HashMap<Integer,Integer> map=new HashMap<>();
+        for(User user:users){
+            if(!map.containsKey(user.getId())){
+                map.put(user.getId(),0);
+            }
+        }
         for(System_message s:list){
             int id=s.getSenderId();
             if(id==0){
                 continue;
             }
-            if(!map.containsKey(id)){
-                MessageState m=new MessageState(id,"","无新消息");
-                map.put(id,m);
-            }
-            if(s.getState()==0){
-                MessageState m=new MessageState(id,"","有新消息");
-                map.put(id,m);
+            else if(s.getState()==0){
+                map.put(id,map.get(id)+1);
             }
         }
+
         List<MessageState>result=new ArrayList<MessageState>();
         for(Integer key:map.keySet()){
-            result.add(map.get(key));
+            int num=map.get(key);
+            for(User user:users){
+                if(user.getId()==key){
+                    MessageState m=new MessageState(key,user.getUsername(),"有"+map.get(key)+"条新消息");
+                    result.add(m);
+                }
+            }
         }
+        Collections.sort(result, new Comparator<MessageState>() {
+            @Override
+            public int compare(MessageState o1, MessageState o2) {
+                String str1=o1.getState();
+                String str2=o2.getState();
+                int num1=Integer.parseInt(str1.substring(1,str1.length()-4));
+                int num2=Integer.parseInt(str2.substring(1,str2.length()-4));
+                return num2-num1;
+            }
+        });
         return result;
     }
 
@@ -118,4 +140,5 @@ public class SystemMessageServiceImpl implements SystemMessageService {
         }
         return list;
     }
+
 }

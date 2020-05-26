@@ -2,7 +2,9 @@ package com.wedding.weddingconsulthappiness.service.impl;
 
 
 import com.wedding.mapper.HappinessMapper;
+import com.wedding.mapper.UserMapper;
 import com.wedding.model.po.Happiness;
+import com.wedding.model.po.User;
 import com.wedding.weddingconsulthappiness.service.HappinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -16,6 +18,8 @@ import java.util.List;
 public class HappinessServiceImpl implements HappinessService {
     @Autowired
     HappinessMapper hm;
+    @Autowired
+    UserMapper um;
     @Autowired
     RedisTemplate<Object,Object> redisTemplate;
 
@@ -73,6 +77,17 @@ public class HappinessServiceImpl implements HappinessService {
             return 1;
         }
         return 0;
+    }
+
+    @Override
+    public String getFullName(int id) {
+        List<User>list=um.selectAll();
+        for(User user:list){
+            if(user.getId()==id){
+                return user.getFullname();
+            }
+        }
+        return "";
     }
 
     public List<Happiness> getHFromRedis(){
