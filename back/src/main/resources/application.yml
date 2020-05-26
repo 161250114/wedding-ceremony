@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/wedding?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://sh-cynosdbmysql-grp-5qjydfg0.sql.tencentcdb.com:29004/wedding?useUnicode=true&characterEncoding=utf8
     username: root
     password: 161250114
     driver-class-name: com.mysql.jdbc.Driver
@@ -20,10 +20,6 @@ spring:
     testOnReturn: false
     poolPreparedStatements: true
     maxOpenPreparedStatements: 20
-#  mvc:
-#    static-path-pattern: /**
-#  resources:
-#    static-locations: file:/Users/da_pi/IdeaProjects/wedding-ceremony/back/photos
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

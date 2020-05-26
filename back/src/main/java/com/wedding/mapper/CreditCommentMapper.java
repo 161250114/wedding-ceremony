@@ -13,4 +13,8 @@ public interface CreditCommentMapper {
     List<CreditComment> selectAll();
 
     int updateByPrimaryKey(CreditComment record);
+
+    CreditComment selectByUser1AndDateRecord(int userid1,int daterecordid);
+
+    List<CreditComment> selectByUser2(int userid2);
 }

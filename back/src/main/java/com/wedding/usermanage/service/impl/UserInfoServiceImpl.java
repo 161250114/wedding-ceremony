@@ -5,6 +5,7 @@ import com.wedding.model.ReturnMessage;
 import com.wedding.model.po.*;
 import com.wedding.usermanage.service.UserInfoService;
 import com.wedding.usermanage.utils.Base64Converter;
+import com.wedding.usermanage.utils.CosClient;
 import com.wedding.usermanage.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         List<Album_photo> photos=album_photoMapper.selectByAlbumId(user.getAlbumid());
         for(int i=0;i<photos.size();i++){
             if(photos.get(i).getOrderNumber()==1){
-                userStatusVO.setHeadPhotoUrl(photos.get(i).getAddress());
+                userStatusVO.setHeadPhotoUrl(CosClient.bucket_url+photos.get(i).getAddress());
                 break;
             }
         }

@@ -15,11 +15,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wedding.model.po.CreditComment" >
-    insert into credit_comment (id, userid1, daterecordid, 
-      basiccomment, extracomment, labelcomment, 
+    insert into credit_comment (id, userid1, daterecordid,
+      basiccomment, extracomment, labelcomment,
       userid2)
-    values (#{id,jdbcType=INTEGER}, #{userid1,jdbcType=INTEGER}, #{daterecordid,jdbcType=INTEGER}, 
-      #{basiccomment,jdbcType=INTEGER}, #{extracomment,jdbcType=INTEGER}, #{labelcomment,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{userid1,jdbcType=INTEGER}, #{daterecordid,jdbcType=INTEGER},
+      #{basiccomment,jdbcType=INTEGER}, #{extracomment,jdbcType=INTEGER}, #{labelcomment,jdbcType=INTEGER},
       #{userid2,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.wedding.model.po.CreditComment" >
@@ -40,5 +40,16 @@
   <select id="selectAll" resultMap="BaseResultMap" >
     select id, userid1, daterecordid, basiccomment, extracomment, labelcomment, userid2
     from credit_comment
+  </select>
+
+  <select id="selectByUser1AndDateRecord" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, userid1, daterecordid, basiccomment, extracomment, labelcomment, userid2
+    from credit_comment
+    where userid1 = #{userid1,jdbcType=INTEGER} and daterecordid = #{daterecordid,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUser2" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, userid1, daterecordid, basiccomment, extracomment, labelcomment, userid2
+    from credit_comment
+    where userid2 = #{userid2,jdbcType=INTEGER}
   </select>
 </mapper>

@@ -5,4 +5,5 @@ import com.wedding.usermanage.vo.CreditCommentVO;
 
 public interface UserCreditService {
     public ReturnMessage addCreditComment(CreditCommentVO creditCommentVO);
+    public int getNewTrueness(int userid);
 }

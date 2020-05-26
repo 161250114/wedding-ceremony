@@ -1,10 +1,12 @@
 package com.wedding.usermanage.service.impl;
 
 import com.wedding.mapper.BillMapper;
+import com.wedding.mapper.CreditCommentMapper;
 import com.wedding.mapper.Date_recordMapper;
 import com.wedding.mapper.UserMapper;
 import com.wedding.model.ReturnMessage;
 import com.wedding.model.po.Bill;
+import com.wedding.model.po.CreditComment;
 import com.wedding.model.po.Date_record;
 import com.wedding.model.po.User;
 import com.wedding.usermanage.service.RecordService;
@@ -69,6 +71,14 @@ public class RecordServiceImpl implements RecordService {
             }
             dateRecordVO.setUserid1(userid);
             dateRecordVO.setId(date_record.getId());
+
+            CreditComment creditComment=creditCommentMapper.selectByUser1AndDateRecord(userid,date_record.getId());
+            if(creditComment==null){
+                dateRecordVO.setIsCommented(0);
+            }else{
+                dateRecordVO.setIsCommented(1);
+            }
+
             dateRecordVOS[i]=dateRecordVO;
         }
         return dateRecordVOS;
