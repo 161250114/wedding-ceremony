@@ -18,4 +18,6 @@ public interface HappinessService {
 
     public int del(int id);
 
+    public String getFullName(int id);
+
 }

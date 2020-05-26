@@ -4,6 +4,7 @@
     <div style="float: left;cursor: pointer" @click="myroom()">
       <el-avatar :size="80" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png">
       </el-avatar>
+      好友动态
     </div>
       <el-button size="200" style="float:right;top:auto" type="primary" icon="el-icon-edit" @click="write">
       </el-button>
@@ -11,7 +12,7 @@
   <div  v-for="(h,index) in list" class="hp" :key="index">
     <div>
       <p @click="myroom" style="margin-left:-700px;margin-top: 50px"><el-avatar :size="30" src="../../../static/photo1.jpg" ></el-avatar>
-      sjw1</p>
+      {{happinessNames[index]}}</p>
     </div>
     <div class="wa">
       <div style="width: 760px;
@@ -43,7 +44,7 @@
         <div @click="enter()" style="cursor:pointer;">
           <el-avatar :size="30" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png">
           </el-avatar>
-          sjw
+          {{commentNames[index][j]}}
         </div>
         <p>{{comm.content}}</p></div>
     </div>
@@ -73,6 +74,8 @@
             photolist:[],
             commentlist:[],
             avaterlist:[],
+            commentNames:[],
+            happinessNames:[],
           }
       },
       computed:{
@@ -110,6 +113,13 @@
                         app.list=res.data;
                         for(let i=0;i<app.list.length;i++){
                           app.happinesslist.push(app.list[i].id)
+                          axios.post('/happiness/getName',app.list[i].senderId)
+                            .then(function(res){
+                              app.happinessNames.push(res.data);
+                            })
+                            .catch(function(err){
+                              console.log(err);
+                            });
                         }
                         axios.post('/happinessphoto/getPhotoList',app.happinesslist)
                           .then(function(res){
@@ -121,6 +131,20 @@
                         axios.post('/comment/getCommentList',app.happinesslist)
                           .then(function(res){
                             app.commentlist=res.data
+                            for(let i=0;i<app.commentlist.length;i++){
+                              let cNames=new Array();
+                              let clist=app.commentlist[i];
+                              for(let j=0;j<clist.length;j++){
+                                axios.post('/happiness/getName',clist[j].senderId)
+                                  .then(function(res){
+                                    cNames.push(res.data)
+                                  })
+                                  .catch(function(err){
+                                    console.log(err);
+                                  });
+                              }
+                              app.commentNames.push(cNames);
+                            }
                           })
                           .catch(function(err){
                             console.log(err);
@@ -156,9 +180,21 @@
                 axios.post('/happiness/get',ids)
                   .then(function(res){
                     app.list=res.data;
+                    console.log(res.data)
                     for(let i=0;i<app.list.length;i++){
                       app.happinesslist.push(app.list[i].id)
+                      axios.post('/happiness/getName',app.list[i].senderId)
+                        .then(function(res){
+                          console.log(res)
+                          app.happinessNames.push(res.data);
+                        })
+                        .catch(function(err){
+                          console.log(err);
+                        });
                     }
+
+
+
                     axios.post('/happinessphoto/getPhotoList',app.happinesslist)
                       .then(function(res){
                         app.photolist=res.data
@@ -196,9 +232,6 @@
                 .catch(function(err){
                   console.log(err);
                 });
-
-
-
         },
         write(){
           this.$router.push({
