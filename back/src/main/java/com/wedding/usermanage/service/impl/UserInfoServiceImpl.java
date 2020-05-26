@@ -39,10 +39,18 @@ public class UserInfoServiceImpl implements UserInfoService {
         User user=userMapper.selectByPrimaryKey(userid);
         UserStatusVO userStatusVO=new UserStatusVO();
         List<Album_photo> photos=album_photoMapper.selectByAlbumId(user.getAlbumid());
-        for(int i=0;i<photos.size();i++){
-            if(photos.get(i).getOrderNumber()==1){
-                userStatusVO.setHeadPhotoUrl(CosClient.bucket_url+photos.get(i).getAddress());
-                break;
+        if(photos.size()==0){
+            if(user.getSex()==1){
+                userStatusVO.setHeadPhotoUrl(CosClient.bucket_url +"/male.jpeg");
+            }else{
+                userStatusVO.setHeadPhotoUrl(CosClient.bucket_url +"/female.jpg");
+            }
+        }else {
+            for (int i = 0; i < photos.size(); i++) {
+                if (photos.get(i).getOrderNumber() == 1) {
+                    userStatusVO.setHeadPhotoUrl(CosClient.bucket_url + photos.get(i).getAddress());
+                    break;
+                }
             }
         }
         List<Date_record> date_records=date_recordMapper.selectByUserId1AndUserId2(userid);

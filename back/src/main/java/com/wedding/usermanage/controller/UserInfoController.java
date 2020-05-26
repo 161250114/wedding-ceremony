@@ -5,10 +5,7 @@ import com.wedding.usermanage.service.UserInfoService;
 import com.wedding.usermanage.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,12 +18,12 @@ public class UserInfoController {
     private UserInfoService userInfoService;
 
     @ResponseBody
-    @RequestMapping(value = "/getStatusInfo",method = RequestMethod.GET)
-    public ReturnMessage getStatusInfo(HttpServletRequest httpServletRequest){
+    @RequestMapping(value = "/getStatusInfo",method = RequestMethod.POST)
+    public ReturnMessage getStatusInfo(@RequestBody int userid, HttpServletRequest httpServletRequest){
         HttpSession session=httpServletRequest.getSession(false);
         if(session!=null){
             LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
-            return userInfoService.getUserStatus(loginVO.getUserid());
+            return userInfoService.getUserStatus(userid);
         }
         return new ReturnMessage(false,"尚未登录");
     }

@@ -195,15 +195,17 @@ export default {
     },
     updateInfo() {
       let app = this;
-      Axios.get("/userInfo/getStatusInfo")
-        .then(function (res) {
-          console.log(res);
-          if (res.data.result) {
-            app.userinfo = JSON.parse(JSON.stringify(res.data.message));
-            app.userinfo.headPhotoUrl = app.userinfo.headPhotoUrl;
-          }
-        })
-        .catch(function (error) {});
+      Axios.get("/getCurrentUser").then(function (res) {
+        console.log(res.data.message)
+        Axios.post("/userInfo/getStatusInfo",res.data.message.userid)
+          .then(function (res) {
+            if (res.data.result) {
+              app.userinfo = JSON.parse(JSON.stringify(res.data.message));
+              app.userinfo.headPhotoUrl = app.userinfo.headPhotoUrl;
+            }
+          })
+          .catch(function (error) {});
+      });
     },
   },
   created() {
