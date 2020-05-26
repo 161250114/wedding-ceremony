@@ -161,8 +161,6 @@ public class PhotoServiceImpl implements PhotoService {
         }
         Album album=albumMapper.selectByPrimaryKey(album_photo.getAlbumid());
         album.setCurrentNumber(album.getCurrentNumber()-1);
-        File file=new File("./photos"+album_photo.getAddress());
-        file.delete();
         albumMapper.updateByPrimaryKey(album);
         album_photoMapper.deleteByPrimaryKey(album_photo.getId());
         return new ReturnMessage(true,"删除成功！");

@@ -173,7 +173,7 @@ export default {
       if (res.data.result) {
         app.album = JSON.parse(JSON.stringify(res.data.message));
         for (let i = 0; i < app.album.currentNumber; i++) {
-          app.album.photos[i].url = "/api" + app.album.photos[i].url;
+          app.album.photos[i].url = app.album.photos[i].url;
         }
       }
     });

@@ -200,7 +200,7 @@ export default {
           console.log(res);
           if (res.data.result) {
             app.userinfo = JSON.parse(JSON.stringify(res.data.message));
-            app.userinfo.headPhotoUrl = "/api" + app.userinfo.headPhotoUrl;
+            app.userinfo.headPhotoUrl = app.userinfo.headPhotoUrl;
           }
         })
         .catch(function (error) {});
