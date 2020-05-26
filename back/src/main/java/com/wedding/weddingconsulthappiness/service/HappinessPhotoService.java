@@ -1,19 +1,14 @@
 package com.wedding.weddingconsulthappiness.service;
 
 
-import com.wedding.model.po.Happiness_photo;
+import com.wedding.weddingconsulthappiness.vo.HappinessPhotoVO;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
 public interface HappinessPhotoService {
-    int deleteByPrimaryKey(Integer id);
 
-    int insert(Happiness_photo record);
+    public int add(HappinessPhotoVO[] list);
 
-    Happiness_photo selectByPrimaryKey(Integer id);
-
-
-    int updateByPrimaryKey(Happiness_photo record);
-
-    List<Happiness_photo> selectAll();
+    public List<List<String>> getPhotoList(@RequestBody int[] Ids);
 }

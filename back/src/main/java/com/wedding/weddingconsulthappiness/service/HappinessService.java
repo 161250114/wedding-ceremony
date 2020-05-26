@@ -7,16 +7,17 @@ import com.wedding.model.po.User;
 import java.util.List;
 
 public interface HappinessService {
-    int deleteByPrimaryKey(Integer id);
 
-    int insert(Happiness record);
+    public int add(Happiness h);
 
-    Happiness selectByPrimaryKey(Integer id);
+    public List<Happiness> get(int[] Ids);
 
+    public List<Happiness> getAll();
 
-    int updateByPrimaryKey(Happiness record);
+    public int getId();
 
-    List<Happiness> selectAll();
+    public int del(int id);
 
-    List<Happiness>selectByUserId(List<Integer>list);
+    public String getFullName(int id);
+
 }

@@ -22,58 +22,22 @@ import java.util.List;
 @RequestMapping("/weddingrecord")
 public class WeddingRecordController {
     @Autowired
-    WeddingRecordService wrs;
-    @Autowired
-    RedisTemplate<Object,Object> redisTemplate;
+    WeddingRecordService weddingRecordService;
     @ResponseBody
     @RequestMapping(value="/add",method= RequestMethod.POST)
     public int add(@RequestBody Wedding_record wr){
-        RedisSerializer redisSerializer=new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        List<Wedding_record>list= (List<Wedding_record>) redisTemplate.opsForValue().get("Wedding_record");
-        if(list==null){
-            list=wrs.selectAll();
-            redisTemplate.opsForValue().set("Wedding_record",list);
-        }
-        wr.setId(list.size());
-        if(wrs.insert(wr)==1){
-            list.add(wr);
-            redisTemplate.opsForValue().set("Wedding_record",list);
-            return 1;
-        }
-        return 0;
-    }
-    @ResponseBody
-    @RequestMapping(value="/get",method = RequestMethod.POST)
-    public Wedding_record get(@RequestBody Integer id) {
-        return wrs.selectByPrimaryKey(0);
+        return weddingRecordService.add(wr);
     }
     @ResponseBody
     @RequestMapping(value="/getAll",method = RequestMethod.GET)
     public List<WeddingRecordVO> getAll(){
-        RedisSerializer redisSerializer=new StringRedisSerializer();
-        redisTemplate.setKeySerializer(redisSerializer);
-        List<Wedding_record>list= (List<Wedding_record>) redisTemplate.opsForValue().get("Wedding_record");
-        if(list==null){
-            list=wrs.selectAll();
-            redisTemplate.opsForValue().set("Wedding_record",list);
-        }
-        List<WeddingRecordVO>result=new ArrayList<>();
-        for(Wedding_record w:list){
-            result.add(new WeddingRecordVO(w));
-        }
-        return result;
+        return weddingRecordService.getAll();
     }
 
     @ResponseBody
     @RequestMapping(value="/update",method = RequestMethod.POST)
     public int update(@RequestBody WeddingRecordVO vo){
-        Wedding_record w=wrs.selectByPrimaryKey(vo.getId());
-        w.setResult(vo.getResult());
-        if(wrs.updateByPrimaryKey(w)==1){
-            redisTemplate.opsForValue().set("Wedding_record",null);
-            return 1;
-        }
-        return 0;
+        return weddingRecordService.update(vo);
     }
+
 }

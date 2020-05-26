@@ -2,18 +2,14 @@ package com.wedding.weddingconsulthappiness.service;
 
 
 import com.wedding.model.po.Wedding_record;
+import com.wedding.weddingconsulthappiness.vo.WeddingRecordVO;
 
 import java.util.List;
 
 public interface WeddingRecordService {
-    int deleteByPrimaryKey(Integer id);
 
-    int insert(Wedding_record record);
+    public int add( Wedding_record wr);
+    public List<WeddingRecordVO> getAll();
+    public int update(WeddingRecordVO vo);
 
-    Wedding_record selectByPrimaryKey(Integer id);
-
-
-    int updateByPrimaryKey(Wedding_record record);
-
-    List<Wedding_record> selectAll();
 }

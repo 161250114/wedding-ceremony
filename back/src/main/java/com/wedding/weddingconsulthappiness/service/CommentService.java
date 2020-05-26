@@ -7,14 +7,8 @@ import com.wedding.model.po.Comment;
 import java.util.List;
 
 public interface CommentService {
-    int deleteByPrimaryKey(Integer id);
 
-    int insert(Comment record);
+    public int add(Comment c);
 
-    Comment selectByPrimaryKey(Integer id);
-
-
-    int updateByPrimaryKey(Comment record);
-
-    List<Comment> selectAll();
+    public List<List<Comment>> getCommentList( int[] ids);
 }

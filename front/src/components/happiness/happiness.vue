@@ -1,17 +1,18 @@
 <template>
 <div class="hsp">
   <div style="height: 100px;width: 800px;background-color: white;margin-left: auto;margin-right: auto;">
-    <div style="float: left" @click="myroom">
+    <div style="float: left;cursor: pointer" @click="myroom()">
       <el-avatar :size="80" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png">
       </el-avatar>
+      好友动态
     </div>
       <el-button size="200" style="float:right;top:auto" type="primary" icon="el-icon-edit" @click="write">
       </el-button>
   </div>
   <div  v-for="(h,index) in list" class="hp" :key="index">
     <div>
-      <p @click="myroom" style="margin-left:-700px;margin-top: 50px"><el-avatar :size="30" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" ></el-avatar>
-      卢本伟</p>
+      <p @click="myroom" style="margin-left:-700px;margin-top: 50px"><el-avatar :size="30" src="../../../static/photo1.jpg" ></el-avatar>
+      {{happinessNames[index]}}</p>
     </div>
     <div class="wa">
       <div style="width: 760px;
@@ -39,8 +40,13 @@
       </span>
     </div>
     <div class="ca">
-      <div  v-for="(comm,j) in commentlist[index]" :key="j"><p style="margin-left:-700px;margin-top: 50px"><el-avatar :size="30" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" ></el-avatar>
-        {{comm.content}}</p></div>
+      <div  style="text-align: left" v-for="(comm,j) in commentlist[index]" :key="j">
+        <div @click="enter()" style="cursor:pointer;">
+          <el-avatar :size="30" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png">
+          </el-avatar>
+          {{commentNames[index][j]}}
+        </div>
+        <p>{{comm.content}}</p></div>
     </div>
     <div class="ia">
       <el-input v-model="input[index]" placeholder="评论" class="send_comment"></el-input>
@@ -67,6 +73,9 @@
             input:[],
             photolist:[],
             commentlist:[],
+            avaterlist:[],
+            commentNames:[],
+            happinessNames:[],
           }
       },
       computed:{
@@ -76,6 +85,9 @@
         this.load();
       },
       methods:{
+        enter(){
+          alert("hhh")
+        },
         load(){
           let app=this
           axios.get("/getCurrentUser")
@@ -86,61 +98,140 @@
                 })
               }
               app.id=res.data.message.userid
-              axios.get("/friend/getFriendList")
-                .then(function (res) {
-                  let message=res.data.message;
-                  console.log(res.data)
-                  for(let i=0;i<message.length;i++){
-                    app.friendlist.push(message[i].userid)
-                  }
-                  let ids=app.friendlist
-                  axios.post('/happiness/get',ids)
-                    .then(function(res){
-                      app.list=res.data;
-                      for(let i=0;i<app.list.length;i++){
-                        app.happinesslist.push(app.list[i].id)
-                      }
-                      axios.post('/happiness/getPhotoList',app.happinesslist)
-                        .then(function(res){
-                          app.photolist=res.data
-                        })
-                        .catch(function(err){
-                          console.log(err);
-                        });
-                      axios.post('/happiness/getCommentList',app.happinesslist)
-                        .then(function(res){
-                          app.commentlist=res.data
-                        })
-                        .catch(function(err){
-                          console.log(err);
-                        });
-                      axios.post('/happiness/getLikes',app.happinesslist)
-                        .then(function(res){
-                          app.likes=res.data
-                        })
-                        .catch(function(err){
-                          console.log(err);
-                        });
-                      axios.post('/happiness/getMyLikes',app.happinesslist)
-                        .then(function(res){
-                          app.islike=res.data
-                        })
-                        .catch(function(err){
-                          console.log(err);
-                        });
-                })
+              if(app.$route.query.whosroom==undefined){
+                axios.get("/friend/getFriendList")
+                  .then(function (res) {
+                    app.friendlist.push(app.id)
+                    let message=res.data.message
+                    console.log(res.data)
+                    for(let i=0;i<message.length;i++){
+                      app.friendlist.push(message[i].userid)
+                    }
+                    let ids=app.friendlist
+                    axios.post('/happiness/get',ids)
+                      .then(function(res){
+                        app.list=res.data;
+                        for(let i=0;i<app.list.length;i++){
+                          app.happinesslist.push(app.list[i].id)
+                          axios.post('/happiness/getName',app.list[i].senderId)
+                            .then(function(res){
+                              app.happinessNames.push(res.data);
+                            })
+                            .catch(function(err){
+                              console.log(err);
+                            });
+                        }
+                        axios.post('/happinessphoto/getPhotoList',app.happinesslist)
+                          .then(function(res){
+                            app.photolist=res.data
+                          })
+                          .catch(function(err){
+                            console.log(err);
+                          });
+                        axios.post('/comment/getCommentList',app.happinesslist)
+                          .then(function(res){
+                            app.commentlist=res.data
+                            for(let i=0;i<app.commentlist.length;i++){
+                              let cNames=new Array();
+                              let clist=app.commentlist[i];
+                              for(let j=0;j<clist.length;j++){
+                                axios.post('/happiness/getName',clist[j].senderId)
+                                  .then(function(res){
+                                    cNames.push(res.data)
+                                  })
+                                  .catch(function(err){
+                                    console.log(err);
+                                  });
+                              }
+                              app.commentNames.push(cNames);
+                            }
+                          })
+                          .catch(function(err){
+                            console.log(err);
+                          });
+                        axios.post('/happiness/getLikes',app.happinesslist)
+                          .then(function(res){
+                            app.likes=res.data
+                          })
+                          .catch(function(err){
+                            console.log(err);
+                          });
+                        axios.post('/happiness/getMyLikes',app.happinesslist)
+                          .then(function(res){
+                            app.islike=res.data
+                          })
+                          .catch(function(err){
+                            console.log(err);
+                          });
+                      })
+                      .catch(function (err) {
+                        console.log(err);
+                      })
 
-                })
-                .catch(function (err) {
-                  console.log(err);
-                })
+                  })
+                  .catch(function (err) {
+                    console.log(err);
+                  })
+              }
+              else{
+                app.friendlist.push(app.$route.query.whosroom)
+                let ids=app.friendlist
+                console.log(ids)
+                axios.post('/happiness/get',ids)
+                  .then(function(res){
+                    app.list=res.data;
+                    console.log(res.data)
+                    for(let i=0;i<app.list.length;i++){
+                      app.happinesslist.push(app.list[i].id)
+                      axios.post('/happiness/getName',app.list[i].senderId)
+                        .then(function(res){
+                          console.log(res)
+                          app.happinessNames.push(res.data);
+                        })
+                        .catch(function(err){
+                          console.log(err);
+                        });
+                    }
+
+
+
+                    axios.post('/happinessphoto/getPhotoList',app.happinesslist)
+                      .then(function(res){
+                        app.photolist=res.data
+                      })
+                      .catch(function(err){
+                        console.log(err);
+                      });
+                    axios.post('/comment/getCommentList',app.happinesslist)
+                      .then(function(res){
+                        app.commentlist=res.data
+                      })
+                      .catch(function(err){
+                        console.log(err);
+                      });
+                    axios.post('/happiness/getLikes',app.happinesslist)
+                      .then(function(res){
+                        app.likes=res.data
+                      })
+                      .catch(function(err){
+                        console.log(err);
+                      });
+                    axios.post('/happiness/getMyLikes',app.happinesslist)
+                      .then(function(res){
+                        app.islike=res.data
+                      })
+                      .catch(function(err){
+                        console.log(err);
+                      });
+                  })
+                  .catch(function (err) {
+                    console.log(err);
+                  })
+              }
                 })
                 .catch(function(err){
                   console.log(err);
                 });
-
-
-
         },
         write(){
           this.$router.push({
@@ -148,8 +239,12 @@
           })
         },
         myroom(){
-          this.$router.push({
-            path: './happiness',
+          let app=this;
+          app.$router.push({
+            path: './personalhappiness',
+            query: {
+              whosroom:app.id
+            }
           })
         },
         send(index){
