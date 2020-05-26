@@ -2,7 +2,7 @@
 <div class="hsp">
   <div style="height: 100px;width: 800px;background-color: white;margin-left: auto;margin-right: auto;">
     <div style="float: left;cursor: pointer" @click="myroom()">
-      <el-avatar :size="80" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png">
+      <el-avatar :size="80" :src="MyAvatar">
       </el-avatar>
       好友动态
     </div>
@@ -11,7 +11,7 @@
   </div>
   <div  v-for="(h,index) in list" class="hp" :key="index">
     <div>
-      <p @click="myroom" style="margin-left:-700px;margin-top: 50px"><el-avatar :size="30" src="../../../static/photo1.jpg" ></el-avatar>
+      <p @click="myroom" style="margin-left:-700px;margin-top: 50px"><el-avatar :size="30" :src="happinessAvatar[index]" ></el-avatar>
       {{happinessNames[index]}}</p>
     </div>
     <div class="wa">
@@ -42,7 +42,7 @@
     <div class="ca">
       <div  style="text-align: left" v-for="(comm,j) in commentlist[index]" :key="j">
         <div @click="enter()" style="cursor:pointer;">
-          <el-avatar :size="30" src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png">
+          <el-avatar :size="30" :src="commentAvatar[index][j]">
           </el-avatar>
           {{commentNames[index][j]}}
         </div>
@@ -66,7 +66,6 @@
             id:-1,
             list:[],
             friendlist:[],
-            usernamelist:[],
             happinesslist:[],
             islike:[],
             likes:[],
@@ -76,6 +75,10 @@
             avaterlist:[],
             commentNames:[],
             happinessNames:[],
+            commentAvatar:[],
+            happinessAvatar:[],
+            MyAvatar:"",
+            MyName:"",
           }
       },
       computed:{
@@ -98,136 +101,110 @@
                 })
               }
               app.id=res.data.message.userid
-              if(app.$route.query.whosroom==undefined){
-                axios.get("/friend/getFriendList")
-                  .then(function (res) {
-                    app.friendlist.push(app.id)
-                    let message=res.data.message
-                    console.log(res.data)
-                    for(let i=0;i<message.length;i++){
-                      app.friendlist.push(message[i].userid)
-                    }
-                    let ids=app.friendlist
-                    axios.post('/happiness/get',ids)
-                      .then(function(res){
-                        app.list=res.data;
-                        for(let i=0;i<app.list.length;i++){
-                          app.happinesslist.push(app.list[i].id)
-                          axios.post('/happiness/getName',app.list[i].senderId)
-                            .then(function(res){
-                              app.happinessNames.push(res.data);
-                            })
-                            .catch(function(err){
-                              console.log(err);
-                            });
-                        }
-                        axios.post('/happinessphoto/getPhotoList',app.happinesslist)
+              axios.post("/userInfo/getStatusInfo",app.id)
+                .then(function (res) {
+                  let avatar=app.getAvatar(res.data.message)
+                  app.MyAvatar=avatar
+                })
+                .catch(function(err){
+                  console.log(err);
+                });
+              axios.get("/friend/getFriendList")
+                .then(function (res) {
+                  app.friendlist.push(app.id)
+                  let message=res.data.message
+                  console.log(res.data)
+                  for(let i=0;i<message.length;i++){
+                    app.friendlist.push(message[i].userid)
+                  }
+                  let ids=app.friendlist
+                  axios.post('/happiness/get',ids)
+                    .then(function(res){
+                      app.list=res.data;
+                      for(let i=0;i<app.list.length;i++){
+                        app.happinesslist.push(app.list[i].id)
+                        axios.post('/happiness/getName',app.id)
                           .then(function(res){
-                            app.photolist=res.data
+                            app.MyName=res.data;
                           })
                           .catch(function(err){
                             console.log(err);
                           });
-                        axios.post('/comment/getCommentList',app.happinesslist)
+                        axios.post('/happiness/getName',app.list[i].senderId)
                           .then(function(res){
-                            app.commentlist=res.data
-                            for(let i=0;i<app.commentlist.length;i++){
-                              let cNames=new Array();
-                              let clist=app.commentlist[i];
-                              for(let j=0;j<clist.length;j++){
-                                axios.post('/happiness/getName',clist[j].senderId)
-                                  .then(function(res){
-                                    cNames.push(res.data)
-                                  })
-                                  .catch(function(err){
-                                    console.log(err);
-                                  });
-                              }
-                              app.commentNames.push(cNames);
-                            }
+                            app.happinessNames.push(res.data);
                           })
                           .catch(function(err){
                             console.log(err);
                           });
-                        axios.post('/happiness/getLikes',app.happinesslist)
+                        axios.post('/userInfo/getStatusInfo',app.list[i].senderId)
                           .then(function(res){
-                            app.likes=res.data
+                            app.happinessAvatar.push(app.getAvatar(res.data.message))
                           })
                           .catch(function(err){
                             console.log(err);
                           });
-                        axios.post('/happiness/getMyLikes',app.happinesslist)
-                          .then(function(res){
-                            app.islike=res.data
-                          })
-                          .catch(function(err){
-                            console.log(err);
-                          });
-                      })
-                      .catch(function (err) {
-                        console.log(err);
-                      })
-
-                  })
-                  .catch(function (err) {
-                    console.log(err);
-                  })
-              }
-              else{
-                app.friendlist.push(app.$route.query.whosroom)
-                let ids=app.friendlist
-                console.log(ids)
-                axios.post('/happiness/get',ids)
-                  .then(function(res){
-                    app.list=res.data;
-                    console.log(res.data)
-                    for(let i=0;i<app.list.length;i++){
-                      app.happinesslist.push(app.list[i].id)
-                      axios.post('/happiness/getName',app.list[i].senderId)
+                      }
+                      axios.post('/happinessphoto/getPhotoList',app.happinesslist)
                         .then(function(res){
-                          console.log(res)
-                          app.happinessNames.push(res.data);
+                          app.photolist=res.data
                         })
                         .catch(function(err){
                           console.log(err);
                         });
-                    }
+                      axios.post('/comment/getCommentList',app.happinesslist)
+                        .then(function(res){
+                          app.commentlist=res.data
+                          for(let i=0;i<app.commentlist.length;i++){
+                            let cNames=new Array();
+                            let clist=app.commentlist[i];
+                            let cAvatars=new Array();
+                            for(let j=0;j<clist.length;j++){
+                              axios.post('/happiness/getName',clist[j].senderId)
+                                .then(function(res){
+                                  cNames.push(res.data)
+                                })
+                                .catch(function(err){
+                                  console.log(err);
+                                });
+                              axios.post('/userInfo/getStatusInfo',clist[j].senderId)
+                                .then(function(res){
+                                  cAvatars.push(app.getAvatar(res.data.message))
+                                })
+                                .catch(function(err){
+                                  console.log(err);
+                                });
+                            }
+                            app.commentAvatar.push(cAvatars)
+                            app.commentNames.push(cNames);
+                          }
+                        })
+                        .catch(function(err){
+                          console.log(err);
+                        });
+                      axios.post('/happiness/getLikes',app.happinesslist)
+                        .then(function(res){
+                          app.likes=res.data
+                        })
+                        .catch(function(err){
+                          console.log(err);
+                        });
+                      axios.post('/happiness/getMyLikes',app.happinesslist)
+                        .then(function(res){
+                          app.islike=res.data
+                        })
+                        .catch(function(err){
+                          console.log(err);
+                        });
+                    })
+                    .catch(function (err) {
+                      console.log(err);
+                    })
 
-
-
-                    axios.post('/happinessphoto/getPhotoList',app.happinesslist)
-                      .then(function(res){
-                        app.photolist=res.data
-                      })
-                      .catch(function(err){
-                        console.log(err);
-                      });
-                    axios.post('/comment/getCommentList',app.happinesslist)
-                      .then(function(res){
-                        app.commentlist=res.data
-                      })
-                      .catch(function(err){
-                        console.log(err);
-                      });
-                    axios.post('/happiness/getLikes',app.happinesslist)
-                      .then(function(res){
-                        app.likes=res.data
-                      })
-                      .catch(function(err){
-                        console.log(err);
-                      });
-                    axios.post('/happiness/getMyLikes',app.happinesslist)
-                      .then(function(res){
-                        app.islike=res.data
-                      })
-                      .catch(function(err){
-                        console.log(err);
-                      });
-                  })
-                  .catch(function (err) {
-                    console.log(err);
-                  })
-              }
+                })
+                .catch(function (err) {
+                  console.log(err);
+                })
                 })
                 .catch(function(err){
                   console.log(err);
@@ -258,9 +235,14 @@
           comment.state=0;
           raw_commentlist.push(comment)
           this.commentlist.splice(index,1,raw_commentlist)
+          let cNames=JSON.parse(JSON.stringify(this.commentNames[index]))
+          cNames.push(this.MyName)
+          this.commentNames.splice(index,1,cNames)
+          let cAvatars=JSON.parse(JSON.stringify(this.commentAvatar[index]))
+          cAvatars.push(this.MyAvatar)
+          this.commentAvatar.splice(index,1,cAvatars);
           axios.post('/comment/add',comment)
             .then(function(res) {
-
             })
             .catch(function (err) {
               console.log(err);
@@ -293,12 +275,20 @@
           this.likes.splice(index,1)
           this.happinesslist.splice(index,1)
           this.commentlist.splice(index,1)
+          this.commentNames.splice(index,1)
+          this.commentAvatar.splice(index,1)
+          this.happinessNames.splice(index,1)
+          this.happinessAvatar.splice(index,1)
+          this.input.splice(index,1)
           axios.post('/happiness/del',happinessId)
             .then(function(res) {
             })
             .catch(function (err) {
               console.log(err);
             })
+        },
+        getAvatar(obj){
+          return obj.headPhotoUrl;
         }
       }
     }
