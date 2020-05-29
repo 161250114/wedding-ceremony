@@ -63,7 +63,6 @@
           axios.get("/systemmessage/getState")
             .then(function(res) {
               let temp=JSON.parse(JSON.stringify(res.data))
-              temp[0].username="sjw"
               app.tableData=temp
             })
             .catch(function (err) {
@@ -91,6 +90,9 @@
               username:row.username
             }
           })
+        },
+        getName(id){
+
         }
       }
     }
