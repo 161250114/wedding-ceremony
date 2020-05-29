@@ -20,12 +20,7 @@ public class UserInfoController {
     @ResponseBody
     @RequestMapping(value = "/getStatusInfo",method = RequestMethod.POST)
     public ReturnMessage getStatusInfo(@RequestBody int userid, HttpServletRequest httpServletRequest){
-        HttpSession session=httpServletRequest.getSession(false);
-        if(session!=null){
-            LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
-            return userInfoService.getUserStatus(userid);
-        }
-        return new ReturnMessage(false,"尚未登录");
+        return userInfoService.getUserStatus(userid);
     }
 
     @ResponseBody

@@ -13,6 +13,8 @@ import com.wedding.usermanage.vo.AlbumVO;
 import com.wedding.usermanage.vo.PhotoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -30,7 +32,8 @@ public class PhotoServiceImpl implements PhotoService {
     private AlbumMapper albumMapper;
 
     @Override
-    public synchronized ReturnMessage uploadPhotos(int userid,MultipartFile[] files) {
+    @Transactional
+    public ReturnMessage uploadPhotos(int userid,MultipartFile[] files) {
         OutputStream os = null;
         InputStream inputStream = null;
         String fileName = null;
@@ -41,12 +44,16 @@ public class PhotoServiceImpl implements PhotoService {
         }
         for(int i=0;i<files.length;i++) {
             MultipartFile filecontent=files[i];
+
+            album.setCurrentNumber(album.getCurrentNumber()+1);
+            albumMapper.updateByPrimaryKey(album);
+
             //向数据库存入路径
             Album_photo album_photo=new Album_photo();
             album_photo.setAddress("/album/"+userid);
             album_photo.setUploadTime(new Date());
             album_photo.setAlbumid(album.getId());
-            album_photo.setOrderNumber(album.getCurrentNumber()+1);
+            album_photo.setOrderNumber(album.getCurrentNumber());
             album_photoMapper.insert(album_photo);
             fileName = filecontent.getOriginalFilename();
             String suffix=fileName.substring(fileName.lastIndexOf(".")+1);
@@ -61,8 +68,6 @@ public class PhotoServiceImpl implements PhotoService {
 
                 album_photo.setAddress(album_photo.getAddress()+"/"+fileName);
                 album_photoMapper.updateByPrimaryKey(album_photo);
-                album.setCurrentNumber(album.getCurrentNumber()+1);
-                albumMapper.updateByPrimaryKey(album);
         }
         return new ReturnMessage(true,"上传成功");
     }
