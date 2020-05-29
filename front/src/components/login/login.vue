@@ -25,6 +25,10 @@
               >
             </el-form-item>
             <el-form-item>
+              <el-radio v-model="userinfo.usertype" :label="1">用户</el-radio>
+              <el-radio v-model="userinfo.usertype" :label="2">管理员</el-radio>
+            </el-form-item>
+            <el-form-item>
               <el-button type="primary" @click="login">登录</el-button>
               <a href="/register"><el-button type="primary">注册</el-button></a>
             </el-form-item>
@@ -44,6 +48,7 @@ export default {
       userinfo: {
         uname_phone: "",
         password: "",
+        usertype: 1,
       },
     };
   },
@@ -52,9 +57,13 @@ export default {
       let app = this;
       Axios.post("/login", app.userinfo)
         .then(function (res) {
-          console.log(res.data.result)
-          if(res.data.result){
-            window.location.href='/home'
+          console.log(res.data.result);
+          if (res.data.result) {
+            if (app.userinfo.usertype != 2) {
+              window.location.href = "/";
+            } else {
+              window.location.href = "/Wedding";
+            }
           }
         })
         .catch(function (error) {});

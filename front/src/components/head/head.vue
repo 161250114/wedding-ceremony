@@ -33,7 +33,7 @@
         </el-col>
         <el-col :span="5" v-show="isLogin">
           <p style="margin-top: 15px;">
-            欢迎您，{{ username }}&nbsp;
+            欢迎您，{{ userinfo.uname_phone }}&nbsp;
             <el-dropdown>
               <el-button
                 type="info"
@@ -42,19 +42,25 @@
                 size="medium"
               ></el-button>
               <el-dropdown-menu slot="dropdown">
-                <router-link to="/personalInfo">
+                <router-link to="/personalInfo" v-if="userinfo.usertype != 2">
                   <el-dropdown-item>个人中心</el-dropdown-item>
                 </router-link>
-                <router-link to="/ApplyWedding">
+                <router-link to="/ApplyWedding" v-if="userinfo.usertype != 2">
                   <el-dropdown-item>申请婚喜宴</el-dropdown-item>
                 </router-link>
                 <router-link to="/Wedding">
                   <el-dropdown-item>查看婚喜宴</el-dropdown-item>
                 </router-link>
-                <router-link to="/Happiness">
+                <router-link to="/Happiness" v-if="userinfo.usertype != 2">
                   <el-dropdown-item>查看好友动态</el-dropdown-item>
                 </router-link>
-                <router-link to="/consult">
+                <router-link to="/weddingrecord" v-if="userinfo.usertype == 2">
+                  <el-dropdown-item>查看申请结果</el-dropdown-item>
+                </router-link>
+                <router-link to="/consult" v-if="userinfo.usertype != 2">
+                  <el-dropdown-item>在线咨询</el-dropdown-item>
+                </router-link>
+                <router-link to="/consultlist" v-if="userinfo.usertype == 2">
                   <el-dropdown-item>在线咨询</el-dropdown-item>
                 </router-link>
                 <el-dropdown-item divided>
@@ -110,7 +116,7 @@
                   icon="el-icon-s-check"
                   circle
                   size="medium"
-                  @click.natie="gotoconsult()"
+                  @click.native="gotoconsult()"
                 ></el-button>
               </el-dropdown>
             </el-badge>
@@ -133,14 +139,17 @@ export default {
   },
   data() {
     return {
-      id:-1,
-      username: "",
+      userinfo: {
+        id: "",
+        uname_phone: "",
+        usertype: "",
+      },
       isLogin: false,
       chatNotice: {},
       requestNotice: {},
       chatUsername: "",
       chattedUsername: "",
-      systemMessages:""
+      systemMessages: "",
     };
   },
   methods: {
@@ -250,20 +259,21 @@ export default {
         });
       });
     },
-    getSystemMessages(){
-      let app=this
-      let id=app.id;
-      axios.post('/systemmessage/getMyState',id)
-        .then(function(res){
-          app.systemMessages=res.data
+    getSystemMessages() {
+      let app = this;
+      let id = app.id;
+      axios
+        .post("/systemmessage/getMyState", id)
+        .then(function (res) {
+          app.systemMessages = res.data;
         })
-        .catch(function(err){
+        .catch(function (err) {
           console.log(err);
         });
     },
-    gotoconsult(){
-      this.$router.push("./consult")
-    }
+    gotoconsult() {
+      this.$router.push("./consult");
+    },
   },
   created() {
     let app = this;
@@ -271,9 +281,9 @@ export default {
       .get("/getCurrentUser")
       .then(function (res) {
         console.log("head", res);
-        app.id=res.data.message.userid;
+        app.id = res.data.message.userid;
         if (res.data.result) {
-          app.username = res.data.message.uname_phone;
+          app.userinfo = res.data.message;
           app.isLogin = true;
         }
         this.getNotice();
@@ -281,7 +291,7 @@ export default {
       .catch(function (error) {});
   },
   mounted() {
-    let app=this
+    let app = this;
     this.timer = setInterval(() => {
       setTimeout(() => {
         this.getNotice();
