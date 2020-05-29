@@ -33,17 +33,24 @@ public class LRServiceImpl implements LRService {
     private UserQuestionMapper userQuestionMapper;
 
     @Override
-    public LoginVO login(LoginVO loginVO) {
+    public ReturnMessage login(LoginVO loginVO) {
+        if(loginVO.getUsertype()==2){
+            if(loginVO.getUname_phone().equals("admin")&&loginVO.getPassword().equals("123456")){
+                return new ReturnMessage(true,new LoginVO(0,"admin","",2));
+            }else{
+                return new ReturnMessage(false,"用户名或密码不正确，请重新输入");
+            }
+        }
         User user=userMapper.selectByPhone(loginVO.getUname_phone());
         if(user!=null&&Base64Converter.decode(user.getPassword()).equals(loginVO.getPassword())){
-            return new LoginVO(user.getId(),loginVO.getUname_phone(),"");
+            return new ReturnMessage(true,new LoginVO(user.getId(),loginVO.getUname_phone(),"",user.getUsertype()));
         }else{
             user=userMapper.selectByUsername(loginVO.getUname_phone());
             if(user!=null&&Base64Converter.decode(user.getPassword()).equals(loginVO.getPassword())){
-                return new LoginVO(user.getId(),loginVO.getUname_phone(),"");
+                return new ReturnMessage(true,new LoginVO(user.getId(),loginVO.getUname_phone(),"",user.getUsertype()));
             }
         }
-        return new LoginVO(0,"","");
+        return new ReturnMessage(false,"用户名或密码不正确，请重新输入");
     }
 
     @Override

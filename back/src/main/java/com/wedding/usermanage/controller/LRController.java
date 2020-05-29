@@ -32,13 +32,13 @@ public class LRController {
     @ResponseBody
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public ReturnMessage login(@RequestBody LoginVO loginVO, HttpServletRequest httpServletRequest){
-        LoginVO currentLoginVO=lrService.login(loginVO);
-        if(currentLoginVO.getUserid()!=0){
+        ReturnMessage loginResult=lrService.login(loginVO);
+        if(loginResult.isResult()){
             HttpSession session=httpServletRequest.getSession(true);
-            session.setAttribute("userinfo",currentLoginVO);
-            return new ReturnMessage(true,"ok");
+            session.setAttribute("userinfo",loginResult.getMessage());
+            return new ReturnMessage(true,"登录成功！");
         }
-        return new ReturnMessage(false,"there is something wrong!");
+        return loginResult;
     }
     @ResponseBody
     @RequestMapping(value = "/register",method = RequestMethod.POST)

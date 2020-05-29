@@ -8,11 +8,13 @@ public class LoginVO implements Serializable {
     int userid;
     String uname_phone;
     String password;
+    int usertype;
 
-    public LoginVO(int userid, String uname_phone, String password) {
+    public LoginVO(int userid, String uname_phone, String password, int usertype) {
         this.userid = userid;
         this.uname_phone = uname_phone;
         this.password = password;
+        this.usertype = usertype;
     }
 
     public LoginVO() {
@@ -40,5 +42,13 @@ public class LoginVO implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getUsertype() {
+        return usertype;
+    }
+
+    public void setUsertype(int usertype) {
+        this.usertype = usertype;
     }
 }

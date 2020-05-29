@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface LRService {
-    public LoginVO login(LoginVO loginVO);
+    public ReturnMessage login(LoginVO loginVO);
 
     public ReturnMessage register(RegisterVO registerVO);
 

@@ -11,7 +11,7 @@ public class User {
 
     private String phone;
 
-    private Byte usertype;
+    private Byte usertype;//0为免费用户，1为付费用户，2为管理员
 
     private String fullname;
 
