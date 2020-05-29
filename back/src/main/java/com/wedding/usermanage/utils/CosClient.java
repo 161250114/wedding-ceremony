@@ -15,9 +15,9 @@ import java.io.File;
 
 public class CosClient {
 
-    private static final String ACCESSKEY="AKIDz3vYv17Us0A9wU6vrZLBmpgIk1QcjZHH";
+    private static final String SafeACCESSKEY="QUtJREhZZ3lHVkxXUUVoMUlTdTdleDk3ck5ZYlZEaEM0eHZl";
 
-    private static final String SECRETKEY="xe7NM8vUoulQ0LXS9cr8vSjD8nIXXcRc";
+    private static final String SafeSECRETKEY="R09UVUs2ZzNHS0V3TXVGT09FSUN4VHIyNjhoQWExSjE=";
 
     private static final String BUCKETNAME="weddingceremony-1301700911";
 
@@ -29,7 +29,7 @@ public class CosClient {
 
     public static COSClient getCosClient() {
         // 1 初始化用户身份信息(secretId, secretKey)
-        COSCredentials cred = new BasicCOSCredentials(ACCESSKEY, SECRETKEY);
+        COSCredentials cred = new BasicCOSCredentials(Base64Converter.decode(SafeACCESSKEY), Base64Converter.decode(SafeSECRETKEY));
         // 2 设置bucket的区域, COS地域的简称请参照 https://cloud.tencent.com/document/product/436/6224
         // clientConfig中包含了设置region, https(默认http), 超时, 代理等set方法, 使用可参见源码或者接口文档FAQ中说明
         ClientConfig clientConfig = new ClientConfig(new Region(REGIONID));
@@ -61,4 +61,12 @@ public class CosClient {
         cc.shutdown();
         return null;
     }
+
+    public static String deleteFile(String key){
+
+        COSClient cc=getCosClient();
+        cc.deleteObject(BUCKETNAME,key);
+        return null;
+    }
+
 }
