@@ -34,8 +34,6 @@ public class PhotoServiceImpl implements PhotoService {
     @Override
     @Transactional
     public ReturnMessage uploadPhotos(int userid,MultipartFile[] files) {
-        OutputStream os = null;
-        InputStream inputStream = null;
         String fileName = null;
         User user=userMapper.selectByPrimaryKey(userid);
         Album album=albumMapper.selectByPrimaryKey(user.getAlbumid());
