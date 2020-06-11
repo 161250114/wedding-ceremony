@@ -71,19 +71,19 @@ public class UserServiceImpl implements UserService {
 
         List<User> selectedListByDetail = new ArrayList<>();
         if(search.getMarrige()==3){//婚姻状况不限
-            search.setMarrige(0);
+            search.setMarrige((byte) 0);
             List<User> selectedListByDetail_1 = userMapper.selectByDetail(search);
             if(selectedListByDetail_1!= null) {
                 selectedListByDetail.addAll(selectedListByDetail_1);
                 System.out.println("1");
             }
-            search.setMarrige(1);
+            search.setMarrige((byte) 1);
             List<User> selectedListByDetail_2 = userMapper.selectByDetail(search);
             if(selectedListByDetail_2!= null) {
                 selectedListByDetail.addAll(selectedListByDetail_2);
                 System.out.println("2");
             }
-            search.setMarrige(2);
+            search.setMarrige((byte) 2);
             List<User> selectedListByDetail_3 = userMapper.selectByDetail(search);
             if(selectedListByDetail_3!= null) {
                 selectedListByDetail.addAll(selectedListByDetail_3);

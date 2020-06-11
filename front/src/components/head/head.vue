@@ -72,18 +72,9 @@
             <el-badge :value="chatNotice.length" :max="99">
               <!--              <el-button size="small">{{cNoticeNum}}</el-button>-->
               <el-dropdown>
-                <el-button
-                  type="info"
-                  icon="el-icon-chat-round"
-                  circle
-                  size="medium"
-                ></el-button>
+                <el-button type="info" icon="el-icon-chat-round" circle size="medium"></el-button>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item
-                    v-for="(item, index) in chatNotice"
-                    :key="index"
-                    @click.native="agreeNotice(item)"
-                  >
+                  <el-dropdown-item v-for="(item, index) in chatNotice" :key="index" @click.native="agreeNotice(item)">
                     {{ item.userId }}希望进一步了解您
                   </el-dropdown-item>
                 </el-dropdown-menu>
@@ -92,23 +83,15 @@
 
             <el-badge :value="requestNotice.length" :max="99">
               <el-dropdown>
-                <el-button
-                  type="info"
-                  icon="el-icon-bell"
-                  circle
-                  size="medium"
-                ></el-button>
+                <el-button type="info" icon="el-icon-bell" circle size="medium"></el-button>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item
-                    v-for="(item, index) in requestNotice"
-                    :key="index"
-                    @click.native="joinRoom(item)"
-                  >
+                  <el-dropdown-item v-for="(item, index) in requestNotice" :key="index" @click.native="joinRoom(item)">
                     {{ item.chattedUserId }}同意与您深入交谈
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </el-badge>
+
             <el-badge :value="systemMessages" :max="99">
               <el-dropdown>
                 <el-button

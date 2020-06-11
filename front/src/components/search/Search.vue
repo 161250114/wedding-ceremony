@@ -124,16 +124,6 @@
                      layout="prev, pager, next" :total="pageInfo.total" style="text-align: center">
       </el-pagination>
     </div>
-
-    <div style="margin-top: 100px">
-      <el-card shadow="false" style="width: 1600px;margin: 0 auto; border: none">
-        <p style="text-align: center">关于我们|联系我们|加入我们|合作伙伴|意见反馈|安全中心|网站地图|帮助中心|精英会员|个人信息保护政策</p>
-        <p style="text-align: center">品牌：10年专业婚恋服务 专业：庞大的资深红娘队伍</p>
-        <p style="text-align: center">客服热线：4001-520-520（周一至周日：9:00-21:00）客服信箱：1234567890@jingying.com</p>
-        <p style="text-align: center">违法和不良信息举报 4001-520-520 举报信箱：1234567891@jingying.com</p>
-        <p style="text-align: center">Copyright © 2010-2020 版权所有：西虹市精英婚庆网信息技术有限公司</p>
-      </el-card>
-    </div>
   </div>
 </template>
 
@@ -149,7 +139,6 @@
         userId: 0,
         searchType: 2,
         searchForm: {
-          id: 1,
           sex: 1,
           youngest: 22,
           oldest: 35,
@@ -523,9 +512,10 @@
           // console.log(this.pageInfo)
           for(let item in this.pageInfo.list) {
             console.log(this.pageInfo.list[item])
-            let url_album = `/album/select/${this.pageInfo.list[item].albumid}`
-            axios.get(url_album).then((res) => {
-              let photoAddress = res.data[0].address
+            let url_album = '/userInfo/getStatusInfo'
+            this.$axios.post(url_album, this.pageInfo.list[item].id).then((res) => {
+              console.log(res.data.message.headPhotoUrl)
+              let photoAddress = res.data.message.headPhotoUrl
               // console.log('album')
               this.pageInfoAddress.push(photoAddress)
             })
@@ -545,9 +535,10 @@
               this.pageInfo = res.data
               for(let item in this.pageInfo.list) {
                 console.log(this.pageInfo.list[item])
-                let url_album = `/album/select/${this.pageInfo.list[item].albumid}`
-                axios.get(url_album).then((res) => {
-                  let photoAddress = res.data[0].address
+                let url_album = '/userInfo/getStatusInfo'
+                this.$axios.post(url_album, this.pageInfo.list[item].id).then((res) => {
+                  console.log(res.data.message.headPhotoUrl)
+                  let photoAddress = res.data.message.headPhotoUrl
                   // console.log('album')
                   this.pageInfoAddress.push(photoAddress)
                 })
@@ -560,31 +551,34 @@
             //根据择偶要求设置默认搜索界面的结果，并显示在选择框上
             let url_1 = `/date_standard/select/${this.userId}`
             axios.get(url_1).then((res) => {
-              // console.log(res)
+              console.log(res)
               let areas = res.data.address.split('/')
-              console.log(areas)
-              if (areas.length === 3) {//xx省/xx市/xx区
-                this.searchForm.address = areas[0] + '/' + areas[1] + '/' + areas[2]
-                let province = TextToCode[areas[0]].code
-                let city = TextToCode[areas[0]][areas[1]].code
-                let area = TextToCode[areas[0]][areas[1]][areas[2]].code
-                this.addressValue = [province, city, area]
-              } else if (areas.length === 2) {//xx省/xx市/全部
+              // console.log(areas)
+              if (areas.length === 3&&areas[2]==='不限') {//xx省/xx市/不限
                 this.searchForm.address = areas[0] + '/' + areas[1]
                 let province = TextToCode[areas[0]].code
                 // console.log(province)
                 let city = TextToCode[areas[0]][areas[1]].code
                 let area = ''
                 this.addressValue = [province, city, area]
-                console.log(this.addressValue)
-              } else if (areas.length === 0) {//不限
-                this.searchForm.address = ''
-                this.addressValue = []
-              } else if (areas.length === 1) {//xx省/全部
+                // console.log(this.addressValue)
+              }
+              else if (areas.length === 2) {//xx省/不限
                 this.searchForm.address = areas[0]
                 let province = TextToCode[areas[0]].code + ''
                 let city = ''
                 this.addressValue = [province, city]
+              }
+              else if (areas.length === 1) {//不限
+                this.searchForm.address = ''
+                this.addressValue = []
+              }
+              else{//xx省/xx市/xx区
+                this.searchForm.address = areas[0] + '/' + areas[1] + '/' + areas[2]
+                let province = TextToCode[areas[0]].code
+                let city = TextToCode[areas[0]][areas[1]].code
+                let area = TextToCode[areas[0]][areas[1]][areas[2]].code
+                this.addressValue = [province, city, area]
               }
 
               this.searchForm.youngest = res.data.agemin
@@ -596,23 +590,24 @@
               let url_2 = `/user/get/${this.userId}`
               axios.get(url_2).then((res) => {
                 // console.log(res)
-                if (res.data.sex === 0) {
-                  this.searchForm.sex = 1
+                if (res.data.sex === 1) {
+                  this.searchForm.sex = 2
                   this.sex_label = '女'
                 } else {
-                  this.searchForm.sex = 0
+                  this.searchForm.sex = 1
                   this.sex_label = '男'
                 }
                 // console.log(url)
                 let url = `/user/queryDetailSearch/${this.currentPage}`
                 this.$axios.post(url, this.searchForm).then((res) => {
-                  // console.log(this.searchForm)
+                  console.log(this.searchForm)
                   this.pageInfo = res.data
                   for(let item in this.pageInfo.list) {
                     console.log(this.pageInfo.list[item])
-                    let url_album = `/album/select/${this.pageInfo.list[item].albumid}`
-                    axios.get(url_album).then((res) => {
-                      let photoAddress = res.data[0].address
+                    let url_album = '/userInfo/getStatusInfo'
+                    this.$axios.post(url_album, this.pageInfo.list[item].id).then((res) => {
+                      console.log(res.data.message.headPhotoUrl)
+                      let photoAddress = res.data.message.headPhotoUrl
                       // console.log('album')
                       this.pageInfoAddress.push(photoAddress)
                     })
@@ -641,9 +636,10 @@
               this.pageInfo = res.data
               for(let item in this.pageInfo.list) {
                 console.log(this.pageInfo.list[item])
-                let url_album = `/album/select/${this.pageInfo.list[item].albumid}`
-                axios.get(url_album).then((res) => {
-                  let photoAddress = res.data[0].address
+                let url_album = '/userInfo/getStatusInfo'
+                this.$axios.post(url_album, this.pageInfo.list[item].id).then((res) => {
+                  console.log(res.data.message.headPhotoUrl)
+                  let photoAddress = res.data.message.headPhotoUrl
                   // console.log('album')
                   this.pageInfoAddress.push(photoAddress)
                 })
@@ -689,9 +685,9 @@
         getSex = obj.sex_label
         // console.log(getName)
         if (getSex === '男') {
-          this.searchForm.sex = 0
-        } else if (getSex === '女') {
           this.searchForm.sex = 1
+        } else if (getSex === '女') {
+          this.searchForm.sex = 2
         }
       },
       changeLocationValue_youngest (val) {
@@ -854,11 +850,10 @@
 
 <style scoped>
   .hottestLabel {
-    width: 80px;
     margin-left: 20px;
     text-align: center;
     color: black;
-    border-radius: 30px
+    border-radius: 15px
   }
 
   .box-card {

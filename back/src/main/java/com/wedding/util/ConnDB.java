@@ -6,11 +6,11 @@ import java.sql.SQLException;
 
 public class ConnDB {
 
-    private static String url = "jdbc:mysql://localhost:3306/wedding?useUnicode=true&characterEncoding=utf8";
+    private static String url = "jdbc:mysql://sh-cynosdbmysql-grp-5qjydfg0.sql.tencentcdb.com:29004/wedding?useUnicode=true&characterEncoding=utf8";
 
     private static String username = "root";
 
-    private static String password = "980328";
+    private static String password = "161250114haha";
 
     private static Connection conn;
 

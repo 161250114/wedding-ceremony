@@ -10,11 +10,11 @@
     <div style="margin-top: 20px; height: 350px">
       <el-card class="simpleInfo">
         <div style="height: 100%; width: 30%; float: left">
-          <figure style="height: 70%; margin-bottom: 20px">
-            <img :src="photoAddress"/>
+          <figure style="height: 200px; margin-bottom: 20px">
+            <img :src="headAddress"/>
           </figure>
 
-          <div style="height: 25%;float:bottom;">
+          <div style="height: 100px;float:bottom;">
             <el-button type="primary" plain @click="handleSayHi()" class="sayHi" style="margin-left: 40px">打招呼
             </el-button>
             <el-button type="primary" plain @click="handleChat()" class="sayHi" style="margin-left: 10px">发消息
@@ -25,12 +25,9 @@
         <div style="height: 100%; width: 70%; float: left">
           <div style="width: 80%">
             <el-carousel height="120px" type="card" autoplay="false">
-              <!--              <el-carousel-item v-for="(item,index) in 4" :key="index" style="width: 200px">-->
               <el-carousel-item v-for="(item,index) in album" :key="index" style="width: 200px">
-                <!--                <img src="../recommend/girl.png"/>-->
-                <img style="width: 100%;height: 120px" :src="item.address"/>
+                <img style="width: 100%;height: 120px" :src="item"/>
               </el-carousel-item>
-              <!--              </el-carousel-item>-->
             </el-carousel>
           </div>
 
@@ -52,7 +49,7 @@
           style="font-size: 20px; font-weight: bolder">个人标签</strong></li>
         <div>
           <el-tag v-for="(item,index) in this.form" :key="index"
-                  style="font-size:15px; height: 35px; width: 80px;margin-left: 30px;vertical-align: middle;text-align: center;color: black;border-radius: 20px"
+                  style="font-size:15px; height: 35px; margin-left: 25px;vertical-align: middle;text-align: center;color: black;border-radius: 15px"
                   effect="plain">
             {{item.label}}
           </el-tag>
@@ -116,16 +113,6 @@
         </div>
       </el-card>
     </div>
-
-    <div style="margin-top: 100px; width: 100%">
-      <el-card shadow="false" style="width: 1600px;margin: 0 auto; border: none">
-        <p style="text-align: center">关于我们|联系我们|加入我们|合作伙伴|意见反馈|安全中心|网站地图|帮助中心|精英会员|个人信息保护政策</p>
-        <p style="text-align: center">品牌：10年专业婚恋服务 专业：庞大的资深红娘队伍</p>
-        <p style="text-align: center">客服热线：4001-520-520（周一至周日：9:00-21:00）客服信箱：1234567890@jingying.com</p>
-        <p style="text-align: center">违法和不良信息举报 4001-520-520 举报信箱：1234567891@jingying.com</p>
-        <p style="text-align: center">Copyright © 2010-2020 版权所有：西虹市精英婚庆网信息技术有限公司</p>
-      </el-card>
-    </div>
   </div>
 </template>
 
@@ -136,8 +123,8 @@
     name: 'Check',
     data () {
       return {
-        album: {},
-        photoAddress: '',
+        headAddress: '', //头像
+        album: [], //相册
         truth: 0,
         colors: ['#99A9BF', '#F7BA2A', '#FF9900'],  // 等同于 { 2: '#99A9BF', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' }
         id: 0,//查看对象的id
@@ -182,6 +169,7 @@
     created () {
       this.id = this.$route.params.id
       this.getData()
+      this.getAlbumPhotos()
       this.getDateStandard()
       this.getHobby()
       this.getUserLabel()
@@ -203,7 +191,6 @@
           let nowDate = new Date()
           let currentYear = nowDate.getFullYear()
           this.age = currentYear - parseInt(this.records.birthday.substr(0, 4))
-          this.getAlbumPhotos()
         })
       },
       getDateStandard () {
@@ -229,12 +216,16 @@
         })
       },
       getAlbumPhotos () {
-        let url_album = `/album/select/${this.records.albumid}`
-        axios.get(url_album).then((res) => {
+        let url_album = '/userInfo/getStatusInfo'
+        this.$axios.post(url_album, this.id).then((res) => {
+          console.log(res.data.message.headPhotoUrl)
+          this.headAddress = res.data.message.headPhotoUrl
+          // console.log('album')
+        })
+        let url = `/album/select/${this.id}`
+        axios.get(url).then((res) => {
           this.album = res.data
-          console.log('album')
-          this.photoAddress = this.album[0].address
-          console.log(this.photoAddress)
+          console.log(this.album)
         })
       },
       getHobby () {

@@ -21,7 +21,7 @@ public class Search {
 
     private String profession;
 
-    private Integer marrige;
+    private byte marrige;
 
     public Integer getId() {
         return id;
@@ -103,11 +103,11 @@ public class Search {
         this.profession = profession == null ? null : profession.trim();
     }
 
-    public Integer getMarrige() {
+    public byte getMarrige() {
         return marrige;
     }
 
-    public void setMarrige(Integer marrige) {
+    public void setMarrige(byte marrige) {
         this.marrige = marrige;
     }
 }

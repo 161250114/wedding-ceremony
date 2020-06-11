@@ -17,9 +17,9 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/wedding"
+                        connectionURL="jdbc:mysql://sh-cynosdbmysql-grp-5qjydfg0.sql.tencentcdb.com:29004/wedding"
                         userId="root"
-                        password="161250114">
+                        password="161250114haha">
         </jdbcConnection>
 
         <!--生成model类的存放位置 -->

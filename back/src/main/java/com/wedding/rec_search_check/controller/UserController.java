@@ -54,7 +54,7 @@ public class UserController {
     @RequestMapping("memberList")
     public List<User> memberList(){
         List<User> allUsers= userService.selAll();
-        for(int i=0;i<allUsers.size();i++){//性别相反
+        for(int i=0;i<allUsers.size();i++){
             if(allUsers.get(i).getUsertype()==0){
                 allUsers.remove(i);
                 i--;
@@ -74,9 +74,20 @@ public class UserController {
         Calendar cal=Calendar.getInstance();
         int year=cal.get(Calendar.YEAR);
 
-        //根据用户的择偶要求来推荐，若不够，则放宽要求，只要address，marriage
+        //根据用户的择偶要求来推荐
         Date_standard date_standard = dateStandardService.selByUserId(user_id);
-        List<User> selectedListByStandard = null;
+
+        if(date_standard.getSalary().equals("不限")){
+            date_standard.setSalary("");
+        }
+        if(date_standard.getEducation().equals("不限")){
+            date_standard.setEducation("");
+        }
+        if (date_standard.getAddress().substring(date_standard.getAddress().length()-2).equals("不限")){
+            date_standard.setAddress(date_standard.getAddress().substring(0,date_standard.getAddress().length()-3));
+        }
+
+        List<User> selectedListByStandard = new ArrayList<>();
         if(date_standard.getMarrige()==3){//婚姻状况不限
             date_standard.setMarrige((byte) 0);
             List<User> selectedListByStandard_1 = userService.selByStandard(date_standard);
@@ -99,7 +110,7 @@ public class UserController {
         }
 
         for(int i=0;i<selectedListByStandard.size();i++){//性别相反
-            if(selectedListByStandard.get(i).getSex()== currentUser.getSex()){
+            if(selectedListByStandard.get(i).getSex() == currentUser.getSex()){
                 selectedListByStandard.remove(i);
                 i--;
             }
@@ -121,55 +132,55 @@ public class UserController {
         if(selectedListByStandard.size()>=8){
             return selectedListByStandard.subList(selectedListByStandard.size()-8,selectedListByStandard.size());
         }
-        else {
-            //扩大范围
-            date_standard.setEducation("");
-            date_standard.setAgemin(20);
-            date_standard.setAgemax(50);
-            date_standard.setHeightmin(0);
-            date_standard.setHeightmax(300);
-
-            if(date_standard.getMarrige()==3){//婚姻状况不限
-                date_standard.setMarrige((byte) 0);
-                List<User> selectedListByStandard_1 = userService.selByStandard(date_standard);
-                if(selectedListByStandard_1!=null) {
-                    selectedListByStandard.addAll(selectedListByStandard_1);
-                }
-                date_standard.setMarrige((byte) 1);
-                List<User> selectedListByStandard_2 = userService.selByStandard(date_standard);
-                if(selectedListByStandard_2!=null) {
-                    selectedListByStandard.addAll(selectedListByStandard_2);
-                }
-                date_standard.setMarrige((byte) 2);
-                List<User> selectedListByStandard_3 = userService.selByStandard(date_standard);
-                if(selectedListByStandard_3!=null) {
-                    selectedListByStandard.addAll(selectedListByStandard_3);
-                }
-            }
-            else {
-                selectedListByStandard = userService.selByStandard(date_standard);
-            }
-
-            for(int i=0;i<selectedListByStandard.size();i++){
-                if(selectedListByStandard.get(i).getSex()== currentUser.getSex()){
-                    selectedListByStandard.remove(i);
-                    i--;
-                }
-            }
-
-            for(int i=0;i<selectedListByStandard.size();i++){//年龄在范围之内
-                //获取用户出生年份
-                Date birthday= selectedListByStandard.get(i).getBirthday();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss aa");
-                String birth_year=sdf.format(birthday).substring(0,4);
-                //得到年龄
-                int age = year-Integer.parseInt(birth_year);
-                if(age<date_standard.getAgemin()||age>date_standard.getAgemax()){
-                    selectedListByStandard.remove(i);
-                    i--;
-                }
-            }
-        }
+//        else {
+//            //扩大范围
+//            date_standard.setEducation("");
+//            date_standard.setAgemin(20);
+//            date_standard.setAgemax(50);
+//            date_standard.setHeightmin(0);
+//            date_standard.setHeightmax(300);
+//
+//            if(date_standard.getMarrige()==3){//婚姻状况不限
+//                date_standard.setMarrige((byte) 0);
+//                List<User> selectedListByStandard_1 = userService.selByStandard(date_standard);
+//                if(selectedListByStandard_1!=null) {
+//                    selectedListByStandard.addAll(selectedListByStandard_1);
+//                }
+//                date_standard.setMarrige((byte) 1);
+//                List<User> selectedListByStandard_2 = userService.selByStandard(date_standard);
+//                if(selectedListByStandard_2!=null) {
+//                    selectedListByStandard.addAll(selectedListByStandard_2);
+//                }
+//                date_standard.setMarrige((byte) 2);
+//                List<User> selectedListByStandard_3 = userService.selByStandard(date_standard);
+//                if(selectedListByStandard_3!=null) {
+//                    selectedListByStandard.addAll(selectedListByStandard_3);
+//                }
+//            }
+//            else {
+//                selectedListByStandard = userService.selByStandard(date_standard);
+//            }
+//
+//            for(int i=0;i<selectedListByStandard.size();i++){
+//                if(selectedListByStandard.get(i).getSex()== currentUser.getSex()){
+//                    selectedListByStandard.remove(i);
+//                    i--;
+//                }
+//            }
+//
+//            for(int i=0;i<selectedListByStandard.size();i++){//年龄在范围之内
+//                //获取用户出生年份
+//                Date birthday= selectedListByStandard.get(i).getBirthday();
+//                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss aa");
+//                String birth_year=sdf.format(birthday).substring(0,4);
+//                //得到年龄
+//                int age = year-Integer.parseInt(birth_year);
+//                if(age<date_standard.getAgemin()||age>date_standard.getAgemax()){
+//                    selectedListByStandard.remove(i);
+//                    i--;
+//                }
+//            }
+//        }
         return selectedListByStandard;
     }
 

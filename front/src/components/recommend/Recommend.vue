@@ -38,24 +38,14 @@
         </el-button>
       </el-card>
     </div>
-
-    <div style="margin-top: 50px">
-      <el-card shadow="false" style="width: 1600px;margin: 0 auto; border: none">
-        <p style="text-align: center">关于我们|联系我们|加入我们|合作伙伴|意见反馈|安全中心|网站地图|帮助中心|精英会员|个人信息保护政策</p>
-        <p style="text-align: center">品牌：10年专业婚恋服务 专业：庞大的资深红娘队伍</p>
-        <p style="text-align: center">客服热线：4001-520-520（周一至周日：9:00-21:00）客服信箱：1234567890@jingying.com</p>
-        <p style="text-align: center">违法和不良信息举报 4001-520-520 举报信箱：1234567891@jingying.com</p>
-        <p style="text-align: center">Copyright © 2010-2020 版权所有：西虹市精英婚庆网信息技术有限公司</p>
-      </el-card>
-    </div>
   </div>
 </template>
 
 <script>
   import axios from 'axios'
-  import head_img1 from './sample2.jpg'
-  import head_img2 from './sample3.jpg'
-  import head_img3 from './sample4.jpg'
+  import head_img1 from './head1.jpg'
+  import head_img2 from './title.png'
+  import head_img3 from './timg.jpg'
 
   export default {
     name: 'Recommend',
@@ -70,13 +60,13 @@
         userList: {},
         userListAddress: [],
         carouselList: [{
-          img_name: 'paris',
+          img_name: 'love',
           img_url: head_img1
         }, {
-          img_name: 'church',
+          img_name: 'title',
           img_url: head_img2
         }, {
-          img_name: 'jeneva',
+          img_name: 'scene',
           img_url: head_img3
         }]
       }
@@ -90,17 +80,18 @@
         this.preferListAddress = []
         let url_getCurrentUser = '/getCurrentUser'
         axios.get(url_getCurrentUser).then((res) => {
-          // console.log(res.data.message)
+          console.log(res.data.message)
           if (res.data.message === null) {//没登录的用户，猜你喜欢显示会员
             let url = '/user/memberList'
             axios.get(url).then((res) => {
               // console.log(res)
               this.preferList = res.data
               for(let item in this.preferList) {
-                let url_album = `/album/select/${this.preferList[item].albumid}`
-                console.log(this.preferList[item].albumid)
-                axios.get(url_album).then((res) => {
-                  let photoAddress = res.data[0].address
+                console.log(this.preferList[item])
+                let url_album = '/userInfo/getStatusInfo'
+                this.$axios.post(url_album, this.preferList[item].id).then((res) => {
+                  console.log(res.data.message.headPhotoUrl)
+                  let photoAddress = res.data.message.headPhotoUrl
                   // console.log('album')
                   this.preferListAddress.push(photoAddress)
                 })
@@ -110,16 +101,18 @@
           }
           else {
             this.userId = res.data.message.userid
+            console.log(this.userId)
             // this.userId=res.data
             let url = `/user/preferList/${this.userId}`
             axios.get(url).then((res) => {
-              // console.log(res)
+              console.log(res)
               this.preferList = res.data
               for(let item in this.preferList) {
-                let url_album = `/album/select/${this.preferList[item].albumid}`
-                // console.log(this.preferList[item].albumid)
-                axios.get(url_album).then((res) => {
-                  let photoAddress = res.data[0].address
+                console.log(this.preferList[item])
+                let url_album = '/userInfo/getStatusInfo'
+                this.$axios.post(url_album, this.preferList[item].id).then((res) => {
+                  console.log(res.data.message.headPhotoUrl)
+                  let photoAddress = res.data.message.headPhotoUrl
                   // console.log('album')
                   this.preferListAddress.push(photoAddress)
                 })
@@ -151,10 +144,10 @@
             })
           }
           else {//已经登录状态下
-            // console.log(event.target.getAttribute('id'))
+            console.log(event.target.getAttribute('id'))
             if (event.target.getAttribute('id') === 'tab-猜你喜欢') {
               //猜你喜欢标签，在登录状态下，加载页面的时候已经有数据，直接沿用
-              // console.log("111")
+              console.log("111")
               // console.log(this.preferListAddress)
             }
             else {
@@ -168,12 +161,16 @@
                 this.userList = res.data
                 for(let item in this.userList) {
                   console.log(this.userList[item])
-                  let url_album = `/album/select/${this.userList[item].albumid}`
-                  axios.get(url_album).then((res) => {
-                    let photoAddress = res.data[0].address
+                  let url_album = '/userInfo/getStatusInfo'
+                  this.$axios.post(url_album, this.userList[item].id).then((res) => {
+                    console.log(res.data.message.headPhotoUrl)
+                    let photoAddress = res.data.message.headPhotoUrl
                     // console.log('album')
                     this.userListAddress.push(photoAddress)
                   })
+                  // let url_album = `/album/select/${this.userList[item].albumid}`
+                  // axios.get(url_album).then((res) => {
+                  // })
                 }
                 // console.log(url)
               })
