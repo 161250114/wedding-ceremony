@@ -86,6 +86,9 @@ public class FriendController {
         if(session!=null){
             LoginVO loginVO=(LoginVO) session.getAttribute("userinfo");
             friendApplyVO.setUserid1(loginVO.getUserid());
+            if(friendApplyVO.getUserid2()==friendApplyVO.getUserid1()){
+                return new ReturnMessage(false,"请勿向自己发送好友申请!");
+            }
             return friendService.sendFriendApply(friendApplyVO);
         }
         return new ReturnMessage(false,"尚未登录");

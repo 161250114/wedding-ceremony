@@ -24,6 +24,8 @@ public class FriendServiceImpl implements FriendService {
     private Date_applyMapper date_applyMapper;
     @Autowired
     private Date_recordMapper date_recordMapper;
+    @Autowired
+    private User_limitMapper user_limitMapper;
 
     @Override
     public FriendVO[] getFriendList(int userid) {
@@ -86,15 +88,27 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public ReturnMessage sendFriendApply(FriendApplyVO friendApplyVO) {
-        Friend_apply friend_apply=new Friend_apply();
-        friend_apply.setApplydate(new Date());
-        friend_apply.setApplyinfo(friendApplyVO.getApplyInfo());
-        friend_apply.setReplyinfo("暂无");
-        friend_apply.setResult("等待");
-        friend_apply.setUserid1(friendApplyVO.getUserid1());
-        friend_apply.setUserid2(friendApplyVO.getUserid2());
-        friend_applyMapper.insert(friend_apply);
-        return new ReturnMessage(true,"发送成功");
+        List<User_relation> user_relations=user_relationMapper.selectByUserId1(friendApplyVO.getUserid1());
+        for(int i=0;i<user_relations.size();i++){
+            if(user_relations.get(i).getUserid2()==friendApplyVO.getUserid2()){
+                return new ReturnMessage(false,"该用户已是您的好友！");
+            }
+        }
+        User_limit user_limit=user_limitMapper.selectByUserId(friendApplyVO.getUserid2());
+        if(user_limit.getLimitFapply()==0){
+            Friend_apply friend_apply=new Friend_apply();
+            friend_apply.setApplydate(new Date());
+            friend_apply.setApplyinfo(friendApplyVO.getApplyInfo());
+            friend_apply.setReplyinfo("暂无");
+            friend_apply.setResult("等待");
+            friend_apply.setUserid1(friendApplyVO.getUserid1());
+            friend_apply.setUserid2(friendApplyVO.getUserid2());
+            friend_applyMapper.insert(friend_apply);
+            return new ReturnMessage(true,"发送成功");
+        }else{
+            return new ReturnMessage(false,"对方当前拒绝好友申请！");
+        }
+
     }
 
     @Override
@@ -188,15 +202,25 @@ public class FriendServiceImpl implements FriendService {
                 return new ReturnMessage(false,"您已向该用户发送过申请啦！请耐心等待~~");
             }
         }
-        Date_apply date_apply=new Date_apply();
-        date_apply.setApplydate(new Date());
-        date_apply.setApplyinfo(dateApplyVO.getApplyInfo());
-        date_apply.setReplyinfo("暂无");
-        date_apply.setResult("等待");
-        date_apply.setUserid1(dateApplyVO.getUserid1());
-        date_apply.setUserid2(dateApplyVO.getUserid2());
-        date_applyMapper.insert(date_apply);
-        return new ReturnMessage(true,"发送成功!");
+        User user2=userMapper.selectByPrimaryKey(dateApplyVO.getUserid2());
+        if(user2.getDateStatus()==1){
+            return new ReturnMessage(false,"对方已经有约会对象啦！");
+        }
+        User_limit user_limit=user_limitMapper.selectByUserId(dateApplyVO.getUserid2());
+        if(user_limit.getLimitDapply()==0){
+            Date_apply date_apply=new Date_apply();
+            date_apply.setApplydate(new Date());
+            date_apply.setApplyinfo(dateApplyVO.getApplyInfo());
+            date_apply.setReplyinfo("暂无");
+            date_apply.setResult("等待");
+            date_apply.setUserid1(dateApplyVO.getUserid1());
+            date_apply.setUserid2(dateApplyVO.getUserid2());
+            date_applyMapper.insert(date_apply);
+            return new ReturnMessage(true,"发送成功!");
+        }else{
+            return new ReturnMessage(false,"对方当前拒绝约会申请！");
+        }
+
     }
 
     @Override

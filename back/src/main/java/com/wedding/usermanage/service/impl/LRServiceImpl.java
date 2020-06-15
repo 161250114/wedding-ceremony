@@ -4,6 +4,7 @@ import com.wedding.mapper.*;
 import com.wedding.model.ReturnMessage;
 import com.wedding.model.po.*;
 import com.wedding.usermanage.service.LRService;
+import com.wedding.usermanage.service.LimitService;
 import com.wedding.usermanage.utils.Base64Converter;
 import com.wedding.usermanage.utils.Statistics;
 import com.wedding.usermanage.vo.LoginVO;
@@ -135,7 +136,7 @@ public class LRServiceImpl implements LRService {
     }
 
     @Override
-    public ReturnMessage validate(String phone) {
+    public ReturnMessage checkUsername(String username) {
         return null;
     }
 

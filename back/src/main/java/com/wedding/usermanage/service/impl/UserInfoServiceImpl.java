@@ -145,6 +145,12 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public ReturnMessage changeStandard(int userid, StandardVO standardVO) {
+        if(standardVO.getAgeMin()>standardVO.getAgeMax()){
+            return new ReturnMessage(false,"年龄标准数据不规范，请重新审核！");
+        }
+        if(standardVO.getHeightMin()>standardVO.getHeightMax()){
+            return new ReturnMessage(false,"身高标准数据不规范，请重新审核！");
+        }
         Date_standard date_standard=date_standardMapper.selectByUserId(userid);
         date_standard.setSalary(standardVO.getSalary());
         date_standard.setMarrige((byte)standardVO.getMarriage());

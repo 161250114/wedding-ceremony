@@ -1,5 +1,5 @@
 <template>
-  <div style="text-align:center">
+  <div style="text-align: center;">
     <el-row style="height: 60px;">
       <el-col ::span="1">&nbsp;</el-col>
     </el-row>
@@ -583,7 +583,18 @@ export default {
       if (app.active == 0 && index == 1) {
         this.$refs["ruleForm1"].validate((valid) => {
           if (valid) {
-            app.active = app.active + index;
+            Axios.post("checkValidateNumber", app.validateNumber).then(
+              function (res) {
+                if (res.data.result) {
+                  app.active = app.active + index;
+                } else {
+                  app.$message({
+                    message: res.data.message,
+                    type: "warning",
+                  });
+                }
+              }
+            );
           } else {
             app.$message({
               message: "请正确填写！",
@@ -599,8 +610,8 @@ export default {
           type: "warning",
         });
       }
-      if (app.active == 1 && index == 1) {
-        app.active++;
+      if (app.active != 0) {
+        app.active = app.active + index;
       }
     },
     chooseTag(tag) {
@@ -760,10 +771,10 @@ export default {
     app.cities = regionData;
     Axios.get("../../../static/infoList.json").then(function (res) {
       app.tagAllList = res.data.tagList;
-      app.professionList=res.data.professionList
-      app.salaryList=res.data.salaryList
-      app.educationList=res.data.educationList
-      app.questionAllList=res.data.questionList
+      app.professionList = res.data.professionList;
+      app.salaryList = res.data.salaryList;
+      app.educationList = res.data.educationList;
+      app.questionAllList = res.data.questionList;
       app.changeTagList();
     });
   },

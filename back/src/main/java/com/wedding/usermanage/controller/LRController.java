@@ -83,4 +83,21 @@ public class LRController {
         }
         return new ReturnMessage(false,"当前没有登录用户");
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/checkValidateNumber",method = RequestMethod.POST)
+    public ReturnMessage checkValidateNumber(@RequestBody String code,HttpServletRequest httpServletRequest){
+        HttpSession session=httpServletRequest.getSession(false);
+        if(code.equals(session.getAttribute("VALIDATE_CODE"))){
+            return new ReturnMessage(true,"验证码正确");
+        }
+        return new ReturnMessage(false,"验证码不正确");
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/checkUsername",method = RequestMethod.POST)
+    public ReturnMessage checkUsername(@RequestBody String username,HttpServletRequest httpServletRequest){
+
+        return new ReturnMessage(false,"验证码不正确");
+    }
 }

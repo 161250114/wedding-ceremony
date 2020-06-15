@@ -372,7 +372,7 @@ export default {
         .then(function (res) {
           app.$message({
             message: res.data.message,
-            type: "success",
+            type: res.data.result==true?"success":"warning",
           });
           app.getSendApplyList();
         })
