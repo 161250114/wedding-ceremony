@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { regionData } from "element-china-area-data";
 import Axios from "axios";
 export default {
   data() {
@@ -59,15 +60,11 @@ export default {
         .then(function (res) {
           console.log(res.data.result);
           if (res.data.result) {
-            if (app.userinfo.usertype != 2) {
-              window.location.href = "/";
-            } else {
-              window.location.href = "/Wedding";
-            }
+            window.location.href = "/";
           }
         })
         .catch(function (error) {});
-    },
+    }
   },
 };
 </script>

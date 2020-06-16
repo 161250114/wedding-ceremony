@@ -58,62 +58,80 @@
                 disabled
                 >已评价</el-button
               >
+              <el-dialog
+                title="信息真实度评价"
+                :visible.sync="commentDialog"
+                width="50%"
+                :before-close="handleClose"
+              >
+                <div>
+                  <div class="block">
+                    <el-row>
+                      <span class="demonstration"
+                        >基础信息真实度(年龄，身高，性别)</span
+                      >
+                    </el-row>
+                    <el-row>
+                      <el-col :span="5">&nbsp;</el-col>
+                      <el-col :span="17">
+                        <el-slider
+                          v-model="basiccomment"
+                          show-input
+                        ></el-slider>
+                      </el-col>
+                      <el-col :span="2">&nbsp;</el-col>
+                    </el-row>
+                    <el-row>
+                      <span class="demonstration"
+                        >其他信息真实度(职业，月薪，住址等)</span
+                      >
+                    </el-row>
+                    <el-row>
+                      <el-col :span="5">&nbsp;</el-col>
+                      <el-col :span="17">
+                        <el-slider
+                          v-model="extracomment"
+                          show-input
+                        ></el-slider>
+                      </el-col>
+                      <el-col :span="2">&nbsp;</el-col>
+                    </el-row>
+                    <el-row>
+                      <span class="demonstration">性格兴趣真实度</span>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="5">&nbsp;</el-col>
+                      <el-col :span="17">
+                        <el-slider
+                          v-model="labelcomment"
+                          show-input
+                        ></el-slider>
+                      </el-col>
+                      <el-col :span="2">&nbsp;</el-col>
+                    </el-row>
+                  </div>
+                </div>
+                <span slot="footer" class="dialog-footer">
+                  <el-button
+                    style="margin-top: 12px;"
+                    @click="commentDialog = false"
+                    >取消</el-button
+                  >
+                  <el-button
+                    style="margin-top: 12px;"
+                    @click="
+                      scope.row.isCommented=1;
+                      sendCreditComment();
+                    "
+                    >完成评价</el-button
+                  >
+                </span>
+              </el-dialog>
             </template>
           </el-table-column>
         </el-table></el-col
       >
     </el-row>
-    <el-dialog
-      title="信息真实度评价"
-      :visible.sync="commentDialog"
-      width="50%"
-      :before-close="handleClose"
-    >
-      <div>
-        <div class="block">
-          <el-row>
-            <span class="demonstration">基础信息真实度(年龄，身高，性别)</span>
-          </el-row>
-          <el-row>
-            <el-col :span="5">&nbsp;</el-col>
-            <el-col :span="17">
-              <el-slider v-model="basiccomment" show-input></el-slider>
-            </el-col>
-            <el-col :span="2">&nbsp;</el-col>
-          </el-row>
-          <el-row>
-            <span class="demonstration"
-              >其他信息真实度(职业，月薪，住址等)</span
-            >
-          </el-row>
-          <el-row>
-            <el-col :span="5">&nbsp;</el-col>
-            <el-col :span="17">
-              <el-slider v-model="extracomment" show-input></el-slider>
-            </el-col>
-            <el-col :span="2">&nbsp;</el-col>
-          </el-row>
-          <el-row>
-            <span class="demonstration">性格兴趣真实度</span>
-          </el-row>
-          <el-row>
-            <el-col :span="5">&nbsp;</el-col>
-            <el-col :span="17">
-              <el-slider v-model="labelcomment" show-input></el-slider>
-            </el-col>
-            <el-col :span="2">&nbsp;</el-col>
-          </el-row>
-        </div>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button style="margin-top: 12px;" @click="commentDialog = false"
-          >取消</el-button
-        >
-        <el-button style="margin-top: 12px;" @click="sendCreditComment"
-          >完成评价</el-button
-        >
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -139,7 +157,11 @@ export default {
     },
     sendCreditComment() {
       let app = this;
-      Axios;
+      app.$message({
+        message: "提交成功",
+        type: "success",
+      });
+      app.commentDialog = false;
     },
     getDateRecords() {
       let app = this;
