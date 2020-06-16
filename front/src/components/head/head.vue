@@ -255,7 +255,12 @@ export default {
         });
     },
     gotoconsult() {
-      this.$router.push("./consult");
+      if(this.id==0){
+        this.$router.push("./consultlist");
+      }else{
+
+        this.$router.push("./consult");
+      }
     },
   },
   created() {

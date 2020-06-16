@@ -41,7 +41,7 @@
     </div>
     <div class="ca">
       <div  style="text-align: left" v-for="(comm,j) in commentlist[index]" :key="j">
-        <div @click="enter()" style="cursor:pointer;">
+        <div @click="myroom()" style="cursor:pointer;">
           <el-avatar :size="30" :src="commentAvatar[index][j]">
           </el-avatar>
           {{commentNames[index][j]}}
@@ -88,9 +88,6 @@
         this.load();
       },
       methods:{
-        enter(){
-          alert("hhh")
-        },
         load(){
           let app=this
           axios.get("/getCurrentUser")
