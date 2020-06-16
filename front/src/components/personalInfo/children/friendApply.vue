@@ -53,6 +53,7 @@
                     @click="
                       remarkDialog = true;
                       currentEditRow = scope.row;
+                      changePage(scope.row.userid);
                     "
                     type="text"
                     >查看用户资料</el-button
@@ -318,6 +319,10 @@ export default {
     };
   },
   methods: {
+    changePage(userid) {
+      let app = this;
+      window.open("../check/"+userid);
+    },
     handleApply() {
       console.log("OK");
       let app = this;
@@ -372,7 +377,7 @@ export default {
         .then(function (res) {
           app.$message({
             message: res.data.message,
-            type: res.data.result==true?"success":"warning",
+            type: res.data.result == true ? "success" : "warning",
           });
           app.getSendApplyList();
         })
@@ -380,7 +385,7 @@ export default {
     },
     getSendApplyList() {
       let app = this;
-      app.sendApplyList.splice(0,app.sendApplyList.length)
+      app.sendApplyList.splice(0, app.sendApplyList.length);
       Axios.get("/friend/getSendFriendApplyList")
         .then(function (res) {
           app.sendApplyList = res.data.message;
@@ -389,8 +394,8 @@ export default {
     },
     getReceiveApplyList() {
       let app = this;
-      app.unhandledApplyList.splice(0,app.unhandledApplyList.length)
-      app.handledApplyList.splice(0,app.handledApplyList.length)
+      app.unhandledApplyList.splice(0, app.unhandledApplyList.length);
+      app.handledApplyList.splice(0, app.handledApplyList.length);
       Axios.get("/friend/getReceiveFriendApplyList").then(function (res) {
         for (let i = 0; i < res.data.message.length; i++) {
           console.log(res.data);
