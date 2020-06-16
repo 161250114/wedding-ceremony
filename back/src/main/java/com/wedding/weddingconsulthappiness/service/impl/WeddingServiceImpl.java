@@ -37,7 +37,7 @@ public class WeddingServiceImpl implements WeddingService {
         List<Wedding>list=getWFromRedis();
         ArrayList<WeddingVO> result=new ArrayList<>();
         for(Wedding w:list){
-            if(w.getApplicantId()-id==0){
+            if(w.getApplicantId()-id==0||id==0){
                 WeddingVO W=new WeddingVO(w);
                 result.add(W);
             }
